@@ -14,7 +14,7 @@ int main()
 	if (!grandpaTexture.loadFromFile("img/2.png"))
 		printf("Load Mai Dai");
 
-	Grandpa grandpa(&grandpaTexture, sf::Vector2u(6, 3), 0.3f, 300.0f);
+	Grandpa grandpa(&grandpaTexture, sf::Vector2u(6, 3), 0.25f, 200.0f);
 
 	while (window.isOpen())
 	{

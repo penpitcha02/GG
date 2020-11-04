@@ -25,7 +25,7 @@ void Animation::Update(int row, float deltaTime, bool faceRight)
 		totalTime -= switchTime;
 		currentImage.x++;
 
-		if (currentImage.x >= imageCount.x)
+		if (currentImage.x >= imageCount.x && currentImage.y != 2)
 		{
 			currentImage.x = 0;
 		}
