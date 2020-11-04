@@ -20,4 +20,5 @@ private:
 	unsigned int row;
 	float speed;
 	bool faceRight;
+	bool attack;
 };

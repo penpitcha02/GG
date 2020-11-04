@@ -6,6 +6,7 @@ Grandpa::Grandpa(sf::Texture* texture, sf::Vector2u imageCount, float switchTime
 	this->speed = speed;
 	row = 0;
 	faceRight = true;
+	attack = false;
 
 	grandpa.setSize(sf::Vector2f(475.f, 475.f));
 	grandpa.setPosition(0.0f, 0.0f);
@@ -26,8 +27,11 @@ void Grandpa::Update(float deltaTime)
 		movement.x += speed * deltaTime;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::G))
-		row = 2;
+	{
+		attack = true;
+	}
 	else {
+		attack = false;
 		if (movement.x == 0.0f)
 		{
 			row = 0;
@@ -49,7 +53,7 @@ void Grandpa::Update(float deltaTime)
 		}
 	}
 
-	animation.Update(row, deltaTime, faceRight);
+	animation.Update(row, deltaTime, faceRight, attack);
 	grandpa.setTextureRect(animation.uvRect);
 	grandpa.move(movement);
 
