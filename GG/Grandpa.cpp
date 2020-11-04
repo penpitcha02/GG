@@ -7,7 +7,7 @@ Grandpa::Grandpa(sf::Texture* texture, sf::Vector2u imageCount, float switchTime
 	row = 0;
 	faceRight = true;
 
-	grandpa.setSize(sf::Vector2f(950.f, 1000.f));
+	grandpa.setSize(sf::Vector2f(475.f, 475.f));
 	grandpa.setPosition(0.0f, 0.0f);
 	grandpa.setTexture(texture);
 }
@@ -44,7 +44,7 @@ void Grandpa::Update(float deltaTime)
 			else
 			{
 				faceRight = false;
-				grandpa.setOrigin(100.f, 0.f);
+				grandpa.setOrigin(20.f, 0.f);
 			}
 		}
 	}
