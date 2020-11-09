@@ -30,36 +30,62 @@ void Game::initWindow()
 
 }
 
+void Game::initKeys()
+{
+	this->supportedKeys["Escape"] = sf::Keyboard::Key::Escape;
+	this->supportedKeys["A"] = sf::Keyboard::Key::A;
+	this->supportedKeys["D"] = sf::Keyboard::Key::D;
+	this->supportedKeys["Space"] = sf::Keyboard::Key::Space;
+
+
+	//DEBUG REMOVE LATER!
+	for (auto i : this->supportedKeys)
+	{
+		std::cout << i.first << "" << i.second << "\n";
+	}
+}
+
 void Game::initStates()
 {
-	this->states.push(new GameState(this->window));
+	this->states.push(new GameState(this->window, &this->supportedKeys));
 }
+
+
 
 
 //Constructors/Destructors
 Game::Game()
 {
 	this->initWindow();
+	this->initKeys();
 	this->initStates();
+	
 }
 
 Game::~Game() 
 {
 	delete this->window;
 
-	while (this->states.empty())
+	while (!this->states.empty())
 	{
 		delete this->states.top();
 		this->states.pop();
 	}
 }
 
+
+
+
+//Function
+void Game::endApplication()
+{
+	std::cout << "Ending Application" << "\n";
+}
 void Game::updateDt()
 {
 	this->dt = this->dtClock.restart().asSeconds();
 }
 
-//Function
 void Game::updateSFMLEvents()
 {
 
@@ -86,8 +112,12 @@ void Game::update()
 			this->states.pop();
 		}
 	}
-
-
+	//Application end
+	else
+	{
+		this->endApplication();
+		this->window->close();
+	}
 }
 
 void Game::render()
