@@ -75,8 +75,9 @@ void Game::update()
 {
 	this->updateSFMLEvents();
 
-	if (this->states.empty())
+	if (!this->states.empty())
 		this->states.top()->update(this->dt); 
+
 }
 
 void Game::render()
@@ -84,7 +85,7 @@ void Game::render()
 	this->window->clear();
 	
 	//Render items
-	if (this->states.empty())
+	if (!this->states.empty())
 		this->states.top()->render();
 
 	this->window->display();
