@@ -7,8 +7,8 @@ void GameState::initKeybinds()
 	this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
 }
 
-GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys)
-	: State(window, supportedKeys)
+GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
+	: State(window, supportedKeys, states)
 {
 	this->initKeybinds();
 }
@@ -25,13 +25,15 @@ void GameState::endState()
 
 void GameState::updateInput(const float& dt)
 {
-	this->checkForQuit();
 
 	//Update grandpa input
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
 		this->grandpa.move(dt, -1.f, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
 		this->grandpa.move(dt, 1.f, 0.f);
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
+		this->quit = true;
 }
 
 void GameState::update(const float& dt)

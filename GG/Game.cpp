@@ -24,7 +24,7 @@ void Game::initWindow()
 		ifs >> vertical_sync_enabled;
 	}
 
-	this->window=new sf::RenderWindow(window_bounds, title);
+	this->window = new sf::RenderWindow(window_bounds, title);
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 
@@ -47,7 +47,7 @@ void Game::initKeys()
 
 void Game::initStates()
 {
-	this->states.push(new MainMenuState(this->window, &this->supportedKeys));
+	this->states.push(new MainMenuState(this->window, &this->supportedKeys, &this->states));
 }
 
 
