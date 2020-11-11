@@ -20,8 +20,6 @@ private:
 	short unsigned buttonState;
 
 	sf::RectangleShape shape;
-	sf::Font* font;
-	sf::Text text;
 
 	sf::Texture* idleColor;
 	sf::Texture* hoverColor;
@@ -29,7 +27,6 @@ private:
 
 public:
 	Button(float x, float y, float width, float height, 
-		sf::Font* font, std::string text, 
 		sf::Texture* idleColor, sf::Texture* hoverColor, sf::Texture* activeColor);
 	~Button();
 
