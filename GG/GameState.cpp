@@ -1,5 +1,6 @@
 #include "GameState.h"
 
+//Initializer functions
 void GameState::initKeybinds()
 {
 	this->keybinds["CLOSE"] = this->supportedKeys->at("Escape");
@@ -7,33 +8,46 @@ void GameState::initKeybinds()
 	this->keybinds["MOVE_RIGHT"] = this->supportedKeys->at("D");
 }
 
+void GameState::initTexture()
+{
+	if (!this->textures["PLAYER_IDLE"].loadFromFile("img/PlayButton.png"))
+	{
+		throw"LOAD PLAYER IDLE MAI DAIIII";
+	}
+}
+
+void GameState::initPlayers()
+{
+	this->player = new Player(0, 0, &this->textures["PLAYER_IDLE"]);
+}
+
+
+//Constructors / Destructors
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
 	: State(window, supportedKeys, states)
 {
 	this->initKeybinds();
+	this->initTexture();
+	this->initPlayers();
 }
 
 GameState::~GameState()
 {
+	delete this->player;
 }
 
-
-void GameState::endState()
-{
-	std::cout << "Ending GameState" << "\n";
-}
 
 void GameState::updateInput(const float& dt)
 {
 
 	//Update grandpa input
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-		this->grandpa.move(dt, -1.f, 0.f);
+		this->player->move(dt, -1.f, 0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-		this->grandpa.move(dt, 1.f, 0.f);
+		this->player->move(dt, 1.f, 0.f);
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
-		this->quit = true;
+		this->endState();
 }
 
 void GameState::update(const float& dt)
@@ -42,7 +56,7 @@ void GameState::update(const float& dt)
 
 	this->updateInput(dt);
 
-	this->grandpa.update(dt);
+	this->player->update(dt);
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -50,6 +64,6 @@ void GameState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
-	this->grandpa.render(this->window);
+	this->player->render(this->window);
 	
 }
