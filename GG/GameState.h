@@ -9,8 +9,6 @@ class GameState :
 private:
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
-    sf::Texture shopTexture;
-    sf::RectangleShape shop;
 
     Player* player;
 

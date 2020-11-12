@@ -72,5 +72,4 @@ void Entity::render(sf::RenderTarget& target)
 		if (this->hitboxComponent)
 			this->hitboxComponent->render(target);
 
-		//target.setView(this->view);
 }

@@ -20,12 +20,12 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 	this->setPosition(x, y);
 
 	this->createHitboxComponent(this->sprite, 10.f, 10.f, 430.f, 500.f);
-	this->createMovementComponent(150.f, 15.f, 5.f);
+	this->createMovementComponent(300.f, 20.f, 10.f);
 	this->createAnimationComponent(texture_sheet);
 
 	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 5, 0, 475, 475);
 	this->animationComponent->addAnimation("WALK", 10.f, 0, 1, 3, 1, 475, 475);
-	this->animationComponent->addAnimation("ATTACK", 7.f, 0, 2, 5, 2, 475, 500);
+	this->animationComponent->addAnimation("ATTACK", 5.f, 0, 2, 5, 2, 475, 500);
 }
 
 Player::~Player()
