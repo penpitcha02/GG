@@ -10,7 +10,7 @@ void GameState::initKeybinds()
 
 void GameState::initTexture()
 {
-	if (!this->textures["PLAYER_IDLE"].loadFromFile("img/menubutton/PlayButton.png"))
+	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/3-1.png"))
 	{
 		throw"LOAD PLAYER IDLE MAI DAIIII";
 	}
@@ -18,7 +18,7 @@ void GameState::initTexture()
 
 void GameState::initPlayers()
 {
-	this->player = new Player(0, 0, this->textures["PLAYER_IDLE"]); 
+	this->player = new Player(0, 0, this->textures["PLAYER_SHEET"]); 
 }
 
 
