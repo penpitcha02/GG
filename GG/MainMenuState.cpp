@@ -18,7 +18,7 @@ void MainMenuState::initBackground()
 
 	if (!this->backgroundTexture.loadFromFile("img/Menu.png"))
 	{
-		throw "LOAD MENU BACKGROUND MAI DAI AAAAAAA";
+		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
 	}
 
 	this->background.setTexture(&this->backgroundTexture);
@@ -41,39 +41,39 @@ void MainMenuState::initButton()
 {
 	//Button1
 	if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
-		throw "LOAD BUTTON 1 IDLE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
 
 	if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
-		throw "LOAD BUTTON 1 HOVER MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
 
 	if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
-		throw "LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
 
 	this->buttons["GAME_STATE"] = new Button(1050, 200, 172.5, 107.5,
 		&this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
 
 	//Button2
 	if (!this->button2idleTexture.loadFromFile("img/menubutton/HelpButton1.png"))
-		throw "LOAD BUTTON 2 IDLE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 2 IDLE MAI DAI AAAAAAA");
 
 	if (!this->button2hoverTexture.loadFromFile("img/menubutton/HelpButtonHighlight1.png"))
-		throw "LOAD BUTTON 2 HOVER MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 2 HOVER MAI DAI AAAAAAA");
 
 	if (!this->button2activeTexture.loadFromFile("img/menubutton/HelpButtonPressed1.png"))
-		throw "LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
 
 	this->buttons["Score"] = new Button(1050, 350, 172.5, 107.5,
 		&this->button2idleTexture, &this->button2hoverTexture, &this->button2activeTexture);
 
 		//Button3
 	if (!this->button3idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
-		throw "LOAD BUTTON 3 IDLE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
 
 	if (!this->button3hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
-		throw "LOAD BUTTON 3 HOVER MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 3 HOVER MAI DAI AAAAAAA");
 
 	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
-		throw "LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA";
+		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
 	this->buttons["EXIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
 		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);

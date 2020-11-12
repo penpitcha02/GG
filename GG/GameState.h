@@ -7,11 +7,18 @@ class GameState :
     public State
 {
 private:
+    sf::Texture backgroundTexture;
+    sf::RectangleShape background;
+    sf::Texture shopTexture;
+    sf::RectangleShape shop;
+
     Player* player;
 
     //Function
     void initKeybinds();
     void initTexture();
+    void initBackground();
+
     void initPlayers();
 
 public:

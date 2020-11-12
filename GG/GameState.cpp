@@ -12,8 +12,27 @@ void GameState::initTexture()
 {
 	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/3-1.png"))
 	{
-		throw"LOAD PLAYER IDLE MAI DAIIII";
+		printf("LOAD PLAYER IDLE MAI DAIIII");
 	}
+
+	if (!this->backgroundTexture.loadFromFile("img/Gamebg.png"))
+	{
+		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+	}
+
+	if (!this->shopTexture.loadFromFile("img/Shop.png"))
+	{
+		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+	}
+}
+
+void GameState::initBackground()
+{
+	this->background.setSize(sf::Vector2f(4320.f, 810.f));
+	this->background.setTexture(&this->backgroundTexture);
+
+	this->shop.setSize(sf::Vector2f(4320.f, 810.f));
+	this->shop.setTexture(&this->shopTexture);
 }
 
 void GameState::initPlayers()
@@ -28,6 +47,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 {
 	this->initKeybinds();
 	this->initTexture();
+	this->initBackground();
 	this->initPlayers();
 }
 
@@ -64,6 +84,9 @@ void GameState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
+	target->draw(this->background);
+
 	this->player->render(*target);
-	
+
+	target->draw(this->shop);
 }
