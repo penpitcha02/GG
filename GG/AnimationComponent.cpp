@@ -1,7 +1,7 @@
 #include"AnimationComponent.h"
 
 AnimationComponent::AnimationComponent(sf::Sprite& sprite, sf::Texture& texture_sheet)
-	:sprite(sprite), textureSheet(texture_sheet)
+	:sprite(sprite), textureSheet(texture_sheet), lastAnimation(NULL), priorityAnimation(NULL)
 {
 }
 
@@ -11,6 +11,11 @@ AnimationComponent::~AnimationComponent()
 	{
 		delete i.second;
 	}
+}
+
+const bool& AnimationComponent::isDone(const std::string key)
+{
+	return this->animations[key]->isDone();
 }
 
 
@@ -26,7 +31,54 @@ void AnimationComponent::addAnimation(const std::string key,
 		start_frame_x, start_frame_y, frames_x, frames_y, width, height);
 }
 
-void AnimationComponent::play(const std::string key, const float& dt)
+const bool& AnimationComponent::play(const std::string key, const float& dt, const bool priority)
 {
-	this->animations[key]->play(dt);
+	
+	if (this->priorityAnimation) //
+	{
+		if (this->priorityAnimation == this->animations[key])
+		{
+			if (this->lastAnimation != this->animations[key])
+			{
+				if (this->lastAnimation == NULL)
+					this->lastAnimation = this->animations[key];
+				else
+				{
+					this->lastAnimation->reset();
+					this->lastAnimation = this->animations[key];
+				}
+
+			}
+
+			if (this->animations[key]->play(dt))
+			{
+				this->priorityAnimation = NULL;
+			}
+		}
+	}
+	else
+	{
+		if (priority)
+		{
+			this->priorityAnimation = this->animations[key];
+		}
+
+		if (this->lastAnimation != this->animations[key])
+		{
+			if (this->lastAnimation == NULL)
+				this->lastAnimation = this->animations[key];
+			else
+			{
+				this->lastAnimation->reset();
+				this->lastAnimation = this->animations[key];
+			}
+
+		}
+
+		this->animations[key]->play(dt);
+	}
+
+	return this->animations[key]->isDone();
 }
+
+
