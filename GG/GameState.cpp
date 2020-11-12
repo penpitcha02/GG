@@ -77,6 +77,8 @@ void GameState::update(const float& dt)
 	this->updateInput(dt);
 
 	this->player->update(dt);
+
+
 }
 
 void GameState::render(sf::RenderTarget* target)

@@ -18,7 +18,6 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 	this->initVariables();
 
 	this->setPosition(x, y);
-	this->getPosition();
 
 	this->createHitboxComponent(this->sprite, 10.f, 10.f, 430.f, 500.f);
 	this->createMovementComponent(150.f, 15.f, 5.f);

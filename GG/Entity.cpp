@@ -59,14 +59,10 @@ void Entity::move(const float dir_x, const float dir_y, const float& dt)
 	}
 }
 
-void Entity::getPosition()
-{
-	this->sprite.getPosition();
-}
 
 void Entity::update(const float& dt)
 {
-	
+
 }
 
 void Entity::render(sf::RenderTarget& target)
@@ -75,4 +71,6 @@ void Entity::render(sf::RenderTarget& target)
 
 		if (this->hitboxComponent)
 			this->hitboxComponent->render(target);
+
+		//target.setView(this->view);
 }
