@@ -7,17 +7,30 @@ class GameState :
     public State
 {
 private:
+    //Background
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
 
+    //GUI
+    sf::Font font;
+    sf::Text pointText;
+
+    //Player
     Player* player;
+    
+    //Coconuts
+    float spawnTimer;
+    float spawnTimerMax;
+    std::vector<Coconut*> coconuts;
 
     //Function
     void initKeybinds();
     void initTexture();
     void initBackground();
+    void initGUI();
 
     void initPlayers();
+    void initCoconuts();
 
 public:
     GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -25,7 +38,11 @@ public:
 
     //Functions
     void updateInput(const float& dt);
+    void updateGUI();
+    void updateCollision();
+    void updateCoconutsAndCombat();
     void update(const float& dt);
+    void renderGUI();
     void render(sf::RenderTarget* target = NULL);
 };
 #endif 

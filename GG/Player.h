@@ -18,6 +18,10 @@ public:
     Player(float x, float y, sf::Texture& texture);
     virtual ~Player();
 
+    //Accessor
+    const sf::FloatRect HitboxgetBounds() const;
+    sf::Vector2f GetPosition() { return sprite.getPosition(); }
+    
     //Functions
     void updateAttack();
     void updateAnimation(const float& dt);

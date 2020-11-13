@@ -55,6 +55,16 @@ const bool MovementComponent::getState(const short unsigned state) const
 		if (this->velocity.x < 0.f)
 			return true;
 
+	case MOVING_UP:
+
+		if (this->velocity.y < 0.f)
+			return true;
+
+	case MOVING_DOWN:
+
+		if (this->velocity.y > 0.f)
+			return true;
+
 		break;
 	}
 
@@ -84,7 +94,6 @@ void MovementComponent::move(const float dir_x, const float dir_y, const float& 
 
 void MovementComponent::update(const float& dt)
 {
-	//Deceleration
 
 	if (this->velocity.x > 0.f) //Check for right
 	{
@@ -107,6 +116,30 @@ void MovementComponent::update(const float& dt)
 		this->velocity.x += deceleration;
 		if (this->velocity.x > 0.f)
 			this->velocity.x = 0.f;
+	}
+
+
+	if (this->velocity.y > 0.f) //Check for down
+	{
+		//Max velocity check positive
+		if (this->velocity.y > this->maxVelocity)
+			this->velocity.y = this->maxVelocity;
+
+		//Deceleration y positive
+		this->velocity.y -= deceleration;
+		if (this->velocity.y < 0.f)
+			this->velocity.y = 0.f;
+	}
+	else if (this->velocity.y < 0.f) //Check for up
+	{
+		//Max velocity check y negative
+		if (this->velocity.y < -this->maxVelocity)
+			this->velocity.y = -this->maxVelocity;
+
+		//Deceleration y negative
+		this->velocity.y += deceleration;
+		if (this->velocity.y > 0.f)
+			this->velocity.y = 0.f;
 	}
 
 	//Final move

@@ -44,6 +44,11 @@ void Entity::createAnimationComponent(sf::Texture& texture_sheet)
 	this->animationComponent = new AnimationComponent(this->sprite, texture_sheet);
 }
 
+const sf::FloatRect Entity::getBounds() const
+{
+	return this->sprite.getGlobalBounds();
+}
+
 
 //Functions
 void Entity::setPosition(const float x, const float y)
@@ -58,7 +63,6 @@ void Entity::move(const float dir_x, const float dir_y, const float& dt)
 		this->movementComponent->move(dir_x, dir_y, dt);//Sets velocity
 	}
 }
-
 
 void Entity::update(const float& dt)
 {

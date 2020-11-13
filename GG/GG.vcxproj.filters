@@ -27,9 +27,6 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Grandpa.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -60,11 +57,11 @@
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="Coconut.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Grandpa.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -94,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Coconut.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

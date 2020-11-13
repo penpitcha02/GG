@@ -17,9 +17,9 @@ HitboxComponent::~HitboxComponent()
 
 }
 
-bool HitboxComponent::checkIntersect(const sf::FloatRect& frect)
+const sf::FloatRect HitboxComponent::getBounds() const
 {
-	return this->hitbox.getGlobalBounds().intersects(frect);
+	return this->hitbox.getGlobalBounds();
 }
 
 void HitboxComponent::update()

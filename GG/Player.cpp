@@ -19,12 +19,14 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 10.f, 10.f, 430.f, 500.f);
-	this->createMovementComponent(300.f, 20.f, 10.f);
+	this->createHitboxComponent(this->sprite, 50.f, 100.f, 300.f, 300.f);
+	this->createMovementComponent(600.f, 20.f, 10.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 5, 0, 475, 475);
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 1, 3, 1, 475, 475);
+	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 5, 0, 475, 500);
+	this->animationComponent->addAnimation("WALKLEFTRIGHT", 10.f, 0, 1, 3, 1, 475, 500);
+	//this->animationComponent->addAnimation("WALKUP", 10.f, 0, 4, 3, 4, 475, 500);
+	//this->animationComponent->addAnimation("WALKDOWN", 10.f, 0, 3, 3, 3, 475, 500);
 	this->animationComponent->addAnimation("ATTACK", 5.f, 0, 2, 5, 2, 475, 500);
 }
 
@@ -32,7 +34,13 @@ Player::~Player()
 {
 }
 
+//Accessor
+const sf::FloatRect Player::HitboxgetBounds() const
+{
+	return this->hitboxComponent->getBounds();
+}
 
+//Functions
 void Player::updateAttack()
 {
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
@@ -52,18 +60,20 @@ void Player::updateAnimation(const float& dt)
 	}
 
 	if (this->movementComponent->getState(IDLE))
+	{
 		this->animationComponent->play("IDLE", dt);
+	}
 	else if (this->movementComponent->getState(MOVING_RIGHT))
 	{
 		this->sprite.setOrigin(0.f, 0.f);
 		this->sprite.setScale(1.f, 1.f);
-		this->animationComponent->play("WALK", dt);
-	}
+		this->animationComponent->play("WALKLEFTRIGHT", dt);
+	} 
 	else if (this->movementComponent->getState(MOVING_LEFT))
 	{
 		this->sprite.setOrigin(450.f, 0.f);
 		this->sprite.setScale(-1.f, 1.f);
-		this->animationComponent->play("WALK", dt);
+		this->animationComponent->play("WALKLEFTRIGHT", dt);
 	}
 }
 
