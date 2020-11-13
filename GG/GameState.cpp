@@ -160,7 +160,7 @@ void GameState::updateCoconutsAndCombat()
 		this->coconuts[i]->update();
 
 		//Remove if chop the coconut
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->HitboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
 		{
 			this->points += this->coconuts[i]->getPoints();
 
