@@ -62,7 +62,7 @@ void MainMenuState::initButton()
 	if (!this->button2activeTexture.loadFromFile("img/menubutton/HelpButtonPressed1.png"))
 		printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
 
-	this->buttons["Score"] = new Button(1050, 350, 172.5, 107.5,
+	this->buttons["HELP_STATE"] = new Button(1050, 350, 172.5, 107.5,
 		&this->button2idleTexture, &this->button2hoverTexture, &this->button2activeTexture);
 
 		//Button3
@@ -75,7 +75,7 @@ void MainMenuState::initButton()
 	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
-	this->buttons["EXIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
+	this->buttons["QUIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
 		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
 }
 
@@ -120,7 +120,7 @@ void MainMenuState::updateButtons()
 	}
 
 	//Quit The Game
-	if (this->buttons["EXIT_STATE"]->isPressed())
+	if (this->buttons["QUIT_STATE"]->isPressed())
 	{
 		this->endState();
 	}

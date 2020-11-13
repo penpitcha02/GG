@@ -24,7 +24,9 @@ Button::~Button()
 const bool Button::isPressed() const
 {
 	if (this->buttonState == BTN_ACTIVE)
+	{
 		return true;
+	}
 
 	return false;
 }
