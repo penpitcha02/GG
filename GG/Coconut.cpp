@@ -1,10 +1,5 @@
 #include "Coconut.h"
 
-void Coconut::initCoconut()
-{
-	this->coconut.setRadius(50.f);
-}
-
 void Coconut::initVariables()
 {
 	this->type		= 0;
@@ -13,6 +8,19 @@ void Coconut::initVariables()
 	this->hp		= 0;
 	this->damage	= 1;
 	this->points	= 5;
+}
+
+void Coconut::initCoconut()
+{
+	this->coconut.setRadius(50.f);
+	this->coconut.setOutlineThickness(1.f);
+	this->coconut.setOutlineColor(sf::Color::Green);
+	if (!this->coconutTexture.loadFromFile("img/Coconut1.png"))
+	{
+		printf("LOAD COCONUT MAI DAI AAAAAAA");
+	}
+	this->coconut.setTexture(&this->coconutTexture);
+
 }
 
 Coconut::Coconut(float pos_x, float pos_y)
@@ -32,6 +40,16 @@ Coconut::~Coconut()
 const sf::FloatRect Coconut::getBounds() const
 {
 	return this->coconut.getGlobalBounds();
+}
+
+const int& Coconut::getPoints() const
+{
+	return this->points;
+}
+
+const int& Coconut::getDamage() const
+{
+	return this->damage;
 }
 
 

@@ -41,6 +41,19 @@ void GameState::initGUI()
 	this->pointText.setCharacterSize(20);
 	this->pointText.setFillColor(sf::Color::Blue);
 	this->pointText.setString("test");
+
+	//Init player GUI
+	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
+	this->playerHpBar.setFillColor(sf::Color::Red);
+	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+
+	this->playerHpBarBack = this->playerHpBar;
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
+}
+
+void GameState::initSystem()
+{
+	this->points = 0;
 }
 
 void GameState::initPlayers()
@@ -63,6 +76,8 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initTexture();
 	this->initBackground();
 	this->initGUI();
+	this->initSystem();
+
 	this->initPlayers();
 	this->initCoconuts();
 }
@@ -96,7 +111,14 @@ void GameState::updateInput(const float& dt)
 
 void GameState::updateGUI()
 {
+	std::stringstream ss;
+	ss << "Ponits: " << this->points;
 
+	this->pointText.setString(ss.str());
+
+	//Update player GUI;
+	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
+	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
 }
 
 void GameState::updateCollision()
@@ -137,11 +159,24 @@ void GameState::updateCoconutsAndCombat()
 		bool coconut_removed = false;
 		this->coconuts[i]->update();
 
+		//Remove if chop the coconut
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->HitboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
 		{
+			this->points += this->coconuts[i]->getPoints();
+
 			printf("+1\n");
 			this->coconuts.erase(this->coconuts.begin() + i);
 			coconut_removed = true;
+		}
+		//Coconuts Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
+		{
+			this->player->loseHp(this->coconuts[i]->getDamage());
+
+			printf("-1\n");
+			this->coconuts.erase(this->coconuts.begin() + i);
+			coconut_removed = true;
+			
 		}
 
 		//Remove coconuts at the bottom of the screen
@@ -175,6 +210,8 @@ void GameState::update(const float& dt)
 void GameState::renderGUI()
 {
 	this->window->draw(this->pointText);
+	this->window->draw(this->playerHpBarBack);
+	this->window->draw(this->playerHpBar);
 }
 
 void GameState::render(sf::RenderTarget* target)

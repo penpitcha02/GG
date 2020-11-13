@@ -17,17 +17,25 @@ private:
 
     //Player
     Player* player;
+
+    //PlayerGUI
+    sf::RectangleShape playerHpBar;
+    sf::RectangleShape playerHpBarBack;
     
     //Coconuts
     float spawnTimer;
     float spawnTimerMax;
     std::vector<Coconut*> coconuts;
 
+    //System
+    unsigned points;
+
     //Function
     void initKeybinds();
     void initTexture();
     void initBackground();
     void initGUI();
+    void initSystem();
 
     void initPlayers();
     void initCoconuts();

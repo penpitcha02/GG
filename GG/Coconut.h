@@ -7,15 +7,17 @@ class Coconut
 {
 private:
 	sf::CircleShape coconut;
+	sf::Texture coconutTexture;
+
 	int type;
 	float speed;
 	int hp;
 	int hpMax;
 	int damage;
 	int points;
-
-	void initCoconut();
+	
 	void initVariables();
+	void initCoconut();
 
 public:
 	Coconut(float pos_x, float pos_y);
@@ -23,6 +25,8 @@ public:
 
 	//Accessor
 	const sf::FloatRect getBounds() const;
+	const int& getPoints() const;
+	const int& getDamage() const;
 
 	//Function
 	void update();

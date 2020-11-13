@@ -15,6 +15,7 @@ protected:
 	sf::Sprite sprite;
 
 	HitboxComponent* hitboxComponent;
+	HitboxComponent* cutboxComponent;
 	MovementComponent* movementComponent;
 	AnimationComponent* animationComponent;
 
@@ -25,6 +26,9 @@ public:
 	//Component functions
 	void setTexture(sf::Texture& texture);
 	void createHitboxComponent(sf::Sprite& sprite, 
+		float offset_x, float offset_y,
+		float width, float height);
+	void createCutboxComponent(sf::Sprite& sprite,
 		float offset_x, float offset_y,
 		float width, float height);
 	void createMovementComponent(const float maxVelocity, const float acceleration, const float deceleration);

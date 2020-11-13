@@ -9,6 +9,8 @@ class Player :
 private:
     //Variables
     bool attacking;
+    int hp;
+    int hpMax;
 
     //Initializer functions
     void initVariables();
@@ -20,7 +22,14 @@ public:
 
     //Accessor
     const sf::FloatRect HitboxgetBounds() const;
+    const sf::FloatRect CutboxgetBounds() const;
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
+    const int& getHp() const;
+    const int& getHpMax() const;
+
+    //Modifier
+    void setHp(const int hp);
+    void loseHp(const int value);
     
     //Functions
     void updateAttack();
