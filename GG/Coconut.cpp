@@ -20,7 +20,6 @@ void Coconut::initCoconut()
 		printf("LOAD COCONUT MAI DAI AAAAAAA");
 	}
 	this->coconut.setTexture(&this->coconutTexture);
-
 }
 
 Coconut::Coconut(float pos_x, float pos_y)
