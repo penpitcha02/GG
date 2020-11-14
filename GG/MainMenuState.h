@@ -8,6 +8,14 @@ class MainMenuState :
     public State
 {
 private:
+    //View
+    sf::View view;
+    
+    //Background
+    sf::Texture backgroundTexture;
+    sf::RectangleShape background;
+    sf::Font font;
+
     //Variables
     sf::Texture button1idleTexture;
     sf::Texture button1hoverTexture;
@@ -21,15 +29,14 @@ private:
     sf::Texture button3hoverTexture;
     sf::Texture button3activeTexture;
 
-    sf::Texture backgroundTexture;
-    sf::RectangleShape background;
-    sf::Font font;
+    
 
     std::map<std::string, Button*> buttons;
 
     //Function
     void initVariable();
     void initBackground();
+    void initView();
     void initFonts();
     void initKeybinds();
     void initButton();
@@ -40,6 +47,7 @@ public:
 
     //Functions
     void updateInput(const float& dt);
+    void updateView();
     void updateButtons();
     void update(const float& dt);
     void renderButtons(sf::RenderTarget& target);

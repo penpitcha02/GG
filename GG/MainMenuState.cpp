@@ -24,6 +24,11 @@ void MainMenuState::initBackground()
 	this->background.setTexture(&this->backgroundTexture);
 }
 
+void MainMenuState::initView()
+{
+	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
+}
+
 void MainMenuState::initFonts()
 {
 	if (!this->font.loadFromFile("font/arialbi.ttf"))
@@ -84,6 +89,7 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int
 {
 	this->initVariable();
 	this->initBackground();
+	this->initView();
 	this->initFonts();
 	this->initKeybinds();
 	this->initButton();
@@ -103,6 +109,11 @@ void MainMenuState::updateInput(const float& dt)
 {
 
 	
+}
+
+void MainMenuState::updateView()
+{
+	this->view.setCenter(sf::Vector2f(720.0f, 405.0f));
 }
 
 void MainMenuState::updateButtons()
@@ -130,6 +141,7 @@ void MainMenuState::update(const float& dt)
 {
 	this->updateMousePosition();
 	this->updateInput(dt);
+	this->updateView();
 
 	this->updateButtons();
 }
@@ -148,6 +160,8 @@ void MainMenuState::render(sf::RenderTarget* target)
 		target = this->window;
 
 	target->draw(this->background);
+
+	target->setView(this->view);
 
 	this->renderButtons(*target);
 

@@ -181,10 +181,10 @@ void GameState::updateCollision()
 
 void GameState::updateCoconutsAndCombat()
 {
-	this->spawnTimer += 2.f;
+	this->spawnTimer += 0.2f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
-		this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x - 20.f, -100.f));
+		this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3, -100.f));
 		this->spawnTimer = 0.f;
 	}
 
