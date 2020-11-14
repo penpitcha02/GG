@@ -17,7 +17,12 @@ void GameState::initTexture()
 		printf("LOAD PLAYER IDLE MAI DAIIII");
 	}
 
-	if (!this->backgroundTexture.loadFromFile("img/Game.png"))
+	if (!this->backgroundTexture.loadFromFile("img/Gamebg.png"))
+	{
+		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+	}
+
+	if (!this->shopTexture.loadFromFile("img/Shop.png"))
 	{
 		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
 	}
@@ -25,8 +30,16 @@ void GameState::initTexture()
 
 void GameState::initBackground()
 {
-	this->background.setSize(sf::Vector2f(1440.f, 810.f));
+	this->background.setSize(sf::Vector2f(4320.f, 810.f));
 	this->background.setTexture(&this->backgroundTexture);
+
+	this->shop.setSize(sf::Vector2f(4320.f, 810.f));
+	this->shop.setTexture(&this->shopTexture);
+}
+
+void GameState::initView()
+{
+	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
 }
 
 void GameState::initGUI()
@@ -45,7 +58,7 @@ void GameState::initGUI()
 	//Init player GUI
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
 	this->playerHpBar.setFillColor(sf::Color::Red);
-	this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
+	//this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
 
 	this->playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
@@ -75,6 +88,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initKeybinds();
 	this->initTexture();
 	this->initBackground();
+	this->initView();
 	this->initGUI();
 	this->initSystem();
 
@@ -92,6 +106,7 @@ GameState::~GameState()
 }
 
 
+//Functions
 void GameState::updateInput(const float& dt)
 {
 
@@ -109,8 +124,27 @@ void GameState::updateInput(const float& dt)
 		this->endState();
 }
 
+void GameState::updateView()
+{
+	this->view.setCenter(this->player->GetPosition().x, this->window->getSize().y / 2);
+
+	//Left Collision
+	if (this->view.getCenter().x < 720)
+	{
+		this->view.setCenter(720.f, this->window->getSize().y / 2);
+	}
+	//Right Collision
+	/*else if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
+	{
+		this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
+	}*/
+}
+
 void GameState::updateGUI()
 {
+	this->playerHpBar.setPosition(this->view.getCenter().x - 710, 10.f);
+	this->playerHpBarBack.setPosition(this->playerHpBar.getPosition());
+
 	std::stringstream ss;
 	ss << "Ponits: " << this->points;
 
@@ -129,10 +163,10 @@ void GameState::updateCollision()
 		this->player->setPosition(-100.f, this->player->GetPosition().y);
 	}
 	//Right Collision
-	else if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
+	/*else if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
 	{
 		this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
-	}
+	}*/
 	//Top Collision
 	if (this->player->GetPosition().y < 50.f)
 	{
@@ -198,6 +232,8 @@ void GameState::update(const float& dt)
 
 	this->updateInput(dt);
 
+	this->updateView();
+
 	this->player->update(dt);
 
 	this->updateCollision();
@@ -219,9 +255,13 @@ void GameState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
+	target->setView(this->view);
+
 	target->draw(this->background);
 
 	this->player->render(*target);
+
+	target->draw(this->shop);
 
 	for (auto* coconut : this->coconuts)
 	{

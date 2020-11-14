@@ -7,6 +7,9 @@ class GameState :
     public State
 {
 private:
+    //View
+    sf::View view;
+
     //Background
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
@@ -17,6 +20,10 @@ private:
 
     //Player
     Player* player;
+
+    //Shop
+    sf::Texture shopTexture;
+    sf::RectangleShape shop;
 
     //PlayerGUI
     sf::RectangleShape playerHpBar;
@@ -34,6 +41,7 @@ private:
     void initKeybinds();
     void initTexture();
     void initBackground();
+    void initView();
     void initGUI();
     void initSystem();
 
@@ -46,6 +54,7 @@ public:
 
     //Functions
     void updateInput(const float& dt);
+    void updateView();
     void updateGUI();
     void updateCollision();
     void updateCoconutsAndCombat();
