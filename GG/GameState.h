@@ -48,7 +48,7 @@ private:
     float spawnTimerMax;
     std::vector<Coconut*> coconuts;
 
-    //Coconuts
+    //Monsters
     float spawnTimer2;
     float spawnTimerMax2;
     std::vector<Monster*> monsters;
@@ -89,7 +89,7 @@ public:
     void updateGUI();
 
     void updateCollision();
-    void updateCoconutsAndCombat();
+    void updateCoconutsAndCombat(const float& dt);
     void updateMonstersAndCombat();
     void updateBigmonsAndCombat(const float& dt);
 

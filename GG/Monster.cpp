@@ -7,7 +7,7 @@ void Monster::initVariables()
 	this->speed = 8.f;
 	this->hpMax = 10;
 	this->hp = 0;
-	this->damage = 50;
+	this->damage = 1;
 	this->points = 5;
 }
 

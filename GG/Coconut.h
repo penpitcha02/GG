@@ -1,40 +1,50 @@
-#ifndef  COCONUT_H
+#ifndef COCONUT_H
 #define COCONUT_H
 
-#include<SFML/Graphics.hpp>
+#include "Entity.h"
+#include "Player.h"
 
-class Coconut
+class Coconut :
+    public Entity
 {
 private:
-	sf::CircleShape coconut;
-	sf::Texture coconutTexture;
+    sf::CircleShape coconutHitbox;;
 
-	int type;
-	float speed;
-	int hp;
-	int hpMax;
-	int damage;
-	int points;
-	
-	void initVariables();
-	void initCoconut();
+    //Variables
+    int type;
+    float speed;
+    int hp;
+    int hpMax;
+    int damage;
+    int points;
+
+
+    //Initializer functions
+    void initVariables();
 
 public:
-	Coconut(float pos_x, float pos_y);
-	virtual ~Coconut();
+    Coconut(float x, float y, sf::Texture& texture);
+    virtual ~Coconut();
 
-	//Accessor
-	const sf::FloatRect getBounds() const;
-	sf::Vector2f GetPosition() { return coconut.getPosition(); }
-	const int& getPoints() const;
-	const int& getDamage() const;
+    //Accessor
+    const sf::FloatRect getBounds() const;
+    sf::Vector2f GetPosition() { return sprite.getPosition(); }
+    const int& getPoints() const;
+    const int& getDamage() const;
+    const int& getHp() const;
+    const int& getHpMax() const;
 
-	//Function
-	void coconutBackLeft();
-	void coconutBackRight();
-	void coconutBackUp();
-	void coconutBackDown();
-	void render(sf::RenderTarget* target);
+    //Modifier
+    void setHp(const int hp);
+    void loseHp(const int value);
 
+    //Functions
+    void coconutBackLeft();
+    void coconutBackRight();
+    void coconutBackUp();
+    void coconutBackDown();
+    void updateAnimation(const float& dt);
+    virtual void update(const float& dt);
 };
-#endif // ! COCONUT_H
+#endif
+

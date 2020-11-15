@@ -56,7 +56,6 @@ const sf::FloatRect Entity::getBounds() const
 	return this->sprite.getGlobalBounds();
 }
 
-
 //Functions
 void Entity::setPosition(const float x, const float y)
 {
@@ -85,4 +84,5 @@ void Entity::render(sf::RenderTarget& target)
 
 		if (this->cutboxComponent)
 			this->cutboxComponent->render(target);
+
 }

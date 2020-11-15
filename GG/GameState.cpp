@@ -40,6 +40,12 @@ void GameState::initTexture()
 	}
 
 	//Bigmons
+	if (!this->textures["COCONUTS_SHEET"].loadFromFile("img/Coconut.png"))
+	{
+		printf("LOAD PLAYER IDLE MAI DAIIII");
+	}
+	
+	//Bigmons
 	if (!this->textures["BIGMONS_SHEET"].loadFromFile("img/3-3.png"))
 	{
 		printf("LOAD PLAYER IDLE MAI DAIIII");
@@ -266,14 +272,14 @@ void GameState::updateCollision()
 	}
 }
 
-void GameState::updateCoconutsAndCombat()
+void GameState::updateCoconutsAndCombat(const float& dt)
 {
 	if (this->points < 20)
 	{
 		this->spawnTimer += 2.f;
 		if (this->spawnTimer >= this->spawnTimerMax)
 		{
-			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3.f, -100.f));
+			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3.f, -100.f, this->textures["COCONUTS_SHEET"]));
 			this->spawnTimer = 0.f;
 		}
 	}
@@ -281,6 +287,8 @@ void GameState::updateCoconutsAndCombat()
 	for (int i = 0; i < this->coconuts.size(); ++i)
 	{
 		bool coconut_removed = false;
+
+		this->coconuts[i]->update(dt);
 
 		//Coconuts Follow Player
 		if (this->coconuts[i]->GetPosition().x > this->player->GetPosition().x + 237.5f)
@@ -320,16 +328,16 @@ void GameState::updateCoconutsAndCombat()
 			
 		}
 
-		//Remove coconuts at the bottom of the screen
-		if (!coconut_removed)
-		{
-			if (this->coconuts[i]->getBounds().top > this->window->getSize().y)
-			{
-				this->coconuts.erase(this->coconuts.begin() + i);
-				std::cout << this->coconuts.size() << "\n";
-				coconut_removed = true;
-			}
-		}
+		////Remove coconuts at the bottom of the screen
+		//if (!coconut_removed)
+		//{
+		//	if (this->coconuts[i]->getBounds().top > this->window->getSize().y)
+		//	{
+		//		this->coconuts.erase(this->coconuts.begin() + i);
+		//		std::cout << this->coconuts.size() << "\n";
+		//		coconut_removed = true;
+		//	}
+		//}
 	}
 }
 
@@ -397,6 +405,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 		this->spawnTimer3 = 0.f;
 	}
 
+
 	for (int i = 0; i < this->bigmons.size(); ++i)
 	{
 		bool bigmons_removed = false;
@@ -416,7 +425,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 			this->bigmons[i]->updateAnimation(dt);
 		}
 
-		//Monster Follow Player
+		//Bigmons Follow Player
 		if (this->bigmons[i]->GetPosition().x > this->player->GetPosition().x + 237.5f)
 		{
 			this->bigmons[i]->bigmonsBackLeft();
@@ -443,7 +452,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 
 			printf("+1\n");
 		}
-		//Monster Player Collision
+		//Bigmons Player Collision
 		else if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
 		{
 			this->bigmons[i]->updateAttack(dt);
@@ -478,7 +487,7 @@ void GameState::update(const float& dt)
 
 		this->updateCollision();
 
-		this->updateCoconutsAndCombat();
+		this->updateCoconutsAndCombat(dt);
 
 		this->updateMonstersAndCombat();
 		
@@ -524,7 +533,7 @@ void GameState::render(sf::RenderTarget* target)
 	//Coconuts
 	for (auto* coconut : this->coconuts)
 	{
-		coconut->render(target);
+		coconut->render(*target);
 	}
 
 	//Monsters
