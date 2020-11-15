@@ -17,6 +17,11 @@ HitboxComponent::~HitboxComponent()
 
 }
 
+void HitboxComponent::setScale(int x, int y)
+{
+	this->hitbox.setScale(x, y);
+}
+
 const sf::FloatRect HitboxComponent::getBounds() const
 {
 	return this->hitbox.getGlobalBounds();

@@ -377,46 +377,51 @@ void GameState::updateMonstersAndCombat(const float& dt)
 		}
 	}
 
-	for (int i = 0; i < this->monsters.size(); ++i)
+	for (int j = 0; j < this->monsters.size(); ++j)
 	{
 		bool monster_removed = false;
 
-		this->monsters[i]->update(dt);
+		this->monsters[j]->update(dt);
 
 		//Monster Follow Player
-		if (this->monsters[i]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		if (this->monsters[j]->GetPosition().x > this->player->GetPosition().x + 200.f)
 		{
-			this->monsters[i]->monsterBackLeft();
+			this->monsters[j]->monsterBackLeft();
 		}
-		if (this->monsters[i]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		if (this->monsters[j]->GetPosition().x < this->player->GetPosition().x + 200.f)
 		{
-			this->monsters[i]->monsterBackRight();
+			this->monsters[j]->monsterBackRight();
 		}
-		if (this->monsters[i]->GetPosition().y > this->player->GetPosition().y + 150.f)
+		if (this->monsters[j]->GetPosition().y > this->player->GetPosition().y + 150.f)
 		{
-			this->monsters[i]->monsterBackUp();
+			this->monsters[j]->monsterBackUp();
 		}
-		if (this->monsters[i]->GetPosition().y < this->player->GetPosition().y + 150.f)
+		if (this->monsters[j]->GetPosition().y < this->player->GetPosition().y + 150.f)
 		{
-			this->monsters[i]->monsterBackDown();
+			this->monsters[j]->monsterBackDown();
 		}
 
-		//Remove if attack the monster
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[i]->getBounds()) && !monster_removed)
+		//Monster lose if attack the monster
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) && !monster_removed)
 		{
-			this->points += this->monsters[i]->getPoints();
+			this->points += this->monsters[j]->getPoints();
+			
+			this->monsters[j]->loseHp(this->player->getDamage());
 
 			printf("+1\n");
-			this->monsters.erase(this->monsters.begin() + i);
-			monster_removed = true;
 		}
 		//Monster Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->monsters[i]->getBounds()))
+		else if (this->player->HitboxgetBounds().intersects(this->monsters[j]->getBounds()))
 		{
-			this->player->loseHp(this->monsters[i]->getDamage());
+			this->player->loseHp(this->monsters[j]->getDamage());
 
 			printf("-1\n");
-			this->monsters.erase(this->monsters.begin() + i);
+		}
+
+		//Remove if monster die
+		if (this->monsters[j]->getHp() <= 0)
+		{
+			this->monsters.erase(this->monsters.begin() + j);
 			monster_removed = true;
 		}
 	}
@@ -435,15 +440,9 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 	}
 
 
-	for (int i = 0; i < this->bigmons.size(); ++i)
+	for (int k = 0; k < this->bigmons.size(); ++k)
 	{
 		bool bigmons_removed = false;
-
-		/*this->bigmonsHpBar.setPosition(this->bigmons[i]->GetPosition());
-		this->bigmonsHpBarBack.setPosition(this->bigmons[i]->GetPosition());
-
-		float bigmonsHpPercent = static_cast<float>(this->bigmons[i]->getHp()) / this->bigmons[i]->getHpMax();
-		this->bigmonsHpBar.setSize(sf::Vector2f(300.f * bigmonsHpPercent, this->bigmonsHpBar.getSize().y));*/
 		
 		/*if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
 		{
@@ -454,52 +453,52 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 			this->bigmons[i]->updateAnimation(dt);
 		}*/
 
-		this->bigmons[i]->update(dt);
+		this->bigmons[k]->update(dt);
 
 		//Bigmons Follow Player
-		if (this->bigmons[i]->GetPosition().x > this->player->GetPosition().x + 100.f)
+		if (this->bigmons[k]->GetPosition().x > this->player->GetPosition().x + 100.f)
 		{
-			this->bigmons[i]->bigmonsBackLeft();
+			this->bigmons[k]->bigmonsBackLeft();
 		}
-		if (this->bigmons[i]->GetPosition().x < this->player->GetPosition().x + 100.f)
+		if (this->bigmons[k]->GetPosition().x < this->player->GetPosition().x + 100.f)
 		{
-			this->bigmons[i]->bigmonsBackRight();
+			this->bigmons[k]->bigmonsBackRight();
 		}
-		if (this->bigmons[i]->GetPosition().y > this->player->GetPosition().y + 200.f)
+		if (this->bigmons[k]->GetPosition().y > this->player->GetPosition().y + 200.f)
 		{
-			this->bigmons[i]->bigmonsBackUp();
+			this->bigmons[k]->bigmonsBackUp();
 		}
-		if (this->bigmons[i]->GetPosition().y < this->player->GetPosition().y + 200.f)
+		if (this->bigmons[k]->GetPosition().y < this->player->GetPosition().y + 200.f)
 		{
-			this->bigmons[i]->bigmonsBackDown();
+			this->bigmons[k]->bigmonsBackDown();
 		}
 
 		//Bigmon lose hp if attack the bigmons
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[i]->getBounds()) && !bigmons_removed)
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds()) && !bigmons_removed)
 		{
-			this->points += this->bigmons[i]->getPoints();
+			this->points += this->bigmons[k]->getPoints();
 
-			this->bigmons[i]->loseHp(this->player->getDamage());
+			this->bigmons[k]->loseHp(this->player->getDamage());
 
 			printf("+1\n");
 		}
 		//Bigmons Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
+		else if (this->player->HitboxgetBounds().intersects(this->bigmons[k]->getBounds()))
 		{
 
-			this->player->loseHp(this->bigmons[i]->getDamage());
+			this->player->loseHp(this->bigmons[k]->getDamage());
 
-			this->player->setPosition(this->player->GetPosition().x - 20.f, this->player->GetPosition().y);
+			/*this->player->setPosition(this->player->GetPosition().x - 20.f, this->player->GetPosition().y);
 
-			this->bigmons[i]->setPosition(this->monsters[i]->GetPosition().x + 20.f, this->monsters[i]->GetPosition().y);
+			this->bigmons[i]->setPosition(this->monsters[i]->GetPosition().x + 20.f, this->monsters[i]->GetPosition().y);*/
 
 			printf("-1\n");
 		}
 
 		//Remove if bigmon die
-		if (this->bigmons[i]->getHp() <= 0)
+		if (this->bigmons[k]->getHp() <= 0)
 		{
-			this->bigmons.erase(this->bigmons.begin() + i);
+			this->bigmons.erase(this->bigmons.begin() + k);
 			bigmons_removed = true;
 		}
 	}

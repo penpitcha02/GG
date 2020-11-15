@@ -26,6 +26,9 @@ public:
 		float width, float height);
 	virtual ~HitboxComponent();
 
+	//Accessors
+	void setScale(int x, int y);
+
 	//Functions
 	const sf::FloatRect getBounds() const;
 	

@@ -8,6 +8,7 @@ class Monster :
     public Entity
 {
 private:
+ 
     //Variables
     bool attacking;
 

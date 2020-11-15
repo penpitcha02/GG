@@ -23,8 +23,8 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 150.f, 60.f, 120.f, 300.f);
-	this->createCutboxComponent(this->sprite, 60.f, 60.f, 300.f, 300.f);
+	this->createHitboxComponent(this->sprite, 150.f, 85.f, 120.f, 250.f);
+	this->createCutboxComponent(this->sprite, 210.f, 60.f, 200.f, 300.f);
 	this->createMovementComponent(600.f, 20.f, 10.f);
 	this->createAnimationComponent(texture_sheet);
 
@@ -88,6 +88,20 @@ void Player::updateAttack()
 	}
 }
 
+void Player::updateCutbox()
+{
+	this->cutboxComponent->update();
+
+	if (this->movementComponent->getState(MOVING_RIGHT))
+	{
+		this->cutboxComponent->setScale(1.f, 1.f);
+	}
+	else if (this->movementComponent->getState(MOVING_LEFT))
+	{
+		this->cutboxComponent->setScale(-1.f, 1.f);
+	}
+}
+
 void Player::updateAnimation(const float& dt)
 {
 	if (this->attacking)
@@ -126,6 +140,5 @@ void Player::update(const float& dt)
 
 	this->hitboxComponent->update();
 
-	this->cutboxComponent->update();
-
+	this->updateCutbox();
 }
