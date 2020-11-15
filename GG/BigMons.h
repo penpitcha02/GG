@@ -33,6 +33,12 @@ public:
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
     const int& getPoints() const;
     const int& getDamage() const;
+    const int& getHp() const;
+    const int& getHpMax() const;
+
+    //Modifier
+    void setHp(const int hp);
+    void loseHp(const int value);
 
     //Functions
     void bigmonsBackLeft();

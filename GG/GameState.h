@@ -32,12 +32,16 @@ private:
     Player* player;
 
     //Shop
-    sf::Texture shopTexture;
-    sf::RectangleShape shop;
+    /*sf::Texture shopTexture;
+    sf::RectangleShape shop;*/
 
     //PlayerGUI
     sf::RectangleShape playerHpBar;
     sf::RectangleShape playerHpBarBack;
+
+    //BigmonsGUI
+    /*sf::RectangleShape bigmonsHpBar;
+    sf::RectangleShape bigmonsHpBarBack;*/
     
     //Coconuts
     float spawnTimer;

@@ -7,6 +7,7 @@ void Player::initVariables()
 
 	this->hpMax = 100;
 	this->hp = this->hpMax;
+	this->damage = 1;
 }
 
 void Player::initComponents()
@@ -57,6 +58,11 @@ const int& Player::getHp() const
 const int& Player::getHpMax() const
 {
 	return this->hpMax;
+}
+
+const int& Player::getDamage() const
+{
+	return this->damage;
 }
 
 

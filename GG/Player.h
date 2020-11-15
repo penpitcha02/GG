@@ -11,6 +11,7 @@ private:
     bool attacking;
     int hp;
     int hpMax;
+    int damage;
 
     //Initializer functions
     void initVariables();
@@ -26,6 +27,7 @@ public:
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
     const int& getHp() const;
     const int& getHpMax() const;
+    const int& getDamage() const;
 
     //Modifier
     void setHp(const int hp);

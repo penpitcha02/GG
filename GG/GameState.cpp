@@ -13,15 +13,15 @@ void GameState::initKeybinds()
 void GameState::initTexture()
 {
 	//Background
-	if (!this->backgroundTexture.loadFromFile("img/Gamebg.png"))
+	if (!this->backgroundTexture.loadFromFile("img/NightGame.png"))
 	{
 		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
 	}
 
-	if (!this->shopTexture.loadFromFile("img/Shop.png"))
-	{
-		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
-	}
+	//if (!this->shopTexture.loadFromFile("img/Shop.png"))
+	//{
+	//	printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+	//}
 
 	//Pause Menu
 	if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
@@ -56,11 +56,11 @@ void GameState::initPauseMenu()
 
 void GameState::initBackground()
 {
-	this->background.setSize(sf::Vector2f(4320.f, 810.f));
+	this->background.setSize(sf::Vector2f(2880.f, 810.f));
 	this->background.setTexture(&this->backgroundTexture);
 
-	this->shop.setSize(sf::Vector2f(4320.f, 810.f));
-	this->shop.setTexture(&this->shopTexture);
+	/*this->shop.setSize(sf::Vector2f(4320.f, 810.f));
+	this->shop.setTexture(&this->shopTexture);*/
 }
 
 void GameState::initView()
@@ -82,12 +82,16 @@ void GameState::initGUI()
 	this->gameOverText.setString("Game Over!");
 
 	//Init player GUI
-	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
-	this->playerHpBar.setFillColor(sf::Color::Red);
-	//this->playerHpBar.setPosition(sf::Vector2f(20.f, 20.f));
-
+	this->playerHpBar.setSize(sf::Vector2f(300.f, 5.f));
+	this->playerHpBar.setFillColor(sf::Color::White);
 	this->playerHpBarBack = this->playerHpBar;
-	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
+	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 100));
+
+	//Init bigmons GUI
+	/*this->bigmonsHpBar.setSize(sf::Vector2f(200.f, 10.f));
+	this->bigmonsHpBar.setFillColor(sf::Color::White);
+	this->bigmonsHpBarBack = this->playerHpBar;
+	this->bigmonsHpBarBack.setFillColor(sf::Color(25, 25, 25, 100));*/
 
 	//Init game over text
 	this->pointText.setFont(this->font);
@@ -205,9 +209,9 @@ void GameState::updateView()
 		this->view.setCenter(720.f, this->window->getSize().y / 2.f);
 	}
 	//Right Collision
-	if (this->view.getCenter().x > 3600.f)
+	if (this->view.getCenter().x > 2100.f)
 	{
-		this->view.setCenter(3600.f, this->window->getSize().y / 2.f);
+		this->view.setCenter(2100.f, this->window->getSize().y / 2.f);
 	}
 }
 
@@ -244,9 +248,9 @@ void GameState::updateCollision()
 		{
 			this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
 		}
-		else if(this->player->GetPosition().x + this->player->getBounds().width >= 4460.f)
+		else if(this->player->GetPosition().x + this->player->getBounds().width >= 2740.f)
 		{
-		this->player->setPosition(4460.f - this->player->getBounds().width, this->player->GetPosition().y);
+		this->player->setPosition(2740.f - this->player->getBounds().width, this->player->GetPosition().y);
 		}
 	}
 	
@@ -386,17 +390,22 @@ void GameState::updateMonstersAndCombat()
 
 void GameState::updateBigmonsAndCombat(const float& dt)
 {
-	this->spawnTimer3 += 2.f;
+	this->spawnTimer3 += 1.f;
 	if (this->spawnTimer3 >= this->spawnTimerMax3)
 	{
 		this->bigmons.push_back(new BigMons(4300.f, this->player->GetPosition().y + 250.f, this->textures["BIGMONS_SHEET"]));
 		this->spawnTimer3 = 0.f;
 	}
 
-
 	for (int i = 0; i < this->bigmons.size(); ++i)
 	{
 		bool bigmons_removed = false;
+
+		/*this->bigmonsHpBar.setPosition(this->bigmons[i]->GetPosition());
+		this->bigmonsHpBarBack.setPosition(this->bigmons[i]->GetPosition());
+
+		float bigmonsHpPercent = static_cast<float>(this->bigmons[i]->getHp()) / this->bigmons[i]->getHpMax();
+		this->bigmonsHpBar.setSize(sf::Vector2f(300.f * bigmonsHpPercent, this->bigmonsHpBar.getSize().y));*/
 		
 		if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
 		{
@@ -430,21 +439,25 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 		{
 			this->points += this->bigmons[i]->getPoints();
 
+			this->bigmons[i]->loseHp(this->player->getDamage());
+
 			printf("+1\n");
+		}
+		//Monster Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
+		{
+			this->bigmons[i]->updateAttack(dt);
+
+			this->player->loseHp(this->bigmons[i]->getDamage());
+
+			printf("-1\n");
+		}
+
+		if (this->bigmons[i]->getHp() <= 0)
+		{
 			this->bigmons.erase(this->bigmons.begin() + i);
 			bigmons_removed = true;
 		}
-		////Monster Player Collision
-		//else if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
-		//{
-		//	this->bigmons[i]->updateAttack(dt);
-
-		//	this->player->loseHp(this->bigmons[i]->getDamage());
-
-		//	printf("-1\n");
-		//	this->bigmons.erase(this->bigmons.begin() + i);
-		//	bigmons_removed = true;
-		//}
 	}
 }
 
@@ -486,6 +499,8 @@ void GameState::renderGUI()
 	this->window->draw(this->pointText);
 	this->window->draw(this->playerHpBarBack);
 	this->window->draw(this->playerHpBar);
+	/*this->window->draw(this->bigmonsHpBarBack);
+	this->window->draw(this->bigmonsHpBar);*/
 }
 
 void GameState::render(sf::RenderTarget* target)
@@ -503,7 +518,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->player->render(*target);
 
 	//Shop
-	target->draw(this->shop);
+	/*target->draw(this->shop);*/
 
 	
 	//Coconuts

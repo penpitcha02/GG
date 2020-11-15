@@ -7,8 +7,8 @@ void BigMons::initVariables()
 
 	this->type = 0;
 	this->speed = 8.f;
-	this->hpMax = 10;
-	this->hp = 0;
+	this->hpMax = 100;
+	this->hp = this->hpMax;
 	this->damage = 1;
 	this->points = 5;
 }
@@ -44,6 +44,28 @@ const int& BigMons::getPoints() const
 const int& BigMons::getDamage() const
 {
 	return this->damage;
+}
+
+const int& BigMons::getHp() const
+{
+	return this->hp;
+}
+
+const int& BigMons::getHpMax() const
+{
+	return this->hpMax;
+}
+
+void BigMons::setHp(const int hp)
+{
+	this->hp = hp;
+}
+
+void BigMons::loseHp(const int value)
+{
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
 }
 
 //Functions
