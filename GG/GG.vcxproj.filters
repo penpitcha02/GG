@@ -22,6 +22,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{1393e3ff-3f39-4496-a1c8-b3bb0cf8d7ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{3665d54e-c743-4c77-919d-00cc29ae46bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -60,6 +63,15 @@
     <ClCompile Include="Coconut.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BigMons.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -93,6 +105,15 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Coconut.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="PauseMenu.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BigMons.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

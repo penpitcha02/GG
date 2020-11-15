@@ -25,11 +25,15 @@ public:
 
 	//Accessor
 	const sf::FloatRect getBounds() const;
+	sf::Vector2f GetPosition() { return coconut.getPosition(); }
 	const int& getPoints() const;
 	const int& getDamage() const;
 
 	//Function
-	void update();
+	void coconutBackLeft();
+	void coconutBackRight();
+	void coconutBackUp();
+	void coconutBackDown();
 	void render(sf::RenderTarget* target);
 
 };

@@ -3,10 +3,10 @@
 void Coconut::initVariables()
 {
 	this->type		= 0;
-	this->speed		= 10.f;
+	this->speed		= 8.f;
 	this->hpMax		= 10;
 	this->hp		= 0;
-	this->damage	= 1;
+	this->damage	= 50;
 	this->points	= 5;
 }
 
@@ -54,7 +54,22 @@ const int& Coconut::getDamage() const
 
 
 //Functions
-void Coconut::update()
+void Coconut::coconutBackLeft()
+{
+	this->coconut.move(-this->speed, 0.f);
+}
+
+void Coconut::coconutBackRight()
+{
+	this->coconut.move(this->speed, 0.f);
+}
+
+void Coconut::coconutBackUp()
+{
+	this->coconut.move(0.f, -this->speed);
+}
+
+void Coconut::coconutBackDown()
 {
 	this->coconut.move(0.f, this->speed);
 }

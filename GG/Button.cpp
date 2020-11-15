@@ -13,8 +13,6 @@ Button::Button(float x, float y, float width, float height,
 	this->activeColor = activeColor;
 
 	this->shape.setTexture(this->idleColor);
-
-	
 }
 
 Button::~Button()
@@ -36,7 +34,7 @@ const bool Button::isPressed() const
 
 //Functions
 
-void Button::update(const sf::Vector2f mousePos)
+void Button::update(const sf::Vector2f& mousePos)
 {
 	/*Update the booleans for hover and pressed*/
 

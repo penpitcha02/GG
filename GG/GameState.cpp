@@ -12,11 +12,7 @@ void GameState::initKeybinds()
 
 void GameState::initTexture()
 {
-	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/3-3.png"))
-	{
-		printf("LOAD PLAYER IDLE MAI DAIIII");
-	}
-
+	//Background
 	if (!this->backgroundTexture.loadFromFile("img/Gamebg.png"))
 	{
 		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
@@ -26,7 +22,37 @@ void GameState::initTexture()
 	{
 		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
 	}
+
+	//Pause Menu
+	if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+		printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
+
+	if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+		printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
+
+	if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+		printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
+
+	//Player
+	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/3-3.png"))
+	{
+		printf("LOAD PLAYER IDLE MAI DAIIII");
+	}
+
+	//Bigmons
+	if (!this->textures["BIGMONS_SHEET"].loadFromFile("img/3-3.png"))
+	{
+		printf("LOAD PLAYER IDLE MAI DAIIII");
+	}
 }
+
+void GameState::initPauseMenu()
+{
+	this->pmenu = new PauseMenu(*this->window);
+
+	this->pmenu->addButton("QUIT_STATE", 720.f, 405.f, &this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
+}
+
 
 void GameState::initBackground()
 {
@@ -50,10 +76,10 @@ void GameState::initGUI()
 		throw("LOAD MAIDAI KRUB");
 	}
 	//Init point text
-	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(20);
-	this->pointText.setFillColor(sf::Color::Blue);
-	this->pointText.setString("test");
+	this->gameOverText.setFont(this->font);
+	this->gameOverText.setCharacterSize(80);
+	this->gameOverText.setFillColor(sf::Color::Red);
+	this->gameOverText.setString("Game Over!");
 
 	//Init player GUI
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 25.f));
@@ -62,12 +88,19 @@ void GameState::initGUI()
 
 	this->playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
+
+	//Init game over text
+	this->pointText.setFont(this->font);
+	this->pointText.setCharacterSize(20);
+	this->pointText.setFillColor(sf::Color::Blue);
+	this->pointText.setString("test");
 }
 
 void GameState::initSystem()
 {
 	this->points = 0;
 }
+
 
 void GameState::initPlayers()
 {
@@ -80,6 +113,18 @@ void GameState::initCoconuts()
 	this->spawnTimer = this->spawnTimerMax;
 }
 
+void GameState::initMonsters()
+{
+	this->spawnTimerMax2 = 50.f;
+	this->spawnTimer2 = this->spawnTimerMax2;
+}
+
+void GameState::initBigmons()
+{
+	this->spawnTimerMax3 = 50.f;
+	this->spawnTimer3 = this->spawnTimerMax3;
+}
+
 
 //Constructors / Destructors
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
@@ -87,6 +132,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 {
 	this->initKeybinds();
 	this->initTexture();
+	this->initPauseMenu();
 	this->initBackground();
 	this->initView();
 	this->initGUI();
@@ -94,22 +140,41 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 
 	this->initPlayers();
 	this->initCoconuts();
+	this->initMonsters();
+	this->initBigmons();
 }
 
 GameState::~GameState()
 {
+	delete this->pmenu;
+
 	delete this->player;
+
 	for (auto* i : this->coconuts)
+	{
+		delete i;
+	}
+
+	for (auto* i : this->monsters)
 	{
 		delete i;
 	}
 }
 
-
 //Functions
 void GameState::updateInput(const float& dt)
 {
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
+	{
+		if (!this->paused)
+			this->pauseState();
+		else
+			this->unpauseState();
+	}
+}
 
+void GameState::updatePlayerInput(const float& dt)
+{
 	//Update player input
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
 		this->player->move(-1.f, 0.f, dt);
@@ -119,41 +184,51 @@ void GameState::updateInput(const float& dt)
 		this->player->move(0.f, -1.f, dt);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
 		this->player->move(0.f, 1.f, dt);
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
-		this->endState();
 }
+
+void GameState::updatePauseMenuButtons()
+{
+	if (this->pmenu->isButtonPressed("QUIT_STATE"))
+	{
+		this->endState();
+	}
+}
+
 
 void GameState::updateView()
 {
-	this->view.setCenter(this->player->GetPosition().x, this->window->getSize().y / 2);
+	this->view.setCenter(this->player->GetPosition().x + 220.f, this->window->getSize().y / 2.f);
 
 	//Left Collision
-	if (this->view.getCenter().x < 720)
+	if (this->view.getCenter().x < 720.f)
 	{
-		this->view.setCenter(720.f, this->window->getSize().y / 2);
+		this->view.setCenter(720.f, this->window->getSize().y / 2.f);
 	}
 	//Right Collision
-	/*else if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
+	if (this->view.getCenter().x > 3600.f)
 	{
-		this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
-	}*/
+		this->view.setCenter(3600.f, this->window->getSize().y / 2.f);
+	}
 }
 
 void GameState::updateGUI()
 {
+	this->pointText.setPosition(this->view.getCenter().x - this->pointText.getGlobalBounds().width, 10.f);
+
 	this->playerHpBar.setPosition(this->view.getCenter().x - 710, 10.f);
 	this->playerHpBarBack.setPosition(this->playerHpBar.getPosition());
+
+	this->gameOverText.setPosition(this->view.getCenter().x - this->pointText.getGlobalBounds().width, 10.f);
 
 	std::stringstream ss;
 	ss << "Ponits: " << this->points;
 
 	this->pointText.setString(ss.str());
 
-	//Update player GUI;
 	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
 	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
 }
+
 
 void GameState::updateCollision()
 {
@@ -163,10 +238,18 @@ void GameState::updateCollision()
 		this->player->setPosition(-100.f, this->player->GetPosition().y);
 	}
 	//Right Collision
-	/*else if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
+	else if (this->points < 20)
 	{
-		this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
-	}*/
+		if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
+		{
+			this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
+		}
+		else if(this->player->GetPosition().x + this->player->getBounds().width >= 4460.f)
+		{
+		this->player->setPosition(4460.f - this->player->getBounds().width, this->player->GetPosition().y);
+		}
+	}
+	
 	//Top Collision
 	if (this->player->GetPosition().y < 50.f)
 	{
@@ -181,17 +264,37 @@ void GameState::updateCollision()
 
 void GameState::updateCoconutsAndCombat()
 {
-	this->spawnTimer += 0.2f;
-	if (this->spawnTimer >= this->spawnTimerMax)
+	if (this->points < 20)
 	{
-		this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3, -100.f));
-		this->spawnTimer = 0.f;
+		this->spawnTimer += 2.f;
+		if (this->spawnTimer >= this->spawnTimerMax)
+		{
+			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3.f, -100.f));
+			this->spawnTimer = 0.f;
+		}
 	}
 
 	for (int i = 0; i < this->coconuts.size(); ++i)
 	{
 		bool coconut_removed = false;
-		this->coconuts[i]->update();
+
+		//Coconuts Follow Player
+		if (this->coconuts[i]->GetPosition().x > this->player->GetPosition().x + 237.5f)
+		{
+			this->coconuts[i]->coconutBackLeft();
+		}
+		if (this->coconuts[i]->GetPosition().x < this->player->GetPosition().x + 237.5f)
+		{
+			this->coconuts[i]->coconutBackRight();
+		}
+		if (this->coconuts[i]->GetPosition().y > this->player->GetPosition().y)
+		{
+			this->coconuts[i]->coconutBackUp();
+		}
+		if (this->coconuts[i]->GetPosition().y < this->player->GetPosition().y)
+		{
+			this->coconuts[i]->coconutBackDown();
+		}
 
 		//Remove if chop the coconut
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
@@ -226,21 +329,156 @@ void GameState::updateCoconutsAndCombat()
 	}
 }
 
+void GameState::updateMonstersAndCombat()
+{
+	if (this->points < 20)
+	{
+		this->spawnTimer2 += 2.f;
+		if (this->spawnTimer2 >= this->spawnTimerMax2)
+		{
+			this->monsters.push_back(new Monster(1440.f, this->player->GetPosition().y + 250.f));
+			this->spawnTimer2 = 0.f;
+		}
+	}
+
+	for (int i = 0; i < this->monsters.size(); ++i)
+	{
+		bool monster_removed = false;
+
+		//Monster Follow Player
+		if (this->monsters[i]->GetPosition().x > this->player->GetPosition().x + 237.5f)
+		{
+			this->monsters[i]->monsterBackLeft();
+		}
+		if (this->monsters[i]->GetPosition().x < this->player->GetPosition().x + 237.5f)
+		{
+			this->monsters[i]->monsterBackRight();
+		}
+		if (this->monsters[i]->GetPosition().y > this->player->GetPosition().y + 250.f)
+		{
+			this->monsters[i]->monsterBackUp();
+		}
+		if (this->monsters[i]->GetPosition().y < this->player->GetPosition().y + 250.f)
+		{
+			this->monsters[i]->monsterBackDown();
+		}
+
+		//Remove if attack the monster
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[i]->getBounds()) && !monster_removed)
+		{
+			this->points += this->monsters[i]->getPoints();
+
+			printf("+1\n");
+			this->monsters.erase(this->monsters.begin() + i);
+			monster_removed = true;
+		}
+		//Monster Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->monsters[i]->getBounds()))
+		{
+			this->player->loseHp(this->monsters[i]->getDamage());
+
+			printf("-1\n");
+			this->monsters.erase(this->monsters.begin() + i);
+			monster_removed = true;
+		}
+	}
+}
+
+void GameState::updateBigmonsAndCombat(const float& dt)
+{
+	this->spawnTimer3 += 2.f;
+	if (this->spawnTimer3 >= this->spawnTimerMax3)
+	{
+		this->bigmons.push_back(new BigMons(4300.f, this->player->GetPosition().y + 250.f, this->textures["BIGMONS_SHEET"]));
+		this->spawnTimer3 = 0.f;
+	}
+
+
+	for (int i = 0; i < this->bigmons.size(); ++i)
+	{
+		bool bigmons_removed = false;
+		
+		if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
+		{
+			this->bigmons[i]->updateAttack(dt);
+		}
+		else
+		{
+			this->bigmons[i]->updateAnimation(dt);
+		}
+
+		//Monster Follow Player
+		if (this->bigmons[i]->GetPosition().x > this->player->GetPosition().x + 237.5f)
+		{
+			this->bigmons[i]->bigmonsBackLeft();
+		}
+		if (this->bigmons[i]->GetPosition().x < this->player->GetPosition().x + 237.5f)
+		{
+			this->bigmons[i]->bigmonsBackRight();
+		}
+		if (this->bigmons[i]->GetPosition().y > this->player->GetPosition().y + 250.f)
+		{
+			this->bigmons[i]->bigmonsBackUp();
+		}
+		if (this->bigmons[i]->GetPosition().y < this->player->GetPosition().y + 250.f)
+		{
+			this->bigmons[i]->bigmonsBackDown();
+		}
+
+		//Remove if attack the bigmons
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[i]->getBounds()) && !bigmons_removed)
+		{
+			this->points += this->bigmons[i]->getPoints();
+
+			printf("+1\n");
+			this->bigmons.erase(this->bigmons.begin() + i);
+			bigmons_removed = true;
+		}
+		////Monster Player Collision
+		//else if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
+		//{
+		//	this->bigmons[i]->updateAttack(dt);
+
+		//	this->player->loseHp(this->bigmons[i]->getDamage());
+
+		//	printf("-1\n");
+		//	this->bigmons.erase(this->bigmons.begin() + i);
+		//	bigmons_removed = true;
+		//}
+	}
+}
+
+
 void GameState::update(const float& dt)
 {
 	this->updateMousePosition();
-
+	this->updateKeytime(dt);
 	this->updateInput(dt);
+	
+	if (!this->paused && this->player->getHp() != 0) //Unpause update
+	{
+		this->updatePlayerInput(dt);
 
-	this->updateView();
+		this->updateView();
 
-	this->player->update(dt);
+		this->player->update(dt);
 
-	this->updateCollision();
+		this->updateCollision();
 
-	this->updateCoconutsAndCombat();
+		this->updateCoconutsAndCombat();
 
-	this->updateGUI();
+		this->updateMonstersAndCombat();
+		
+		this->updateBigmonsAndCombat(dt);
+	
+		this->updateGUI();
+	}
+	else //Pause update
+	{
+		this->pmenu->update(this->mousePosView);
+
+		this->updatePauseMenuButtons();
+	}
 }
 
 void GameState::renderGUI()
@@ -255,18 +493,48 @@ void GameState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window;
 
+	//View
 	target->setView(this->view);
 
+	//Background
 	target->draw(this->background);
 
+	//Player
 	this->player->render(*target);
 
+	//Shop
 	target->draw(this->shop);
 
+	
+	//Coconuts
 	for (auto* coconut : this->coconuts)
 	{
 		coconut->render(target);
 	}
 
+	//Monsters
+	for (auto* monster : this->monsters)
+	{
+		monster->render(target);
+	}
+
+	//BigMons
+	for (auto* bigmon : this->bigmons)
+	{
+		bigmon->render(*target);
+	}
+
+
+	//GUI
 	this->renderGUI();
+
+	//Game Over
+	if (this->player->getHp() <= 0)
+		this->window->draw(this->gameOverText);
+
+	//Pause Menu
+	if (this->paused) 
+	{
+		this->pmenu->render(*target);
+	}
 }

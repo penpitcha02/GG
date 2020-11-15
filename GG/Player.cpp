@@ -22,8 +22,8 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 150.f, 60.f, 140.f, 300.f);
-	this->createCutboxComponent(this->sprite, 70.f, 60.f, 300.f, 300.f);
+	this->createHitboxComponent(this->sprite, 150.f, 60.f, 120.f, 300.f);
+	this->createCutboxComponent(this->sprite, 60.f, 60.f, 300.f, 300.f);
 	this->createMovementComponent(600.f, 20.f, 10.f);
 	this->createAnimationComponent(texture_sheet);
 
@@ -104,7 +104,7 @@ void Player::updateAnimation(const float& dt)
 	} 
 	else if (this->movementComponent->getState(MOVING_LEFT))
 	{
-		this->sprite.setOrigin(450.f, 0.f);
+		this->sprite.setOrigin(420.f, 0.f);
 		this->sprite.setScale(-1.f, 1.f);
 		this->animationComponent->play("WALKLEFTRIGHT", dt);
 	}

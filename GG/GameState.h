@@ -2,13 +2,22 @@
 #define GAMESTATE_H
 
 #include "State.h"
+#include "PauseMenu.h"
 
 class GameState :
     public State
 {
 private:
+    //Pause Menu
+    PauseMenu* pmenu;
+
     //View
     sf::View view;
+
+    //Pause Menu
+    sf::Texture button1idleTexture;
+    sf::Texture button1hoverTexture;
+    sf::Texture button1activeTexture;
 
     //Background
     sf::Texture backgroundTexture;
@@ -17,6 +26,7 @@ private:
     //GUI
     sf::Font font;
     sf::Text pointText;
+    sf::Text gameOverText;
 
     //Player
     Player* player;
@@ -34,12 +44,24 @@ private:
     float spawnTimerMax;
     std::vector<Coconut*> coconuts;
 
+    //Coconuts
+    float spawnTimer2;
+    float spawnTimerMax2;
+    std::vector<Monster*> monsters;
+
+    //Bigmons
+    float spawnTimer3;
+    float spawnTimerMax3;
+    std::vector<BigMons*> bigmons;
+
+
     //System
     unsigned points;
 
     //Function
     void initKeybinds();
     void initTexture();
+    void initPauseMenu();
     void initBackground();
     void initView();
     void initGUI();
@@ -47,6 +69,8 @@ private:
 
     void initPlayers();
     void initCoconuts();
+    void initMonsters();
+    void initBigmons();
 
 public:
     GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -54,10 +78,17 @@ public:
 
     //Functions
     void updateInput(const float& dt);
+    void updatePlayerInput(const float& dt);
+    void updatePauseMenuButtons();
+
     void updateView();
     void updateGUI();
+
     void updateCollision();
     void updateCoconutsAndCombat();
+    void updateMonstersAndCombat();
+    void updateBigmonsAndCombat(const float& dt);
+
     void update(const float& dt);
     void renderGUI();
     void render(sf::RenderTarget* target = NULL);
