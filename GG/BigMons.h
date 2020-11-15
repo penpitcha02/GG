@@ -2,7 +2,6 @@
 #define BIGMONS_H
 
 #include "Entity.h"
-#include "Player.h"
 
 class BigMons :
     public Entity
@@ -17,9 +16,6 @@ private:
     int hpMax;
     int damage;
     int points;
-
-    //Player
-    Player* player;
 
     //Initializer functions
     void initVariables();
@@ -45,7 +41,7 @@ public:
     void bigmonsBackRight();
     void bigmonsBackUp();
     void bigmonsBackDown();
-    void updateAttack(const float& dt);
+
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

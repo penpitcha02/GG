@@ -31,10 +31,6 @@ private:
     //Player
     Player* player;
 
-    //Shop
-    /*sf::Texture shopTexture;
-    sf::RectangleShape shop;*/
-
     //PlayerGUI
     sf::RectangleShape playerHpBar;
     sf::RectangleShape playerHpBarBack;
@@ -90,7 +86,7 @@ public:
 
     void updateCollision();
     void updateCoconutsAndCombat(const float& dt);
-    void updateMonstersAndCombat();
+    void updateMonstersAndCombat(const float& dt);
     void updateBigmonsAndCombat(const float& dt);
 
     void update(const float& dt);

@@ -20,10 +20,10 @@ BigMons::BigMons(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
+	this->createHitboxComponent(this->sprite, 70.f, 0.f, 60.f, 176.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("WALKLEFTRIGHT", 10.f, 0, 1, 3, 1, 475, 500);
-	this->animationComponent->addAnimation("ATTACK", 5.f, 0, 2, 5, 2, 475, 500);
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 6, 0, 202, 176);
 }
 
 BigMons::~BigMons()
@@ -33,7 +33,7 @@ BigMons::~BigMons()
 //Accessor
 const sf::FloatRect BigMons::getBounds() const
 {
-	return this->sprite.getGlobalBounds();
+	return this->hitboxComponent->getBounds();
 }
 
 const int& BigMons::getPoints() const
@@ -90,23 +90,17 @@ void BigMons::bigmonsBackDown()
 	this->sprite.move(0.f, this->speed);
 }
 
-void BigMons::updateAttack(const float& dt)
-{
-	this->animationComponent->play("ATTACK", dt);
-}
-
 void BigMons::updateAnimation(const float& dt)
 {
-	this->animationComponent->play("WALKLEFTRIGHT", dt);
+	this->animationComponent->play("WALK", dt);
 }
 
 void BigMons::update(const float& dt)
 {
 
-	this->updateAttack(dt);
-
 	this->updateAnimation(dt);
 
+	this->hitboxComponent->update();
 }
 
 

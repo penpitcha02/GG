@@ -3,44 +3,37 @@
 //Variables
 void Monster::initVariables()
 {
+	this->attacking = false;
+
 	this->type = 0;
-	this->speed = 8.f;
-	this->hpMax = 10;
-	this->hp = 0;
+	this->speed = 3.f;
+	this->hpMax = 100;
+	this->hp = this->hpMax;
 	this->damage = 1;
 	this->points = 5;
 }
 
-//Initializaer functions
-void Monster::initMonster()
-{
-	this->monster.setRadius(50.f);
-	this->monster.setOutlineThickness(1.f);
-	this->monster.setOutlineColor(sf::Color::Green);
-	if (!this->monsterTexture.loadFromFile("img/Coconut1.png"))
-	{
-		printf("LOAD COCONUT MAI DAI AAAAAAA");
-	}
-	this->monster.setTexture(&this->monsterTexture);
-}
-
 //Con-De
-Monster::Monster(float pos_x, float pos_y)
+Monster::Monster(float x, float y, sf::Texture& texture_sheet)
 {
-	this->initMonster();
 	this->initVariables();
 
-	this->monster.setPosition(pos_x, pos_y);
+	this->setPosition(x, y);
+
+	this->createHitboxComponent(this->sprite, 70.f, 60.f, 110.f, 130.f);
+	this->createAnimationComponent(texture_sheet);
+
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 1, 0, 234, 264);
 }
 
 Monster::~Monster()
 {
 }
 
-//Accessors
+//Accessor
 const sf::FloatRect Monster::getBounds() const
 {
-	return this->monster.getGlobalBounds();
+	return this->hitboxComponent->getBounds();
 }
 
 const int& Monster::getPoints() const
@@ -53,28 +46,62 @@ const int& Monster::getDamage() const
 	return this->damage;
 }
 
+const int& Monster::getHp() const
+{
+	return this->hp;
+}
+
+const int& Monster::getHpMax() const
+{
+	return this->hpMax;
+}
+
+void Monster::setHp(const int hp)
+{
+	this->hp = hp;
+}
+
+void Monster::loseHp(const int value)
+{
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
+}
+
 //Functions
+
 void Monster::monsterBackLeft()
 {
-	this->monster.move(-this->speed, 0.f);
+	this->sprite.move(-this->speed, 0.f);
 }
 
 void Monster::monsterBackRight()
 {
-	this->monster.move(this->speed, 0.f);
+	this->sprite.move(this->speed, 0.f);
 }
 
 void Monster::monsterBackUp()
 {
-	this->monster.move(0.f, -this->speed);
+	this->sprite.move(0.f, -this->speed);
 }
 
 void Monster::monsterBackDown()
 {
-	this->monster.move(0.f, this->speed);
+	this->sprite.move(0.f, this->speed);
 }
 
-void Monster::render(sf::RenderTarget* target)
+void Monster::updateAnimation(const float& dt)
 {
-	target->draw(this->monster);
+	this->animationComponent->play("WALK", dt);
 }
+
+void Monster::update(const float& dt)
+{
+
+	this->updateAnimation(dt);
+
+	this->hitboxComponent->update();
+}
+
+
+

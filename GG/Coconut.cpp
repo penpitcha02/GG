@@ -4,7 +4,7 @@
 void Coconut::initVariables()
 {
 	this->type = 0;
-	this->speed = 8.f;
+	this->speed = 4.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
 	this->damage = 1;
@@ -18,10 +18,10 @@ Coconut::Coconut(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 20.f, 35.f, 70.f, 70.f);
+	this->createHitboxComponent(this->sprite, 32.f, 35.f, 65.f, 70.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 6, 0, 171.4f, 150.f);
+	this->animationComponent->addAnimation("FLY", 10.f, 0, 0, 1, 0, 126.f, 114.f);
 }
 
 Coconut::~Coconut()
@@ -90,7 +90,7 @@ void Coconut::coconutBackDown()
 
 void Coconut::updateAnimation(const float& dt)
 {
-	this->animationComponent->play("WALK", dt);
+	this->animationComponent->play("FLY", dt);
 }
 
 void Coconut::update(const float& dt)
