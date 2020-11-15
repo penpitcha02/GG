@@ -18,10 +18,10 @@ Coconut::Coconut(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 150.f, 60.f, 100.f, 100.f);
+	this->createHitboxComponent(this->sprite, 20.f, 35.f, 70.f, 70.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 1, 0, 125.75, 113.5);
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 6, 0, 171.4f, 150.f);
 }
 
 Coconut::~Coconut()

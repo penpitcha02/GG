@@ -39,8 +39,8 @@ void GameState::initTexture()
 		printf("LOAD PLAYER IDLE MAI DAIIII");
 	}
 
-	//Bigmons
-	if (!this->textures["COCONUTS_SHEET"].loadFromFile("img/Coconut.png"))
+	//Coconuts
+	if (!this->textures["COCONUTS_SHEET"].loadFromFile("img/BigMons-1.png"))
 	{
 		printf("LOAD PLAYER IDLE MAI DAIIII");
 	}
@@ -274,12 +274,12 @@ void GameState::updateCollision()
 
 void GameState::updateCoconutsAndCombat(const float& dt)
 {
-	if (this->points < 20)
+	if (this->points < 20.f)
 	{
 		this->spawnTimer += 2.f;
 		if (this->spawnTimer >= this->spawnTimerMax)
 		{
-			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x * 3.f, -100.f, this->textures["COCONUTS_SHEET"]));
+			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x, -100.f, this->textures["COCONUTS_SHEET"]));
 			this->spawnTimer = 0.f;
 		}
 	}
@@ -306,6 +306,28 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		if (this->coconuts[i]->GetPosition().y < this->player->GetPosition().y)
 		{
 			this->coconuts[i]->coconutBackDown();
+		}
+
+
+		//Left Collision
+		if (this->coconuts[i]->GetPosition().x < 0.f)
+		{
+			this->coconuts[i]->setPosition(0.f, this->coconuts[i]->GetPosition().y);
+		}
+		//Right Collision
+		else if (this->coconuts[i]->GetPosition().x + this->coconuts[i]->getBounds().width >= 1440.f)
+		{
+			this->coconuts[i]->setPosition(1440.f - this->coconuts[i]->getBounds().width, this->coconuts[i]->GetPosition().y);
+		}
+		//Top Collision
+		if (this->coconuts[i]->GetPosition().y < 0.f)
+		{
+			this->coconuts[i]->setPosition(this->coconuts[i]->GetPosition().x, 0.f);
+		}
+		//Bottom Collision
+		else if (this->coconuts[i]->GetPosition().y + this->coconuts[i]->getBounds().height >= 810.f)
+		{
+			this->coconuts[i]->setPosition(this->coconuts[i]->GetPosition().x, 810.f - this->coconuts[i]->getBounds().height);
 		}
 
 		//Remove if chop the coconut
@@ -343,7 +365,7 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 
 void GameState::updateMonstersAndCombat()
 {
-	if (this->points < 20)
+	if (this->points < 20.f)
 	{
 		this->spawnTimer2 += 2.f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
@@ -398,11 +420,14 @@ void GameState::updateMonstersAndCombat()
 
 void GameState::updateBigmonsAndCombat(const float& dt)
 {
-	this->spawnTimer3 += 1.f;
-	if (this->spawnTimer3 >= this->spawnTimerMax3)
+	if (this->points >= 20.f)
 	{
-		this->bigmons.push_back(new BigMons(4300.f, this->player->GetPosition().y + 250.f, this->textures["BIGMONS_SHEET"]));
-		this->spawnTimer3 = 0.f;
+		this->spawnTimer3 += 1.f;
+		if (this->spawnTimer3 >= this->spawnTimerMax3)
+		{
+			this->bigmons.push_back(new BigMons(4300.f, this->player->GetPosition().y + 250.f, this->textures["BIGMONS_SHEET"]));
+			this->spawnTimer3 = 0.f;
+		}
 	}
 
 
