@@ -13,6 +13,9 @@ private:
     int hpMax;
     int damage;
 
+    float attackCooldown;
+    float attackCooldownMax;
+
     //Initializer functions
     void initVariables();
     void initComponents();
@@ -34,6 +37,7 @@ public:
     void loseHp(const int value);
     
     //Functions
+    const bool canAttack();
     void updateAttack();
     void updateCutbox();
     void updateAnimation(const float& dt);

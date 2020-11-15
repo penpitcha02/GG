@@ -9,8 +9,11 @@ void BigMons::initVariables()
 	this->speed = 8.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
-	this->damage = 1;
+	this->damage = 10;
 	this->points = 5;
+
+	this->attackCooldownMax = 50.f;
+	this->attackCooldown = this->attackCooldownMax;
 }
 
 //Con-De
@@ -69,6 +72,23 @@ void BigMons::loseHp(const int value)
 }
 
 //Functions
+const bool BigMons::canAttack()
+{
+	if (this->attackCooldown >= this->attackCooldownMax)
+	{
+		this->attackCooldown = 0.f;
+		return true;
+	}
+	return false;
+}
+
+void BigMons::updateAttack()
+{
+	if (this->attackCooldown < this->attackCooldownMax)
+	{
+		this->attackCooldown += 0.5f;
+	}
+}
 
 void BigMons::bigmonsBackLeft()
 {
@@ -97,6 +117,7 @@ void BigMons::updateAnimation(const float& dt)
 
 void BigMons::update(const float& dt)
 {
+	this->updateAttack();
 
 	this->updateAnimation(dt);
 

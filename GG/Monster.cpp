@@ -9,8 +9,11 @@ void Monster::initVariables()
 	this->speed = 3.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
-	this->damage = 1;
+	this->damage = 5;
 	this->points = 5;
+
+	this->attackCooldownMax = 50.f;
+	this->attackCooldown = this->attackCooldownMax;
 }
 
 //Con-De
@@ -70,6 +73,24 @@ void Monster::loseHp(const int value)
 
 //Functions
 
+const bool Monster::canAttack()
+{
+	if (this->attackCooldown >= this->attackCooldownMax)
+	{
+		this->attackCooldown = 0.f;
+		return true;
+	}
+	return false;
+}
+
+void Monster::updateAttack()
+{
+	if (this->attackCooldown < this->attackCooldownMax)
+	{
+		this->attackCooldown += 0.5f;
+	}
+}
+
 void Monster::monsterBackLeft()
 {
 	this->sprite.move(-this->speed, 0.f);
@@ -97,6 +118,7 @@ void Monster::updateAnimation(const float& dt)
 
 void Monster::update(const float& dt)
 {
+	this->updateAttack();
 
 	this->updateAnimation(dt);
 

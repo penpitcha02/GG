@@ -19,6 +19,9 @@ private:
     int damage;
     int points;
 
+    float attackCooldown;
+    float attackCooldownMax;
+
     //Initializer functions
     void initVariables();
 
@@ -39,10 +42,14 @@ public:
     void loseHp(const int value);
 
     //Functions
+    const bool canAttack();
+    void updateAttack();
+
     void monsterBackLeft();
     void monsterBackRight();
     void monsterBackUp();
     void monsterBackDown();
+
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

@@ -333,7 +333,8 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		}
 
 		//Remove if chop the coconut
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds()) 
+			&& !coconut_removed /*&& this->player->canAttack()*/)
 		{
 			this->points += this->coconuts[i]->getPoints();
 
@@ -402,7 +403,8 @@ void GameState::updateMonstersAndCombat(const float& dt)
 		}
 
 		//Monster lose if attack the monster
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) && !monster_removed)
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) 
+			&& !monster_removed)
 		{
 			this->points += this->monsters[j]->getPoints();
 			
@@ -411,11 +413,11 @@ void GameState::updateMonstersAndCombat(const float& dt)
 			printf("+1\n");
 		}
 		//Monster Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->monsters[j]->getBounds()))
+		else if (this->player->HitboxgetBounds().intersects(this->monsters[j]->getBounds()) && this->monsters[j]->canAttack())
 		{
 			this->player->loseHp(this->monsters[j]->getDamage());
 
-			printf("-1\n");
+			printf("-5\n");
 		}
 
 		//Remove if monster die
@@ -474,7 +476,8 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 		}
 
 		//Bigmon lose hp if attack the bigmons
-		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds()) && !bigmons_removed)
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds())
+			&& !bigmons_removed /*&& this->player->canAttack()*/)
 		{
 			this->points += this->bigmons[k]->getPoints();
 
@@ -483,7 +486,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 			printf("+1\n");
 		}
 		//Bigmons Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->bigmons[k]->getBounds()))
+		else if (this->player->HitboxgetBounds().intersects(this->bigmons[k]->getBounds()) && this->bigmons[k]->canAttack())
 		{
 
 			this->player->loseHp(this->bigmons[k]->getDamage());
@@ -492,7 +495,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 
 			this->bigmons[i]->setPosition(this->monsters[i]->GetPosition().x + 20.f, this->monsters[i]->GetPosition().y);*/
 
-			printf("-1\n");
+			printf("-10\n");
 		}
 
 		//Remove if bigmon die

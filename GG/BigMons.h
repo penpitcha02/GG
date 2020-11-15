@@ -17,6 +17,9 @@ private:
     int damage;
     int points;
 
+    float attackCooldown;
+    float attackCooldownMax;
+
     //Initializer functions
     void initVariables();
 
@@ -37,6 +40,9 @@ public:
     void loseHp(const int value);
 
     //Functions
+    const bool canAttack();
+    void updateAttack();
+
     void bigmonsBackLeft();
     void bigmonsBackRight();
     void bigmonsBackUp();

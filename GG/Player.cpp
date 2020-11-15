@@ -8,6 +8,9 @@ void Player::initVariables()
 	this->hpMax = 100;
 	this->hp = this->hpMax;
 	this->damage = 1;
+
+	this->attackCooldownMax = 10.f;
+	this->attackCooldown = this->attackCooldownMax;
 }
 
 void Player::initComponents()
@@ -29,9 +32,7 @@ Player::Player(float x, float y, sf::Texture& texture_sheet)
 	this->createAnimationComponent(texture_sheet);
 
 	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 5, 0, 475, 500);
-	this->animationComponent->addAnimation("WALKLEFTRIGHT", 10.f, 0, 1, 3, 1, 475, 500);
-	//this->animationComponent->addAnimation("WALKUP", 10.f, 0, 4, 3, 4, 475, 500);
-	//this->animationComponent->addAnimation("WALKDOWN", 10.f, 0, 3, 3, 3, 475, 500);
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 1, 3, 1, 475, 500);
 	this->animationComponent->addAnimation("ATTACK", 5.f, 0, 2, 5, 2, 475, 500);
 }
 
@@ -80,9 +81,23 @@ void Player::loseHp(const int value)
 }
 
 //Functions
+const bool Player::canAttack()
+{
+	if (this->attackCooldown >= this->attackCooldownMax)
+	{
+		this->attackCooldown = 0.f;
+		return true;
+	}
+	return false;
+}
+
 void Player::updateAttack()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (this->attackCooldown < this->attackCooldownMax)
+	{
+		this->attackCooldown += 1.f;
+	}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->canAttack())
 	{
 		this->attacking = true;
 	}
@@ -120,13 +135,13 @@ void Player::updateAnimation(const float& dt)
 	{
 		this->sprite.setOrigin(0.f, 0.f);
 		this->sprite.setScale(1.f, 1.f);
-		this->animationComponent->play("WALKLEFTRIGHT", dt);
+		this->animationComponent->play("WALK", dt);
 	} 
 	else if (this->movementComponent->getState(MOVING_LEFT))
 	{
 		this->sprite.setOrigin(420.f, 0.f);
 		this->sprite.setScale(-1.f, 1.f);
-		this->animationComponent->play("WALKLEFTRIGHT", dt);
+		this->animationComponent->play("WALK", dt);
 	}
 }
 
