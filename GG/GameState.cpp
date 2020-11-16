@@ -15,7 +15,23 @@ void GameState::initTexture()
 	//Background
 	if (!this->backgroundTexture.loadFromFile("img/NightGame.png"))
 	{
-		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+		printf("LOAD GAME BACKGROUND MAI DAI AAAAAAA");
+	}
+
+	//LongWeb
+	if (!this->longweb1Texture.loadFromFile("img/Longweb.png"))
+	{
+		printf("LOAD LONGWEB 1 MAI DAI AAAAAAA");
+	}
+	if (!this->longweb2Texture.loadFromFile("img/Longweb.png"))
+	{
+		printf("LOAD LONGWEB 2 MAI DAI AAAAAAA");
+	}
+
+	//Viewweb
+	if (!this->viewwebTexture.loadFromFile("img/Viewweb.png"))
+	{
+		printf("LOAD VIEWWEB MAI DAI AAAAAAA");
 	}
 
 	//Pause Menu
@@ -31,26 +47,37 @@ void GameState::initTexture()
 	//Player
 	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/Grandpa.png"))
 	{
-		printf("LOAD PLAYER IDLE MAI DAIIII");
+		printf("LOAD PLAYER MAI DAIIII");
 	}
 
 	//Coconuts
 	if (!this->textures["COCONUTS_SHEET"].loadFromFile("img/Coconut.png"))
 	{
-		printf("LOAD COCONUT IDLE MAI DAIIII");
+		printf("LOAD COCONUT MAI DAIIII");
 	}
 
 	//Monsters
 	if (!this->textures["SHEET"].loadFromFile("img/Monster.png"))
 	{
-		printf("LOAD MONSTER IDLE MAI DAIIII");
+		printf("LOAD MONSTER MAI DAIIII");
 	}
-
 	
 	//Bigmons
 	if (!this->textures["BIGMONS_SHEET"].loadFromFile("img/Bigmonster.png"))
 	{
-		printf("LOAD BIGMONS IDLE MAI DAIIII");
+		printf("LOAD BIGMONS MAI DAIIII");
+	}
+
+	//Lockwebs
+	if (!this->textures["LOCKWEB_SHEET"].loadFromFile("img/Lockweb.png"))
+	{
+		printf("LOAD LOCKWEB MAI DAIIII");
+	}
+
+	//Lockwebs
+	if (!this->textures["ATTACKWEB_SHEET"].loadFromFile("img/Attackweb.png"))
+	{
+		printf("LOAD ATTACKWEB IDLE MAI DAIIII");
 	}
 }
 
@@ -64,17 +91,32 @@ void GameState::initPauseMenu()
 
 void GameState::initBackground()
 {
-	this->background.setSize(sf::Vector2f(2880.f, 810.f));
+	this->background.setSize(sf::Vector2f(4320.f, 810.f));
 	this->background.setTexture(&this->backgroundTexture);
-
-	/*this->shop.setSize(sf::Vector2f(4320.f, 810.f));
-	this->shop.setTexture(&this->shopTexture);*/
 }
 
 void GameState::initView()
 {
 	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
 }
+
+void GameState::initWeb()
+{
+	this->longweb1.setSize(sf::Vector2f(256.f, 410.f));
+	this->longweb1.setTexture(&this->longweb1Texture);
+	this->longweb1.setPosition(1300.f, -10.f);
+	this->longweb1.setScale(1.f, 1.25f);
+
+	this->longweb2.setSize(sf::Vector2f(256.f, 410.f));
+	this->longweb2.setTexture(&this->longweb2Texture);
+	this->longweb2.setPosition(1300.f, 820.f);
+	this->longweb2.setScale(1.f, -1.25f);
+
+	this->viewweb.setSize(sf::Vector2f(1440.f, 810.f));
+	this->viewweb.setTexture(&this->viewwebTexture);
+	this->viewweb.setPosition(0.f, -300.f);
+}
+
 
 void GameState::initGUI()
 {
@@ -111,6 +153,8 @@ void GameState::initGUI()
 void GameState::initSystem()
 {
 	this->points = 0;
+
+	this->cantMove = false;
 }
 
 
@@ -137,6 +181,12 @@ void GameState::initBigmons()
 	this->spawnTimer3 = this->spawnTimerMax3;
 }
 
+void GameState::initLockwebs()
+{
+	this->spawnTimerMax4 = 100.f;
+	this->spawnTimer4 = this->spawnTimerMax3;
+}
+
 
 //Constructors / Destructors
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
@@ -145,8 +195,11 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initKeybinds();
 	this->initTexture();
 	this->initPauseMenu();
+
 	this->initBackground();
 	this->initView();
+	this->initWeb();
+
 	this->initGUI();
 	this->initSystem();
 
@@ -154,6 +207,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initCoconuts();
 	this->initMonsters();
 	this->initBigmons();
+	this->initLockwebs();
 }
 
 GameState::~GameState()
@@ -188,14 +242,28 @@ void GameState::updateInput(const float& dt)
 void GameState::updatePlayerInput(const float& dt)
 {
 	//Update player input
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
-		this->player->move(-1.f, 0.f, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
-		this->player->move(1.f, 0.f, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
-		this->player->move(0.f, -1.f, dt);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
-		this->player->move(0.f, 1.f, dt);
+	if (!cantMove)
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
+			this->player->move(-1.f, 0.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
+			this->player->move(1.f, 0.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
+			this->player->move(0.f, -1.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
+			this->player->move(0.f, 1.f, dt);
+	}
+	else
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_LEFT"))))
+			this->player->move(0.f, 0.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_RIGHT"))))
+			this->player->move(0.f, 0.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP"))))
+			this->player->move(0.f, 0.f, dt);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN"))))
+			this->player->move(0.f, 0.f, dt);
+	}
 }
 
 void GameState::updatePauseMenuButtons()
@@ -209,6 +277,7 @@ void GameState::updatePauseMenuButtons()
 
 void GameState::updateView()
 {
+	
 	this->view.setCenter(this->player->GetPosition().x + 220.f, this->window->getSize().y / 2.f);
 
 	//Left Collision
@@ -217,11 +286,26 @@ void GameState::updateView()
 		this->view.setCenter(720.f, this->window->getSize().y / 2.f);
 	}
 	//Right Collision
-	if (this->view.getCenter().x > 2100.f)
+	if (this->view.getCenter().x > 3600.f)
 	{
-		this->view.setCenter(2100.f, this->window->getSize().y / 2.f);
+		this->view.setCenter(3600.f, this->window->getSize().y / 2.f);
 	}
 }
+
+void GameState::updateLongWeb()
+{
+	if (this->points >= 500)
+	{
+		this->longweb1.move(0.f, -10.f);
+		this->longweb2.move(0.f, 10.f);
+	}
+}
+
+void GameState::updateViewWeb()
+{
+	this->viewweb.setPosition(this->view.getCenter().x - 720.f, 0.f);	
+}
+
 
 void GameState::updateGUI()
 {
@@ -250,33 +334,33 @@ void GameState::updateCollision()
 		this->player->setPosition(-100.f, this->player->GetPosition().y);
 	}
 	//Right Collision
-	else if (this->points < 20)
+	else if (this->points < 500)
 	{
 		if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
 		{
 			this->player->setPosition(1580.f - this->player->getBounds().width, this->player->GetPosition().y);
 		}
-		else if(this->player->GetPosition().x + this->player->getBounds().width >= 2740.f)
-		{
-		this->player->setPosition(2740.f - this->player->getBounds().width, this->player->GetPosition().y);
-		}
+	}
+	else if(this->player->GetPosition().x + this->player->getBounds().width >= 4470.f)
+	{
+		this->player->setPosition(4470.f - this->player->getBounds().width, this->player->GetPosition().y);
 	}
 	
 	//Top Collision
-	if (this->player->GetPosition().y < 50.f)
+	if (this->player->GetPosition().y < 200.f)
 	{
-		this->player->setPosition(this->player->GetPosition().x, 50.f);
+		this->player->setPosition(this->player->GetPosition().x, 200.f);
 	}
 	//Bottom Collision
-	else if (this->player->GetPosition().y + this->player->getBounds().height >= 850.f)
+	else if (this->player->GetPosition().y + this->player->getBounds().height >= 870.f)
 	{
-		this->player->setPosition(this->player->GetPosition().x, 850.f - this->player->getBounds().height);
+		this->player->setPosition(this->player->GetPosition().x, 870.f - this->player->getBounds().height);
 	}
 }
 
 void GameState::updateCoconutsAndCombat(const float& dt)
 {
-	if (this->points < 20.f)
+	if (this->points < 500.f)
 	{
 		this->spawnTimer += 0.2f;
 		if (this->spawnTimer >= this->spawnTimerMax)
@@ -368,7 +452,7 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 
 void GameState::updateMonstersAndCombat(const float& dt)
 {
-	if (this->points < 20.f)
+	if (this->points < 500.f)
 	{
 		this->spawnTimer2 += 0.2f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
@@ -431,12 +515,13 @@ void GameState::updateMonstersAndCombat(const float& dt)
 
 void GameState::updateBigmonsAndCombat(const float& dt)
 {
-	if (this->points >= 20.f)
+	if (this->points >= 500.f)
 	{
 		this->spawnTimer3 += 0.2f;
 		if (this->spawnTimer3 >= this->spawnTimerMax3)
 		{
-			this->bigmons.push_back(new BigMons(rand() % this->window->getSize().x * 2, rand() % this->window->getSize().y, this->textures["BIGMONS_SHEET"]));
+			this->bigmons.push_back(new BigMons(rand() % this->window->getSize().x * 2, rand() % this->window->getSize().y, 
+				this->textures["BIGMONS_SHEET"]));
 			this->spawnTimer3 = 0.f;
 		}
 	}
@@ -445,15 +530,6 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 	for (int k = 0; k < this->bigmons.size(); ++k)
 	{
 		bool bigmons_removed = false;
-		
-		/*if (this->player->HitboxgetBounds().intersects(this->bigmons[i]->getBounds()))
-		{
-			this->bigmons[i]->updateAttack(dt);
-		}
-		else
-		{
-			this->bigmons[i]->updateAnimation(dt);
-		}*/
 
 		this->bigmons[k]->update(dt);
 
@@ -507,6 +583,112 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 	}
 }
 
+void GameState::updateLockwebsAndCombat(const float& dt)
+{
+	if (this->points >= 500.f)
+	{
+		this->spawnTimer4 += 0.2f;
+		if (this->spawnTimer4 >= this->spawnTimerMax4)
+		{
+			this->lockwebs.push_back(new LockWeb(this->player->GetPosition().x + 200.f, this->player->GetPosition().y,
+				this->textures["LOCKWEB_SHEET"]));
+			this->spawnTimer4 = 0.f;
+		}
+	}
+
+
+	for (int l = 0; l < this->lockwebs.size(); ++l)
+	{
+		bool lockwebs_removed = false;
+
+		this->lockwebs[l]->setPosition(this->player->GetPosition().x + 100.f, this->player->GetPosition().y);
+
+		this->lockwebs[l]->update(dt);
+
+		//Lockweb lose hp if attack the bigmons
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->lockwebs[l]->getBounds())
+			&& !lockwebs_removed /*&& this->player->canAttack()*/ && this->cantMove)
+		{
+			this->points += this->lockwebs[l]->getPoints();
+
+			this->lockwebs[l]->loseHp(this->player->getDamage());
+
+			printf("+1\n");
+		}
+		//Lockweb Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->lockwebs[l]->getBounds()))
+		{
+
+			this->cantMove = true;
+
+			printf("-10\n");
+		}
+
+		//Remove if lockweb die
+		if (this->lockwebs[l]->getHp() <= 0)
+		{
+			this->lockwebs.erase(this->lockwebs.begin() + l);
+			lockwebs_removed = true;
+			this->cantMove = false;
+		}
+	}
+}
+
+void GameState::updateAttackWebsAndCombat(const float& dt)
+{
+	if (this->points >= 500.f)
+	{
+		this->spawnTimer += 0.2f;
+		if (this->spawnTimer >= this->spawnTimerMax)
+		{
+			this->attackwebs.push_back(new AttackWeb(1440.f, this->player->GetPosition().y + 250.f, this->textures["ATTACKWEB_SHEET"]));
+			this->spawnTimer = 0.f;
+		}
+	}
+
+	for (int m = 0; m < this->attackwebs.size(); ++m)
+	{
+		bool attackweb_removed = false;
+
+		this->attackwebs[m]->update(dt);
+
+		//Attackweb Follow Player
+		if (this->attackwebs[m]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		{
+			this->attackwebs[m]->attackwebBackLeft();
+		}
+		if (this->attackwebs[m]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		{
+			this->attackwebs[m]->attackwebBackRight();
+		}
+
+		//Attackweb lose if attack the monster
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->attackwebs[m]->getBounds())
+			&& !attackweb_removed)
+		{
+			this->points += this->attackwebs[m]->getPoints();
+
+			this->attackwebs[m]->loseHp(this->player->getDamage());
+
+			printf("+1\n");
+		}
+		//Attackweb Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->attackwebs[m]->getBounds()) && this->attackwebs[m]->canAttack())
+		{
+			this->player->loseHp(this->attackwebs[m]->getDamage());
+
+			printf("-5\n");
+		}
+
+		//Remove if attackweb die
+		if (this->attackwebs[m]->getHp() <= 0)
+		{
+			this->attackwebs.erase(this->attackwebs.begin() + m);
+			attackweb_removed = true;
+		}
+	}
+}
+
 
 void GameState::update(const float& dt)
 {
@@ -520,15 +702,20 @@ void GameState::update(const float& dt)
 
 		this->updateView();
 
+		if(this->longweb1.getPosition().y > -550.f)
+			this->updateLongWeb();
+		else
+			this->updateViewWeb();
+
 		this->player->update(dt);
 
 		this->updateCollision();
 
 		this->updateCoconutsAndCombat(dt);
-
 		this->updateMonstersAndCombat(dt);
-		
 		this->updateBigmonsAndCombat(dt);
+		this->updateLockwebsAndCombat(dt);
+		this->updateAttackWebsAndCombat(dt);
 	
 		this->updateGUI();
 	}
@@ -560,6 +747,13 @@ void GameState::render(sf::RenderTarget* target)
 	//Background
 	target->draw(this->background);
 
+	//Longweb
+	target->draw(this->longweb1);
+	target->draw(this->longweb2);
+
+	//Viewweb
+	target->draw(this->viewweb);
+
 	//Player
 	this->player->render(*target);
 	
@@ -581,6 +775,17 @@ void GameState::render(sf::RenderTarget* target)
 		bigmon->render(*target);
 	}
 
+	//Lockwebs
+	for (auto* lockweb : this->lockwebs)
+	{
+		lockweb->render(*target);
+	}
+
+	//Attackwebs
+	for (auto* attackweb : this->attackwebs)
+	{
+		attackweb->render(*target);
+	}
 
 	//GUI
 	this->renderGUI();

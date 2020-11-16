@@ -1,35 +1,30 @@
-#ifndef MONSTER_H
-#define MONSTER_H
+#ifndef LOCKWEB_H
+#define LOCKWEB_H
 
 #include "Entity.h"
 
-class Monster :
+class LockWeb :
     public Entity
 {
 private:
- 
+
     //Variables
     float speed;
     int hp;
     int hpMax;
-    int damage;
     int points;
-
-    float attackCooldown;
-    float attackCooldownMax;
 
     //Initializer functions
     void initVariables();
 
 public:
-    Monster(float x, float y, sf::Texture& texture);
-    virtual ~Monster();
+    LockWeb(float x, float y, sf::Texture& texture);
+    virtual ~LockWeb();
 
     //Accessor
     const sf::FloatRect getBounds() const;
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
     const int& getPoints() const;
-    const int& getDamage() const;
     const int& getHp() const;
     const int& getHpMax() const;
 
@@ -38,14 +33,6 @@ public:
     void loseHp(const int value);
 
     //Functions
-    const bool canAttack();
-    void updateAttack();
-
-    void monsterBackLeft();
-    void monsterBackRight();
-    void monsterBackUp();
-    void monsterBackDown();
-
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

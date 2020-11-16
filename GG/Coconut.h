@@ -2,7 +2,6 @@
 #define COCONUT_H
 
 #include "Entity.h"
-#include "Player.h"
 
 class Coconut :
     public Entity

@@ -23,6 +23,14 @@ private:
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
 
+    //Web
+    sf::Texture longweb1Texture;
+    sf::RectangleShape longweb1;
+    sf::Texture longweb2Texture;
+    sf::RectangleShape longweb2;
+    sf::Texture viewwebTexture;
+    sf::RectangleShape viewweb;
+
     //GUI
     sf::Font font;
     sf::Text pointText;
@@ -54,16 +62,27 @@ private:
     float spawnTimerMax3;
     std::vector<BigMons*> bigmons;
 
+    //LockWebs
+    float spawnTimer4;
+    float spawnTimerMax4;
+    std::vector<LockWeb*> lockwebs;
+
+    //Attackwebs
+    std::vector<AttackWeb*> attackwebs;
 
     //System
     unsigned points;
+    bool cantMove;
 
     //Function
     void initKeybinds();
     void initTexture();
     void initPauseMenu();
+
     void initBackground();
     void initView();
+    void initWeb();
+
     void initGUI();
     void initSystem();
 
@@ -71,6 +90,7 @@ private:
     void initCoconuts();
     void initMonsters();
     void initBigmons();
+    void initLockwebs();
 
 public:
     GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -82,12 +102,16 @@ public:
     void updatePauseMenuButtons();
 
     void updateView();
+    void updateLongWeb();
+    void updateViewWeb();
+    
     void updateGUI();
-
     void updateCollision();
     void updateCoconutsAndCombat(const float& dt);
     void updateMonstersAndCombat(const float& dt);
     void updateBigmonsAndCombat(const float& dt);
+    void updateLockwebsAndCombat(const float& dt);
+    void updateAttackWebsAndCombat(const float& dt);
 
     void update(const float& dt);
     void renderGUI();

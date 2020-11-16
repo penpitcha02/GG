@@ -72,6 +72,15 @@
     <ClCompile Include="BigMons.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="LockWeb.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackWeb.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="BubbleTea.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -115,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="BigMons.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="LockWeb.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackWeb.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="BubbleTea.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

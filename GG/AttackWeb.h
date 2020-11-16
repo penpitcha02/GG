@@ -1,13 +1,12 @@
-#ifndef MONSTER_H
-#define MONSTER_H
+#ifndef ATTACKWEB_H
+#define ATTACKWEB_H
 
 #include "Entity.h"
 
-class Monster :
+class AttackWeb :
     public Entity
 {
 private:
- 
     //Variables
     float speed;
     int hp;
@@ -22,16 +21,18 @@ private:
     void initVariables();
 
 public:
-    Monster(float x, float y, sf::Texture& texture);
-    virtual ~Monster();
+    AttackWeb(float x, float y, sf::Texture& texture);
+    virtual ~AttackWeb();
 
     //Accessor
     const sf::FloatRect getBounds() const;
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
     const int& getPoints() const;
     const int& getDamage() const;
+
     const int& getHp() const;
     const int& getHpMax() const;
+
 
     //Modifier
     void setHp(const int hp);
@@ -41,11 +42,8 @@ public:
     const bool canAttack();
     void updateAttack();
 
-    void monsterBackLeft();
-    void monsterBackRight();
-    void monsterBackUp();
-    void monsterBackDown();
-
+    void attackwebBackLeft();
+    void attackwebBackRight();
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

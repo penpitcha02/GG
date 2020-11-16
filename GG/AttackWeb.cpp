@@ -1,7 +1,7 @@
-#include "Monster.h"
+#include "AttackWeb.h"
 
 //Variables
-void Monster::initVariables()
+void AttackWeb::initVariables()
 {
 	this->speed = 3.f;
 	this->hpMax = 100;
@@ -14,7 +14,7 @@ void Monster::initVariables()
 }
 
 //Con-De
-Monster::Monster(float x, float y, sf::Texture& texture_sheet)
+AttackWeb::AttackWeb(float x, float y, sf::Texture& texture_sheet)
 {
 	this->initVariables();
 
@@ -23,46 +23,46 @@ Monster::Monster(float x, float y, sf::Texture& texture_sheet)
 	this->createHitboxComponent(this->sprite, 70.f, 60.f, 110.f, 130.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 1, 0, 234, 264);
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 0, 0, 316, 210);
 }
 
-Monster::~Monster()
+AttackWeb::~AttackWeb()
 {
 }
 
 //Accessor
-const sf::FloatRect Monster::getBounds() const
+const sf::FloatRect AttackWeb::getBounds() const
 {
 	return this->hitboxComponent->getBounds();
 }
 
-const int& Monster::getPoints() const
+const int& AttackWeb::getPoints() const
 {
 	return this->points;
 }
 
-const int& Monster::getDamage() const
+const int& AttackWeb::getDamage() const
 {
 	return this->damage;
 }
 
-const int& Monster::getHp() const
+const int& AttackWeb::getHp() const
 {
 	return this->hp;
 }
 
-const int& Monster::getHpMax() const
+const int& AttackWeb::getHpMax() const
 {
 	return this->hpMax;
 }
 
 //Modifier
-void Monster::setHp(const int hp)
+void AttackWeb::setHp(const int hp)
 {
 	this->hp = hp;
 }
 
-void Monster::loseHp(const int value)
+void AttackWeb::loseHp(const int value)
 {
 	this->hp -= value;
 	if (this->hp < 0)
@@ -70,7 +70,7 @@ void Monster::loseHp(const int value)
 }
 
 //Functions
-const bool Monster::canAttack()
+const bool AttackWeb::canAttack()
 {
 	if (this->attackCooldown >= this->attackCooldownMax)
 	{
@@ -80,7 +80,7 @@ const bool Monster::canAttack()
 	return false;
 }
 
-void Monster::updateAttack()
+void AttackWeb::updateAttack()
 {
 	if (this->attackCooldown < this->attackCooldownMax)
 	{
@@ -88,32 +88,22 @@ void Monster::updateAttack()
 	}
 }
 
-void Monster::monsterBackLeft()
+void AttackWeb::attackwebBackLeft()
 {
 	this->sprite.move(-this->speed, 0.f);
 }
 
-void Monster::monsterBackRight()
+void AttackWeb::attackwebBackRight()
 {
 	this->sprite.move(this->speed, 0.f);
 }
 
-void Monster::monsterBackUp()
-{
-	this->sprite.move(0.f, -this->speed);
-}
-
-void Monster::monsterBackDown()
-{
-	this->sprite.move(0.f, this->speed);
-}
-
-void Monster::updateAnimation(const float& dt)
+void AttackWeb::updateAnimation(const float& dt)
 {
 	this->animationComponent->play("WALK", dt);
 }
 
-void Monster::update(const float& dt)
+void AttackWeb::update(const float& dt)
 {
 	this->updateAttack();
 
