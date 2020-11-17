@@ -32,7 +32,7 @@ Boss::Boss(float x, float y, sf::Texture& texture_sheet)
 	this->createAnimationComponent(texture_sheet);
 
 	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 0, 0, 300, 400);
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 1, 3, 1, 300, 400);
+	this->animationComponent->addAnimation("ATTACK", 10.f, 0, 1, 3, 1, 300, 400);
 	this->animationComponent->addAnimation("DIE", 5.f, 0, 2, 0, 2, 300, 400);
 }
 
@@ -90,13 +90,17 @@ const bool Boss::canAttack()
 	return false;
 }
 
-void Boss::updateAttack()
+void Boss::updateCoolDown()
 {
 	if (this->attackCooldown < this->attackCooldownMax)
 	{
 		this->attackCooldown += 1.f;
 	}
-	if (this->canAttack())
+}
+
+void Boss::updateAttack()
+{
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		this->attacking = true;
 	}
@@ -104,18 +108,7 @@ void Boss::updateAttack()
 
 void Boss::updateAnimation(const float& dt)
 {
-	if (this->attacking)
-	{
-		if (this->animationComponent->play("ATTACK", dt, true))
-		{
-			this->attacking = false;
-		}
-	}
-
-	if (this->movementComponent->getState(IDLE))
-	{
-		this->animationComponent->play("IDLE", dt);
-	}
+	this->animationComponent->play("ATTACK", dt);
 }
 
 void Boss::updateDieAnimation(const float& dt)
@@ -125,6 +118,7 @@ void Boss::updateDieAnimation(const float& dt)
 
 void Boss::update(const float& dt)
 {
+	this->updateCoolDown();
 
 	this->updateAttack();
 

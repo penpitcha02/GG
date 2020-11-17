@@ -39,10 +39,11 @@ public:
 
     //Functions
     const bool canAttack();
+    void updateCoolDown();
     void updateAttack();
     void updateAnimation(const float& dt);
     void updateDieAnimation(const float& dt);
-    virtual void update(const float& dt);
+    void update(const float& dt);
 };
 #endif
 

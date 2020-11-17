@@ -130,7 +130,7 @@ public:
     void updateLockwebsAndCombat(const float& dt);
     void updateAttackWebsAndCombat(const float& dt);
     void updateUltiWebsAndCombat(const float& dt);
-   /* void updateBossAndCombat(const float& dt);*/
+    void updateBossAndCombat(const float& dt);
 
     void update(const float& dt);
     void renderGUI();
