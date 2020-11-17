@@ -1,12 +1,12 @@
 #include "EndGameState.h"
 
 //Initializer functions
-void EndGame::initVariable()
+void EndGameState::initVariable()
 {
 
 }
 
-void EndGame::initBackground()
+void EndGameState::initBackground()
 {
 	this->background.setSize(
 		sf::Vector2f
@@ -24,30 +24,30 @@ void EndGame::initBackground()
 	this->background.setTexture(&this->backgroundTexture);
 }
 
-void EndGame::initView()
+void EndGameState::initView()
 {
 	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
 }
 
-void EndGame::initKeybinds()
+void EndGameState::initKeybinds()
 {
 	this->keybinds["CLOSE"] = this->supportedKeys->at("Escape");
 }
 
-void EndGame::initButton()
+void EndGameState::initButton()
 {
-	//Button1
-	if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
-		printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
+	////Button1
+	//if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+	//	printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
 
-	if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
-		printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
+	//if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+	//	printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
 
-	if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
-		printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
+	//if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+	//	printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
 
-	this->buttons["GAME_STATE"] = new Button(1050, 200, 172.5, 107.5,
-		&this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
+	//this->buttons["GAME_STATE"] = new Button(1050, 200, 172.5, 107.5,
+	//	&this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
 
 	////Button2
 	//if (!this->button2idleTexture.loadFromFile("img/menubutton/HelpButton1.png"))
@@ -62,21 +62,21 @@ void EndGame::initButton()
 	//this->buttons["HELP_STATE"] = new Button(1050, 350, 172.5, 107.5,
 	//	&this->button2idleTexture, &this->button2hoverTexture, &this->button2activeTexture);
 
-	////Button3
-	//if (!this->button3idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
-	//	printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
+	//Button3
+	if (!this->button3idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
+		printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
 
-	//if (!this->button3hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
-	//	printf("LOAD BUTTON 3 HOVER MAI DAI AAAAAAA");
+	if (!this->button3hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
+		printf("LOAD BUTTON 3 HOVER MAI DAI AAAAAAA");
 
-	//if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
-	//	printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
+	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
+		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
-	//this->buttons["QUIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
-	//	&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
+	this->buttons["QUIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
+		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
 }
 
-EndGame::EndGame(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
+EndGameState::EndGameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
 	: State(window, supportedKeys, states)
 {
 	this->initVariable();
@@ -86,7 +86,7 @@ EndGame::EndGame(sf::RenderWindow* window, std::map<std::string, int>* supported
 	this->initButton();
 }
 
-EndGame::~EndGame()
+EndGameState::~EndGameState()
 {
 	auto it = this->buttons.begin();
 	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
@@ -96,18 +96,18 @@ EndGame::~EndGame()
 }
 
 
-void EndGame::updateInput(const float& dt)
+void EndGameState::updateInput(const float& dt)
 {
 
 
 }
 
-void EndGame::updateView()
+void EndGameState::updateView()
 {
 	this->view.setCenter(sf::Vector2f(720.0f, 405.0f));
 }
 
-void EndGame::updateButtons()
+void EndGameState::updateButtons()
 {
 	/*Update all the buttons in the state and handles their functionality*/
 	for (auto& it : this->buttons)
@@ -115,11 +115,11 @@ void EndGame::updateButtons()
 		it.second->update(this->mousePosView);
 	}
 
-	//New Game
-	if (this->buttons["GAME_STATE"]->isPressed())
-	{
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
-	}
+	////New Game
+	//if (this->buttons["GAME_STATE"]->isPressed())
+	//{
+	//	this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+	//}
 
 	//Quit The Game
 	if (this->buttons["QUIT_STATE"]->isPressed())
@@ -128,7 +128,7 @@ void EndGame::updateButtons()
 	}
 }
 
-void EndGame::update(const float& dt)
+void EndGameState::update(const float& dt)
 {
 	this->updateMousePosition();
 	this->updateInput(dt);
@@ -137,7 +137,7 @@ void EndGame::update(const float& dt)
 	this->updateButtons();
 }
 
-void EndGame::renderButtons(sf::RenderTarget& target)
+void EndGameState::renderButtons(sf::RenderTarget& target)
 {
 	for (auto& it : this->buttons)
 	{
@@ -145,7 +145,7 @@ void EndGame::renderButtons(sf::RenderTarget& target)
 	}
 }
 
-void EndGame::render(sf::RenderTarget* target)
+void EndGameState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;

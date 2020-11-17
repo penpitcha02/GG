@@ -2,6 +2,7 @@
 #define State_H
 
 #include"Player.h"
+#include"Boss.h"
 #include"Coconut.h"
 #include"Monster.h"
 #include"BigMons.h"

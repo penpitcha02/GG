@@ -148,11 +148,13 @@
     <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AttackWeb.cpp" />
     <ClCompile Include="BigMons.cpp" />
+    <ClCompile Include="Boss.cpp" />
     <ClCompile Include="BubbleTea.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="EndGameState.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Coconut.cpp" />
     <ClCompile Include="HitboxComponent.cpp" />
@@ -170,11 +172,13 @@
     <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AttackWeb.h" />
     <ClInclude Include="BigMons.h" />
+    <ClInclude Include="Boss.h" />
     <ClInclude Include="BubbleTea.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="EndGameState.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameOver.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Coconut.h" />
     <ClInclude Include="HitboxComponent.h" />

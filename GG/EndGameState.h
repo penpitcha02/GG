@@ -1,10 +1,10 @@
 #ifndef ENDGAMESTATE_H
-#define ENDGAME_H
+#define ENDGAMESTATE_H
 
-#include "GameState.h"
+#include"State.h"
 #include "Button.h"
 
-class EndGame :
+class EndGameState :
     public State
 {
 private:
@@ -15,18 +15,18 @@ private:
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
 
-    //Variables
-    sf::Texture button1idleTexture;
-    sf::Texture button1hoverTexture;
-    sf::Texture button1activeTexture;
+    ////Variables
+    //sf::Texture button1idleTexture;
+    //sf::Texture button1hoverTexture;
+    //sf::Texture button1activeTexture;
 
-    /*sf::Texture button2idleTexture;
-    sf::Texture button2hoverTexture;
-    sf::Texture button2activeTexture;
+    //sf::Texture button2idleTexture;
+    //sf::Texture button2hoverTexture;
+    //sf::Texture button2activeTexture;
 
     sf::Texture button3idleTexture;
     sf::Texture button3hoverTexture;
-    sf::Texture button3activeTexture;*/
+    sf::Texture button3activeTexture;
 
     std::map<std::string, Button*> buttons;
 
@@ -38,8 +38,8 @@ private:
     void initButton();
 
 public:
-    EndGame(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
-    virtual ~EndGame();
+    EndGameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+    virtual ~EndGameState();
 
     //Functions
     void updateInput(const float& dt);

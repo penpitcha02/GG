@@ -44,10 +44,27 @@ void GameState::initTexture()
 	if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
 		printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
 
+	//Game Over
+	if (!this->button2idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+		printf("LOAD BUTTON 2 IDLE MAI DAI AAAAAAA");
+
+	if (!this->button2hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+		printf("LOAD BUTTON 2 HOVER MAI DAI AAAAAAA");
+
+	if (!this->button2activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+		printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
+
+
 	//Player
 	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/Grandpa.png"))
 	{
 		printf("LOAD PLAYER MAI DAIIII");
+	}
+
+	//Boss
+	if (!this->textures["BOSS_SHEET"].loadFromFile("img/Boss.png"))
+	{
+		printf("LOAD BOSS MAI DAIIII");
 	}
 
 	//Coconuts
@@ -88,6 +105,18 @@ void GameState::initPauseMenu()
 	this->pmenu->addButton("QUIT_STATE", &this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
 }
 
+void GameState::initGameOver()
+{
+	this->gameover = new GameOver(*this->window);
+
+	this->gameover->addButton("RANK_STATE", &this->button2idleTexture, &this->button2hoverTexture, &this->button2activeTexture);
+
+	//Init  last score text
+	this->lastScoreText.setFont(this->font);
+	this->lastScoreText.setCharacterSize(50);
+	this->lastScoreText.setFillColor(sf::Color::White);
+}
+
 
 void GameState::initBackground()
 {
@@ -125,11 +154,11 @@ void GameState::initGUI()
 	{
 		throw("LOAD MAIDAI KRUB");
 	}
-	//Init point text
-	this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(80);
-	this->gameOverText.setFillColor(sf::Color::Red);
-	this->gameOverText.setString("Game Over!");
+	////Init point text
+	//this->gameOverText.setFont(this->font);
+	//this->gameOverText.setCharacterSize(80);
+	//this->gameOverText.setFillColor(sf::Color::Red);
+	//this->gameOverText.setString("Game Over!");
 
 	//Init player GUI
 	this->playerHpBar.setSize(sf::Vector2f(300.f, 5.f));
@@ -143,24 +172,31 @@ void GameState::initGUI()
 	this->bigmonsHpBarBack = this->playerHpBar;
 	this->bigmonsHpBarBack.setFillColor(sf::Color(25, 25, 25, 100));*/
 
-	//Init game over text
-	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(20);
-	this->pointText.setFillColor(sf::Color::Blue);
-	this->pointText.setString("test");
+	//Init score text
+	this->scoreText.setFont(this->font);
+	this->scoreText.setCharacterSize(20);
+	this->scoreText.setFillColor(sf::Color::Blue);
+	this->scoreText.setString("test");
 }
 
 void GameState::initSystem()
 {
-	this->points = 0;
+	this->score = 0;
+
+	this->lastscore = this->score;
 
 	this->cantMove = false;
 }
 
 
-void GameState::initPlayers()
+void GameState::initPlayer()
 {
 	this->player = new Player(0, 340, this->textures["PLAYER_SHEET"]); 
+}
+
+void GameState::initBoss()
+{
+	this->boss = new Boss(0, 340, this->textures["BOSS_SHEET"]);
 }
 
 void GameState::initCoconuts()
@@ -195,6 +231,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initKeybinds();
 	this->initTexture();
 	this->initPauseMenu();
+	this->initGameOver();
 
 	this->initBackground();
 	this->initView();
@@ -203,7 +240,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initGUI();
 	this->initSystem();
 
-	this->initPlayers();
+	this->initPlayer();
 	this->initCoconuts();
 	this->initMonsters();
 	this->initBigmons();
@@ -235,7 +272,10 @@ void GameState::updateInput(const float& dt)
 		if (!this->paused)
 			this->pauseState();
 		else
-			this->unpauseState();
+		{
+			if (this->player->getHp() != 0)
+				this->unpauseState();
+		}
 	}
 }
 
@@ -278,6 +318,28 @@ void GameState::updatePauseMenuButtons()
 	}
 }
 
+void GameState::updateGameOverButton()
+{
+	//Last score
+	this->lastScoreText.setPosition(this->view.getCenter().x - this->lastScoreText.getGlobalBounds().width, 400.f);
+
+	std::stringstream ss;
+	ss << "Your Score : " << this->lastscore;
+
+	this->lastScoreText.setString(ss.str());
+
+	this->gameover->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+
+	this->gameover->textSetPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+
+	this->gameover->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 100.f);
+
+	if (this->gameover->isButtonPressed("RANK_STATE"))
+	{
+		this->states->push(new EndGameState(this->window, this->supportedKeys, this->states));
+	}
+}
+
 
 void GameState::updateView()
 {
@@ -298,7 +360,7 @@ void GameState::updateView()
 
 void GameState::updateLongWeb()
 {
-	if (this->points >= 500)
+	if (this->score >= 500)
 	{
 		this->longweb1.move(0.f, -10.f);
 		this->longweb2.move(0.f, 10.f);
@@ -313,17 +375,17 @@ void GameState::updateViewWeb()
 
 void GameState::updateGUI()
 {
-	this->pointText.setPosition(this->view.getCenter().x - this->pointText.getGlobalBounds().width, 10.f);
+	this->scoreText.setPosition(this->view.getCenter().x - this->scoreText.getGlobalBounds().width, 10.f);
 
 	this->playerHpBar.setPosition(this->view.getCenter().x - 710, 10.f);
 	this->playerHpBarBack.setPosition(this->playerHpBar.getPosition());
 
-	this->gameOverText.setPosition(this->view.getCenter().x - this->pointText.getGlobalBounds().width, 10.f);
+	/*this->gameOverText.setPosition(this->view.getCenter().x - this->pointText.getGlobalBounds().width, 10.f);*/
 
 	std::stringstream ss;
-	ss << "Ponits: " << this->points;
+	ss << "Score : " << this->score;
 
-	this->pointText.setString(ss.str());
+	this->scoreText.setString(ss.str());
 
 	float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
 	this->playerHpBar.setSize(sf::Vector2f(300.f * hpPercent, this->playerHpBar.getSize().y));
@@ -338,7 +400,7 @@ void GameState::updateCollision()
 		this->player->setPosition(-100.f, this->player->GetPosition().y);
 	}
 	//Right Collision
-	else if (this->points < 500)
+	else if (this->score < 500)
 	{
 		if (this->player->GetPosition().x + this->player->getBounds().width >= 1580.f)
 		{
@@ -364,7 +426,7 @@ void GameState::updateCollision()
 
 void GameState::updateCoconutsAndCombat(const float& dt)
 {
-	if (this->points < 500.f)
+	if (this->score < 500.f)
 	{
 		this->spawnTimer += 0.2f;
 		if (this->spawnTimer >= this->spawnTimerMax)
@@ -424,7 +486,7 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds()) 
 			&& !coconut_removed /*&& this->player->canAttack()*/)
 		{
-			this->points += this->coconuts[i]->getPoints();
+			this->score += this->coconuts[i]->getPoints();
 
 			printf("+1\n");
 			this->coconuts.erase(this->coconuts.begin() + i);
@@ -456,7 +518,7 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 
 void GameState::updateMonstersAndCombat(const float& dt)
 {
-	if (this->points < 500.f)
+	if (this->score < 500.f)
 	{
 		this->spawnTimer2 += 0.2f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
@@ -494,7 +556,7 @@ void GameState::updateMonstersAndCombat(const float& dt)
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) 
 			&& !monster_removed)
 		{
-			this->points += this->monsters[j]->getPoints();
+			this->score += this->monsters[j]->getPoints();
 			
 			this->monsters[j]->loseHp(this->player->getDamage());
 
@@ -519,7 +581,7 @@ void GameState::updateMonstersAndCombat(const float& dt)
 
 void GameState::updateBigmonsAndCombat(const float& dt)
 {
-	if (this->points >= 500.f)
+	if (this->score >= 500.f)
 	{
 		this->spawnTimer3 += 0.2f;
 		if (this->spawnTimer3 >= this->spawnTimerMax3)
@@ -559,7 +621,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds())
 			&& !bigmons_removed /*&& this->player->canAttack()*/)
 		{
-			this->points += this->bigmons[k]->getPoints();
+			this->score += this->bigmons[k]->getPoints();
 
 			this->bigmons[k]->loseHp(this->player->getDamage());
 
@@ -589,7 +651,7 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 
 void GameState::updateLockwebsAndCombat(const float& dt)
 {
-	if (this->points >= 500.f)
+	if (this->score >= 500.f)
 	{
 		this->spawnTimer4 += 0.2f;
 		if (this->spawnTimer4 >= this->spawnTimerMax4)
@@ -613,7 +675,7 @@ void GameState::updateLockwebsAndCombat(const float& dt)
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->lockwebs[l]->getBounds())
 			&& !lockwebs_removed /*&& this->player->canAttack()*/ && this->cantMove)
 		{
-			this->points += this->lockwebs[l]->getPoints();
+			this->score += this->lockwebs[l]->getPoints();
 
 			this->lockwebs[l]->loseHp(this->player->getDamage());
 
@@ -640,7 +702,7 @@ void GameState::updateLockwebsAndCombat(const float& dt)
 
 void GameState::updateAttackWebsAndCombat(const float& dt)
 {
-	if (this->points >= 500.f)
+	if (this->score >= 500.f)
 	{
 		this->spawnTimer += 0.2f;
 		if (this->spawnTimer >= this->spawnTimerMax)
@@ -670,7 +732,7 @@ void GameState::updateAttackWebsAndCombat(const float& dt)
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->attackwebs[m]->getBounds())
 			&& !attackweb_removed)
 		{
-			this->points += this->attackwebs[m]->getPoints();
+			this->score += this->attackwebs[m]->getPoints();
 
 			this->attackwebs[m]->loseHp(this->player->getDamage());
 
@@ -695,7 +757,7 @@ void GameState::updateAttackWebsAndCombat(const float& dt)
 
 void GameState::updateUltiWebsAndCombat(const float& dt)
 {
-	if (this->points >= 500.f)
+	if (this->score >= 500.f)
 	{
 		this->spawnTimer2 += 0.2f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
@@ -721,11 +783,11 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 			this->ultiwebs[n]->attackwebBackRight();
 		}
 
-		//Ultiweb lose if attack the monster
+		//Ultiweb lose if attack the ultiweb
 		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->ultiwebs[n]->getBounds())
 			&& !ultiweb_removed)
 		{
-			this->points += this->ultiwebs[n]->getPoints();
+			this->score += this->ultiwebs[n]->getPoints();
 
 			this->ultiwebs[n]->loseHp(this->player->getDamage());
 
@@ -746,6 +808,32 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 			ultiweb_removed = true;
 		}
 	}
+}
+
+void GameState::updateBossAndCombat(const float& dt)
+{
+	//Alive animation
+	this->boss->update(dt);
+
+	//Boss lose if attack the boss
+	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->boss->getBounds()))
+	{
+		this->score += this->boss->getPoints();
+
+		this->boss->loseHp(this->player->getDamage());
+
+		printf("+1\n");
+	}
+	//Boss Player Collision
+	else if (this->player->HitboxgetBounds().intersects(this->boss->getBounds()) && this->boss->canAttack())
+	{
+		this->player->loseHp(this->boss->getDamage());
+
+		printf("-5\n");
+	}
+
+	//Die animation
+	this->boss->updateDieAnimation(dt);
 }
 
 
@@ -776,20 +864,30 @@ void GameState::update(const float& dt)
 		this->updateLockwebsAndCombat(dt);
 		this->updateAttackWebsAndCombat(dt);
 		this->updateUltiWebsAndCombat(dt);
+		this->updateBossAndCombat(dt);
 	
 		this->updateGUI();
 	}
 	else //Pause update
 	{
-		this->pmenu->update(this->mousePosView);
+		if (this->player->getHp() != 0)
+		{
+			this->pmenu->update(this->mousePosView);
 
-		this->updatePauseMenuButtons();
+			this->updatePauseMenuButtons();
+		}
+		else
+		{
+			this->gameover->update(this->mousePosView);
+
+			this->updateGameOverButton();
+		}
 	}
 }
 
 void GameState::renderGUI()
 {
-	this->window->draw(this->pointText);
+	this->window->draw(this->scoreText);
 	this->window->draw(this->playerHpBarBack);
 	this->window->draw(this->playerHpBar);
 	/*this->window->draw(this->bigmonsHpBarBack);
@@ -816,6 +914,9 @@ void GameState::render(sf::RenderTarget* target)
 
 	//Player
 	this->player->render(*target);
+
+	////Boss
+	//this->boss->render(*target);
 	
 	//Coconuts
 	for (auto* coconut : this->coconuts)
@@ -856,13 +957,20 @@ void GameState::render(sf::RenderTarget* target)
 	//GUI
 	this->renderGUI();
 
-	//Game Over
-	if (this->player->getHp() <= 0)
-		this->window->draw(this->gameOverText);
+	////Game Over
+	//if (this->player->getHp() <= 0)
+	//	this->window->draw(this->gameOverText);
 
 	//Pause Menu
 	if (this->paused) 
 	{
 		this->pmenu->render(*target);
+	}
+
+	//Game Over
+	if (this->player->getHp() <= 0)
+	{
+		this->gameover->render(*target);
+		this->window->draw(this->lastScoreText);
 	}
 }
