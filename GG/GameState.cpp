@@ -809,32 +809,37 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 		}
 	}
 }
-
-void GameState::updateBossAndCombat(const float& dt)
-{
-	//Alive animation
-	this->boss->update(dt);
-
-	//Boss lose if attack the boss
-	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->boss->getBounds()))
-	{
-		this->score += this->boss->getPoints();
-
-		this->boss->loseHp(this->player->getDamage());
-
-		printf("+1\n");
-	}
-	//Boss Player Collision
-	else if (this->player->HitboxgetBounds().intersects(this->boss->getBounds()) && this->boss->canAttack())
-	{
-		this->player->loseHp(this->boss->getDamage());
-
-		printf("-5\n");
-	}
-
-	//Die animation
-	this->boss->updateDieAnimation(dt);
-}
+//
+////void GameState::updateBossAndCombat(const float& dt)
+//{
+//	
+//		/*this->boss->update(dt);*/
+//	
+//
+//	//Boss lose if attack the boss
+//	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->boss->getBounds()))
+//	{
+//		this->score += this->boss->getPoints();
+//
+//		this->boss->loseHp(this->player->getDamage());
+//
+//		printf("+1\n");
+//	}
+//	//Boss Player Collision
+//	else if (this->player->HitboxgetBounds().intersects(this->boss->getBounds()) && this->boss->canAttack())
+//	{
+//		this->player->loseHp(this->boss->getDamage());
+//
+//		printf("-5\n");
+//	}
+//
+//	////Die animation
+//	//if (this->boss->getHp() <= 0)
+//	//{
+//	//	this->boss->updateDieAnimation(dt);
+//	//}
+//	
+//}
 
 
 void GameState::update(const float& dt)
@@ -864,7 +869,7 @@ void GameState::update(const float& dt)
 		this->updateLockwebsAndCombat(dt);
 		this->updateAttackWebsAndCombat(dt);
 		this->updateUltiWebsAndCombat(dt);
-		this->updateBossAndCombat(dt);
+		/*this->updateBossAndCombat(dt);*/
 	
 		this->updateGUI();
 	}
