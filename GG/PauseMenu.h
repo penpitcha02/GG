@@ -34,10 +34,12 @@ public:
 
 	//Accessor
 	std::map<std::string, Button*>& getButtons();
+	void setPosition(float x, float y);
+	void buttonSetPosition(const std::string key, float x, float y);
 
 	//Functions
 	const bool isButtonPressed(const std::string key);
-	void addButton(const std::string key, float x, float y, sf::Texture* idle, sf::Texture* hover, sf::Texture* active);
+	void addButton(const std::string key, sf::Texture* idle, sf::Texture* hover, sf::Texture* active);
 	void update(const sf::Vector2f& mousePos);
 	void render(sf::RenderTarget& target);
 };

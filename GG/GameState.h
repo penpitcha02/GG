@@ -8,13 +8,12 @@ class GameState :
     public State
 {
 private:
-    //Pause Menu
-    PauseMenu* pmenu;
-
     //View
     sf::View view;
-
+    
     //Pause Menu
+    PauseMenu* pmenu;
+    //Pause Menu Button
     sf::Texture button1idleTexture;
     sf::Texture button1hoverTexture;
     sf::Texture button1activeTexture;
@@ -70,6 +69,9 @@ private:
     //Attackwebs
     std::vector<AttackWeb*> attackwebs;
 
+    //Ultiwebs
+    std::vector<UltiWeb*> ultiwebs;
+
     //System
     unsigned points;
     bool cantMove;
@@ -112,6 +114,7 @@ public:
     void updateBigmonsAndCombat(const float& dt);
     void updateLockwebsAndCombat(const float& dt);
     void updateAttackWebsAndCombat(const float& dt);
+    void updateUltiWebsAndCombat(const float& dt);
 
     void update(const float& dt);
     void renderGUI();

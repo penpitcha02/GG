@@ -32,6 +32,7 @@ public:
 
 	//Accessors
 	const bool isPressed() const;
+	void setPosition(float x, float y);
 
 	//Function
 	void update(const sf::Vector2f& mousePos);

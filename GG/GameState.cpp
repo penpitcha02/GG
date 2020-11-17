@@ -85,7 +85,7 @@ void GameState::initPauseMenu()
 {
 	this->pmenu = new PauseMenu(*this->window);
 
-	this->pmenu->addButton("QUIT_STATE", 720.f, 405.f, &this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
+	this->pmenu->addButton("QUIT_STATE", &this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
 }
 
 
@@ -268,6 +268,10 @@ void GameState::updatePlayerInput(const float& dt)
 
 void GameState::updatePauseMenuButtons()
 {
+	this->pmenu->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+
+	this->pmenu->buttonSetPosition("QUIT_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y - 86.25);
+
 	if (this->pmenu->isButtonPressed("QUIT_STATE"))
 	{
 		this->endState();
@@ -689,6 +693,61 @@ void GameState::updateAttackWebsAndCombat(const float& dt)
 	}
 }
 
+void GameState::updateUltiWebsAndCombat(const float& dt)
+{
+	if (this->points >= 500.f)
+	{
+		this->spawnTimer2 += 0.2f;
+		if (this->spawnTimer2 >= this->spawnTimerMax2)
+		{
+			this->ultiwebs.push_back(new UltiWeb(1440.f, this->player->GetPosition().y + 250.f, this->textures["ATTACKWEB_SHEET"]));
+			this->spawnTimer2 = 0.f;
+		}
+	}
+
+	for (int n = 0; n < this->ultiwebs.size(); ++n)
+	{
+		bool ultiweb_removed = false;
+
+		this->ultiwebs[n]->update(dt);
+
+		//Ultiweb Follow Player
+		if (this->ultiwebs[n]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		{
+			this->ultiwebs[n]->attackwebBackLeft();
+		}
+		if (this->ultiwebs[n]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		{
+			this->ultiwebs[n]->attackwebBackRight();
+		}
+
+		//Ultiweb lose if attack the monster
+		if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->ultiwebs[n]->getBounds())
+			&& !ultiweb_removed)
+		{
+			this->points += this->ultiwebs[n]->getPoints();
+
+			this->ultiwebs[n]->loseHp(this->player->getDamage());
+
+			printf("+1\n");
+		}
+		//Ultiweb Player Collision
+		else if (this->player->HitboxgetBounds().intersects(this->ultiwebs[n]->getBounds()) && this->ultiwebs[n]->canAttack())
+		{
+			this->player->loseHp(this->ultiwebs[n]->getDamage());
+
+			printf("-5\n");
+		}
+
+		//Remove if Ultiweb die
+		if (this->ultiwebs[n]->getHp() <= 0)
+		{
+			this->ultiwebs.erase(this->ultiwebs.begin() + n);
+			ultiweb_removed = true;
+		}
+	}
+}
+
 
 void GameState::update(const float& dt)
 {
@@ -716,6 +775,7 @@ void GameState::update(const float& dt)
 		this->updateBigmonsAndCombat(dt);
 		this->updateLockwebsAndCombat(dt);
 		this->updateAttackWebsAndCombat(dt);
+		this->updateUltiWebsAndCombat(dt);
 	
 		this->updateGUI();
 	}
@@ -785,6 +845,12 @@ void GameState::render(sf::RenderTarget* target)
 	for (auto* attackweb : this->attackwebs)
 	{
 		attackweb->render(*target);
+	}
+
+	//Ultiwebs
+	for (auto* ultiweb : this->ultiwebs)
+	{
+		ultiweb->render(*target);
 	}
 
 	//GUI

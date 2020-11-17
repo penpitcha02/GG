@@ -19,6 +19,7 @@ Button::~Button()
 {
 }
 
+//Accessors
 const bool Button::isPressed() const
 {
 	if (this->buttonState == BTN_ACTIVE)
@@ -29,8 +30,10 @@ const bool Button::isPressed() const
 	return false;
 }
 
-//Accessors
-
+void Button::setPosition(float x, float y)
+{
+	return this->shape.setPosition(sf::Vector2f(x, y));
+}
 
 //Functions
 

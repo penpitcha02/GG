@@ -9,13 +9,6 @@ PauseMenu::PauseMenu(sf::RenderWindow& window)
 	//Init container
 	this->container.setSize(sf::Vector2f(static_cast<float>(window.getSize().x) / 4.f, static_cast<float>(window.getSize().y)));
 	this->container.setFillColor(sf::Color(20, 20, 20, 200));
-	this->container.setPosition(static_cast<float>(window.getSize().x) / 2.f - this->container.getSize().x / 2.f, 0.f);
-
-	//Init text
-	this->menuText.setFillColor(sf::Color(255, 255, 255, 255));
-	this->menuText.setCharacterSize(30);
-	this->menuText.setString("Paused");
-	this->menuText.setPosition(this->container.getPosition());
 }
 
 PauseMenu::~PauseMenu()
@@ -32,7 +25,15 @@ std::map<std::string, Button*>& PauseMenu::getButtons()
 	return this->buttons;
 }
 
+void PauseMenu::setPosition(float x, float y)
+{
+	return this->container.setPosition(sf::Vector2f(x, y));
+}
 
+void PauseMenu::buttonSetPosition(const std::string key, float x, float y)
+{
+	return this->buttons[key]->setPosition(x, y);
+}
 
 //Functions
 const bool PauseMenu::isButtonPressed(const std::string key)
@@ -40,9 +41,9 @@ const bool PauseMenu::isButtonPressed(const std::string key)
 	return this->buttons[key]->isPressed();
 }
 
-void PauseMenu::addButton(const std::string key, float x, float y, sf::Texture* idle, sf::Texture* hover, sf::Texture* active)
+void PauseMenu::addButton(const std::string key, sf::Texture* idle, sf::Texture* hover, sf::Texture* active)
 {
-	this->buttons[key] = new Button(x, y, 172.5, 107.5,
+	this->buttons[key] = new Button(0, 0, 172.5, 107.5,
 		idle, hover, active);
 }
 

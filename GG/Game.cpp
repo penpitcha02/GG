@@ -1,7 +1,5 @@
 #include "Game.h"
 
-
-
 //Static function
 
 
