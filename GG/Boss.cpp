@@ -10,7 +10,7 @@ void Boss::initVariables()
 	this->damage = 5;
 	this->points = 5;
 
-	this->attackCooldownMax = 10.f;
+	this->attackCooldownMax = 100.f;
 	this->attackCooldown = this->attackCooldownMax;
 }
 
@@ -27,12 +27,12 @@ Boss::Boss(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 150.f, 85.f, 120.f, 250.f);
+	this->createHitboxComponent(this->sprite, 85.f, 85.f, 120.f, 250.f);
 
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("IDLE", 10.f, 0, 0, 0, 0, 300, 400);
-	this->animationComponent->addAnimation("ATTACK", 10.f, 0, 1, 3, 1, 300, 400);
+	this->animationComponent->addAnimation("IDLE", 5.f, 0, 0, 0, 0, 300, 400);
+	this->animationComponent->addAnimation("ATTACK", 20.f, 0, 1, 3, 1, 300, 400);
 	this->animationComponent->addAnimation("DIE", 5.f, 0, 2, 0, 2, 300, 400);
 }
 
@@ -100,7 +100,7 @@ void Boss::updateCoolDown()
 
 void Boss::updateAttack()
 {
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (canAttack())
 	{
 		this->attacking = true;
 	}
@@ -108,12 +108,29 @@ void Boss::updateAttack()
 
 void Boss::updateAnimation(const float& dt)
 {
-	this->animationComponent->play("ATTACK", dt);
+	if (this->hp > 0)
+	{
+		if (this->attacking)
+		{
+			if (this->animationComponent->play("ATTACK", dt, true))
+			{
+				this->attacking = false;
+			}
+		}
+		else
+		{
+			this->animationComponent->play("IDLE", dt);
+		}
+	}
+	else
+	{
+		this->animationComponent->play("DIE", dt);
+	}
 }
 
 void Boss::updateDieAnimation(const float& dt)
 {
-	this->animationComponent->play("DIE", dt);
+	
 }
 
 void Boss::update(const float& dt)

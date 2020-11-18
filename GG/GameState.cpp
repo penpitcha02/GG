@@ -196,7 +196,7 @@ void GameState::initPlayer()
 
 void GameState::initBoss()
 {
-	this->boss = new Boss(0, 340, this->textures["BOSS_SHEET"]);
+	this->boss = new Boss(4000, 340, this->textures["BOSS_SHEET"]);
 }
 
 void GameState::initCoconuts()
@@ -241,6 +241,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initSystem();
 
 	this->initPlayer();
+	this->initBoss();
 	this->initCoconuts();
 	this->initMonsters();
 	this->initBigmons();
@@ -267,14 +268,16 @@ GameState::~GameState()
 //Functions
 void GameState::updateInput(const float& dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
+	if (this->player->getHp() > 0)
 	{
-		if (!this->paused)
-			this->pauseState();
-		else
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
 		{
-			if (this->player->getHp() != 0)
+			if (!this->paused)
+				this->pauseState();
+			else
+			{
 				this->unpauseState();
+			}
 		}
 	}
 }
@@ -812,15 +815,25 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 
 void GameState::updateBossAndCombat(const float& dt)
 {
-	if (this->boss->getHp() > 0)
-	{
-		this->boss->updateAnimation(dt);
-	}
-	else //Die
-	{
-		this->boss->updateDieAnimation(dt);
-	}
+	
+	this->boss->update(dt);
 
+	if (this->boss->getHp() > 60 && this->boss->getHp() <= 80)
+	{
+		this->boss->setPosition(860, 250);
+	}
+	if (this->boss->getHp() > 40 && this->boss->getHp() <= 60)
+	{
+		this->boss->setPosition(3000, 400);
+	}
+	if (this->boss->getHp() > 20 && this->boss->getHp() <= 40)
+	{
+		this->boss->setPosition(100, 300);
+	}
+	if (this->boss->getHp() > 0 && this->boss->getHp() <= 20)
+	{
+		this->boss->setPosition(1500, 250);
+	}
 	//Boss lose if attack the boss
 	if ((sf::Mouse::isButtonPressed(sf::Mouse::Left)) && this->player->CutboxgetBounds().intersects(this->boss->HitboxgetBounds()))
 	{
@@ -831,19 +844,15 @@ void GameState::updateBossAndCombat(const float& dt)
 		printf("+1\n");
 	}
 	//Boss Player Collision
-	else if (this->player->HitboxgetBounds().intersects(this->boss->HitboxgetBounds()) && this->boss->canAttack())
+	else if(this->boss->getHp() > 0)
 	{
+		if (this->player->HitboxgetBounds().intersects(this->boss->HitboxgetBounds()) && this->boss->canAttack())
+
 		this->player->loseHp(this->boss->getDamage());
 
 		printf("-5\n");
 	}
 
-	////Die animation
-	//if (this->boss->getHp() <= 0)
-	//{
-	//	
-	//}
-	
 }
 
 
@@ -926,7 +935,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->player->render(*target);
 
 	//Boss
-	/*this->boss->render(*target);*/
+	this->boss->render(*target);
 	
 	//Coconuts
 	for (auto* coconut : this->coconuts)
