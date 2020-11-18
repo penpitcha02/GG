@@ -847,10 +847,12 @@ void GameState::updateBossAndCombat(const float& dt)
 	else if(this->boss->getHp() > 0)
 	{
 		if (this->player->HitboxgetBounds().intersects(this->boss->HitboxgetBounds()) && this->boss->canAttack())
+		{
 
-		this->player->loseHp(this->boss->getDamage());
+			this->player->loseHp(this->boss->getDamage());
 
-		printf("-5\n");
+			printf("-5\n");
+		}
 	}
 
 }
@@ -931,11 +933,11 @@ void GameState::render(sf::RenderTarget* target)
 	//Viewweb
 	target->draw(this->viewweb);
 
-	//Player
-	this->player->render(*target);
-
 	//Boss
 	this->boss->render(*target);
+
+	//Player
+	this->player->render(*target);
 	
 	//Coconuts
 	for (auto* coconut : this->coconuts)
@@ -975,10 +977,6 @@ void GameState::render(sf::RenderTarget* target)
 
 	//GUI
 	this->renderGUI();
-
-	////Game Over
-	//if (this->player->getHp() <= 0)
-	//	this->window->draw(this->gameOverText);
 
 	//Pause Menu
 	if (this->paused) 
