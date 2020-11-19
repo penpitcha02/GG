@@ -8,6 +8,7 @@ void EndGameState::initVariable()
 
 void EndGameState::initBackground()
 {
+	//Background
 	this->background.setSize(
 		sf::Vector2f
 		(
@@ -16,12 +17,40 @@ void EndGameState::initBackground()
 		)
 	);
 
-	if (!this->backgroundTexture.loadFromFile("img/Menu.png"))
+	if (!this->backgroundTexture.loadFromFile("img/Endgamebg.png"))
 	{
 		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
 	}
 
 	this->background.setTexture(&this->backgroundTexture);
+
+	//Shop
+	this->shop.setSize(
+		sf::Vector2f
+		(
+			static_cast<float>(this->window->getSize().x*2),
+			static_cast<float>(this->window->getSize().y)
+		)
+	);
+
+	if (!this->shopTexture.loadFromFile("img/Shop.png"))
+	{
+		printf("LOAD MENU BACKGROUND MAI DAI AAAAAAA");
+	}
+
+	this->shop.setTexture(&this->shopTexture);
+
+	this->shop.setPosition(-500.f, 0.f);
+
+	//Fade
+	this->fade.setSize(
+		sf::Vector2f
+		(
+			static_cast<float>(this->window->getSize().x),
+			static_cast<float>(this->window->getSize().y)
+		)
+	);
+	this->fade.setFillColor(sf::Color(20, 20, 20, 100));
 }
 
 void EndGameState::initView()
@@ -72,7 +101,7 @@ void EndGameState::initButton()
 	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
-	this->buttons["QUIT_STATE"] = new Button(1050, 550, 172.5, 107.5,
+	this->buttons["QUIT_STATE"] = new Button(1200, 700, 172.5, 107.5,
 		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
 }
 
@@ -149,10 +178,14 @@ void EndGameState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;
+	
+	target->setView(this->view);
 
 	target->draw(this->background);
 
-	target->setView(this->view);
+	target->draw(this->shop);
+
+	target->draw(this->fade);
 
 	this->renderButtons(*target);
 

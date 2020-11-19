@@ -2,6 +2,7 @@
 #define ENDGAMESTATE_H
 
 #include"State.h"
+#include"MainMenuState.h"
 #include "Button.h"
 
 class EndGameState :
@@ -11,9 +12,17 @@ private:
     //View
     sf::View view;
 
+    //Fade
+    sf::RectangleShape fade;
+
     //Background
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
+
+    //Shop
+    sf::Texture shopTexture;
+    sf::RectangleShape shop;
+
 
     ////Variables
     //sf::Texture button1idleTexture;

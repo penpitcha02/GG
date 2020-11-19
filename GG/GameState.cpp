@@ -339,6 +339,7 @@ void GameState::updateGameOverButton()
 
 	if (this->gameover->isButtonPressed("RANK_STATE"))
 	{
+		this->endState();
 		this->states->push(new EndGameState(this->window, this->supportedKeys, this->states));
 	}
 }
