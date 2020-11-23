@@ -108,7 +108,7 @@ void Boss::updateAttack()
 
 void Boss::updateAnimation(const float& dt)
 {
-	if (this->hp > 0)
+	if (this->hp != 0)
 	{
 		if (this->attacking)
 		{

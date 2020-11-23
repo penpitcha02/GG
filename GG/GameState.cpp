@@ -311,7 +311,7 @@ GameState::~GameState()
 //Functions
 void GameState::updateInput(const float& dt)
 {
-	if (this->player->getHp() > 0)
+	if (this->player->getHp() != 0 && !this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds()))
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("CLOSE"))))
 		{
@@ -397,9 +397,9 @@ void GameState::updateEndGameButton()
 
 	this->lastScoreText2.setString(ss.str());
 
-	this->endgame->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+	this->endgame->setPosition(this->view.getCenter().x - 720.f, this->view.getCenter().y - 405.f);
 
-	this->endgame->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 100.f);
+	this->endgame->buttonSetPosition("RANK_STATE", this->view.getCenter().x + 300, this->view.getCenter().y + 300.f);
 
 	if (this->endgame->isButtonPressed("RANK_STATE"))
 	{
@@ -940,7 +940,7 @@ void GameState::update(const float& dt)
 	this->updateKeytime(dt);
 	this->updateInput(dt);
 	
-	if (!this->paused && this->player->getHp() != 0) //Unpause update
+	if (!this->paused && this->player->getHp() != 0 && !this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds())) //Unpause update
 	{
 		this->updatePlayerInput(dt);
 
@@ -962,7 +962,9 @@ void GameState::update(const float& dt)
 		this->updateAttackWebsAndCombat(dt);
 		this->updateUltiWebsAndCombat(dt);
 		this->updateBossAndCombat(dt);
-	 
+		if (this->boss->getHp() == 0)
+			this->updateBubbleTea();
+
 		this->updateGUI();
 	}
 	else //Pause update
@@ -979,16 +981,11 @@ void GameState::update(const float& dt)
 
 			this->updateGameOverButton();
 		}
-		else if (this->boss->getHp() == 0)
+		else if (this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds()))
 		{
-			this->updateBubbleTea();
+			this->endgame->update(this->mousePosView);
 
-			if (this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds()))
-			{
-				this->endgame->update(this->mousePosView);
-
-				this->updateEndGameButton();
-			}
+			this->updateEndGameButton();
 		}
 	}
 }
@@ -1062,6 +1059,9 @@ void GameState::render(sf::RenderTarget* target)
 		ultiweb->render(*target);
 	}
 
+	//BubbleTea
+	target->draw(this->bubbletea);
+
 	//GUI
 	this->renderGUI();
 
@@ -1078,10 +1078,10 @@ void GameState::render(sf::RenderTarget* target)
 		this->window->draw(this->lastScoreText);
 	}
 
-	//Game Over
-	if (this->boss->getHp() <= 0)
+	//End Game
+	if (this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds()))
 	{
-		this->gameover->render(*target);
-		this->window->draw(this->lastScoreText);
+		this->endgame->render(*target);
+		this->window->draw(this->lastScoreText2);
 	}
 }
