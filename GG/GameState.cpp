@@ -54,6 +54,16 @@ void GameState::initTexture()
 	if (!this->button2activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
 		printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
 
+	//End Game
+	if (!this->button3idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+		printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
+
+	if (!this->button3hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+		printf("LOAD BUTTON 3 HOVER MAI DAI AAAAAAA");
+
+	if (!this->button3activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
+
 
 	//Player
 	if (!this->textures["PLAYER_SHEET"].loadFromFile("img/Grandpa.png"))
@@ -88,13 +98,25 @@ void GameState::initTexture()
 	//Lockwebs
 	if (!this->textures["LOCKWEB_SHEET"].loadFromFile("img/Lockweb.png"))
 	{
-		printf("LOAD LOCKWEB MAI DAIIII");
+		printf("LOAD LOCK WEB MAI DAIIII");
 	}
 
-	//Lockwebs
+	//Attackwebs
 	if (!this->textures["ATTACKWEB_SHEET"].loadFromFile("img/Attackweb.png"))
 	{
-		printf("LOAD ATTACKWEB IDLE MAI DAIIII");
+		printf("LOAD ATTACK WEB IDLE MAI DAIIII");
+	}
+
+	//Ultiwebs
+	if (!this->textures["ULTIWEB_SHEET"].loadFromFile("img/Ultiweb.png"))
+	{
+		printf("LOAD ULTI WEB IDLE MAI DAIIII");
+	}
+
+	//BubbleTea
+	if (!this->bubbleteaTexture.loadFromFile("img/Bubbletea.png"))
+	{
+		printf("LOAD BUBBLE TEA MAI DAI AAAAAAA");
 	}
 }
 
@@ -115,6 +137,18 @@ void GameState::initGameOver()
 	this->lastScoreText.setFont(this->font);
 	this->lastScoreText.setCharacterSize(50);
 	this->lastScoreText.setFillColor(sf::Color::White);
+}
+
+void GameState::initEndGame()
+{
+	this->endgame = new EndGame(*this->window);
+
+	this->endgame->addButton("RANK_STATE", &this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
+
+	//Init  last score text 2
+	this->lastScoreText2.setFont(this->font);
+	this->lastScoreText2.setCharacterSize(50);
+	this->lastScoreText2.setFillColor(sf::Color::White);
 }
 
 
@@ -223,6 +257,13 @@ void GameState::initLockwebs()
 	this->spawnTimer4 = this->spawnTimerMax3;
 }
 
+void GameState::initBubbleTea()
+{
+	this->bubbletea.setSize(sf::Vector2f(159.f, 233.f));
+	this->bubbletea.setTexture(&this->bubbleteaTexture);
+	this->bubbletea.setPosition(1500.f, -233.f);
+}
+
 
 //Constructors / Destructors
 GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
@@ -232,6 +273,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initTexture();
 	this->initPauseMenu();
 	this->initGameOver();
+	this->initEndGame();
 
 	this->initBackground();
 	this->initView();
@@ -246,6 +288,7 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initMonsters();
 	this->initBigmons();
 	this->initLockwebs();
+	this->initBubbleTea();
 }
 
 GameState::~GameState()
@@ -338,6 +381,27 @@ void GameState::updateGameOverButton()
 	this->gameover->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 100.f);
 
 	if (this->gameover->isButtonPressed("RANK_STATE"))
+	{
+		this->endState();
+		this->states->push(new EndGameState(this->window, this->supportedKeys, this->states));
+	}
+}
+
+void GameState::updateEndGameButton()
+{
+	//Last score 2
+	this->lastScoreText2.setPosition(this->view.getCenter().x - this->lastScoreText2.getGlobalBounds().width, 400.f);
+
+	std::stringstream ss;
+	ss << "Your Score : " << this->lastscore;
+
+	this->lastScoreText2.setString(ss.str());
+
+	this->endgame->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+
+	this->endgame->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 100.f);
+
+	if (this->endgame->isButtonPressed("RANK_STATE"))
 	{
 		this->endState();
 		this->states->push(new EndGameState(this->window, this->supportedKeys, this->states));
@@ -766,7 +830,7 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 		this->spawnTimer2 += 0.2f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
 		{
-			this->ultiwebs.push_back(new UltiWeb(1440.f, this->player->GetPosition().y + 250.f, this->textures["ATTACKWEB_SHEET"]));
+			this->ultiwebs.push_back(new UltiWeb(1440.f, this->player->GetPosition().y + 250.f, this->textures["ULTIWEB_SHEET"]));
 			this->spawnTimer2 = 0.f;
 		}
 	}
@@ -858,6 +922,17 @@ void GameState::updateBossAndCombat(const float& dt)
 
 }
 
+void GameState::updateBubbleTea()
+{
+	this->bubbletea.move(0.f, 5.f);
+
+	//Bottom Collision
+	if (this->bubbletea.getPosition().y + this->bubbletea.getGlobalBounds().height >= 870.f)
+	{
+	this->bubbletea.setPosition(this->bubbletea.getPosition().x, 870.f - this->bubbletea.getGlobalBounds().height);
+	}
+}
+
 
 void GameState::update(const float& dt)
 {
@@ -892,17 +967,28 @@ void GameState::update(const float& dt)
 	}
 	else //Pause update
 	{
-		if (this->player->getHp() != 0)
+		if (this->player->getHp() != 0 && this->boss->getHp() != 0)
 		{
 			this->pmenu->update(this->mousePosView);
 
 			this->updatePauseMenuButtons();
 		}
-		else
+		else if(this->player->getHp() == 0)
 		{
 			this->gameover->update(this->mousePosView);
 
 			this->updateGameOverButton();
+		}
+		else if (this->boss->getHp() == 0)
+		{
+			this->updateBubbleTea();
+
+			if (this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds()))
+			{
+				this->endgame->update(this->mousePosView);
+
+				this->updateEndGameButton();
+			}
 		}
 	}
 }
@@ -987,6 +1073,13 @@ void GameState::render(sf::RenderTarget* target)
 
 	//Game Over
 	if (this->player->getHp() <= 0)
+	{
+		this->gameover->render(*target);
+		this->window->draw(this->lastScoreText);
+	}
+
+	//Game Over
+	if (this->boss->getHp() <= 0)
 	{
 		this->gameover->render(*target);
 		this->window->draw(this->lastScoreText);

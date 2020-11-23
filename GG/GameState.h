@@ -4,6 +4,7 @@
 #include "EndGameState.h"
 #include "PauseMenu.h"
 #include "GameOver.h"
+#include "EndGame.h"
 
 class GameState :
     public State
@@ -26,6 +27,14 @@ private:
     sf::Texture button2idleTexture;
     sf::Texture button2hoverTexture;
     sf::Texture button2activeTexture;
+
+    //End Game
+    EndGame* endgame;
+    sf::Text lastScoreText2;
+    //Game Over Button
+    sf::Texture button3idleTexture;
+    sf::Texture button3hoverTexture;
+    sf::Texture button3activeTexture;
 
     //Background
     sf::Texture backgroundTexture;
@@ -83,16 +92,22 @@ private:
     //Ultiwebs
     std::vector<UltiWeb*> ultiwebs;
 
+    //BubbleTea
+    sf::Texture bubbleteaTexture;
+    sf::RectangleShape bubbletea;
+
     //System
-    unsigned score;
-    bool cantMove;
+    unsigned score; 
     unsigned lastscore;
+    bool cantMove;
+   
 
     //Function
     void initKeybinds();
     void initTexture();
     void initPauseMenu();
     void initGameOver();
+    void initEndGame();
 
     void initBackground();
     void initView();
@@ -107,6 +122,7 @@ private:
     void initMonsters();
     void initBigmons();
     void initLockwebs();
+    void initBubbleTea();
 
 public:
     GameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
@@ -117,6 +133,7 @@ public:
     void updatePlayerInput(const float& dt);
     void updatePauseMenuButtons();
     void updateGameOverButton();
+    void updateEndGameButton();
 
     void updateView();
     void updateLongWeb();
@@ -131,6 +148,7 @@ public:
     void updateAttackWebsAndCombat(const float& dt);
     void updateUltiWebsAndCombat(const float& dt);
     void updateBossAndCombat(const float& dt);
+    void updateBubbleTea();
 
     void update(const float& dt);
     void renderGUI();

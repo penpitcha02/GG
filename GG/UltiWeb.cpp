@@ -23,7 +23,7 @@ UltiWeb::UltiWeb(float x, float y, sf::Texture& texture_sheet)
 	this->createHitboxComponent(this->sprite, 70.f, 60.f, 110.f, 130.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 0, 0, 316, 210);
+	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 0, 0, 303, 182);
 }
 
 UltiWeb::~UltiWeb()
