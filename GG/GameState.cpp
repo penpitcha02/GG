@@ -235,19 +235,19 @@ void GameState::initBoss()
 
 void GameState::initCoconuts()
 {
-	this->spawnTimerMax = 50.f;
+	this->spawnTimerMax = 100.f;
 	this->spawnTimer = this->spawnTimerMax;
 }
 
 void GameState::initMonsters()
 {
-	this->spawnTimerMax2 = 50.f;
+	this->spawnTimerMax2 = 100.f;
 	this->spawnTimer2 = this->spawnTimerMax2;
 }
 
 void GameState::initBigmons()
 {
-	this->spawnTimerMax3 = 50.f;
+	this->spawnTimerMax3 = 100.f;
 	this->spawnTimer3 = this->spawnTimerMax3;
 }
 

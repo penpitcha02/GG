@@ -6,7 +6,7 @@ void BigMons::initVariables()
 	this->attacking = false;
 
 	this->type = 0;
-	this->speed = 8.f;
+	this->speed = 3.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
 	this->damage = 10;

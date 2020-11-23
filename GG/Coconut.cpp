@@ -4,7 +4,7 @@
 void Coconut::initVariables()
 {
 	this->type = 0;
-	this->speed = 4.f;
+	this->speed = 2.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
 	this->damage = 1;
