@@ -1,11 +1,11 @@
-#ifndef ENDGAMESTATE_H
-#define ENDGAMESTATE_H
+#ifndef RANKSTATE_H
+#define RANKSTATE_H
 
 #include"State.h"
 #include"MainMenuState.h"
 #include "Button.h"
 
-class EndGameState :
+class RankState :
     public State
 {
 private:
@@ -47,8 +47,8 @@ private:
     void initButton();
 
 public:
-    EndGameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
-    virtual ~EndGameState();
+    RankState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states);
+    virtual ~RankState();
 
     //Functions
     void updateInput(const float& dt);

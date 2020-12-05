@@ -42,7 +42,6 @@ public:
     void updateCoolDown();
     void updateAttack();
     void updateAnimation(const float& dt);
-    void updateDieAnimation(const float& dt);
     void update(const float& dt);
 };
 #endif

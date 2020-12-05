@@ -1,7 +1,7 @@
 #ifndef GAMESTATE_H
 #define GAMESTATE_H
 
-#include "EndGameState.h"
+#include "RankState.h"
 #include "PauseMenu.h"
 #include "GameOver.h"
 #include "EndGame.h"
@@ -48,6 +48,10 @@ private:
     sf::Texture viewwebTexture;
     sf::RectangleShape viewweb;
 
+    //Bigdragon
+    sf::Texture bigdragonTexture;
+    sf::RectangleShape bigdragon;
+
     //GUI
     sf::Font font;
     sf::Text scoreText;
@@ -62,9 +66,9 @@ private:
     //Boss
     Boss* boss;
 
-    //BigmonsGUI
-    /*sf::RectangleShape bigmonsHpBar;
-    sf::RectangleShape bigmonsHpBarBack;*/
+    //BossGUI
+    sf::RectangleShape bossHpBar;
+    sf::RectangleShape bossHpBarBack;
     
     //Coconuts
     float spawnTimer;
@@ -92,6 +96,9 @@ private:
     //Ultiwebs
     std::vector<UltiWeb*> ultiwebs;
 
+    //Ultidragons
+    std::vector<UltiDragon*> ultidragons;
+
     //BubbleTea
     sf::Texture bubbleteaTexture;
     sf::RectangleShape bubbletea;
@@ -100,8 +107,10 @@ private:
     unsigned score; 
     unsigned lastscore;
     bool cantMove;
+    bool canUlti;
+    bool leftUlti;
+    bool rightUlti;
    
-
     //Function
     void initKeybinds();
     void initTexture();
@@ -112,16 +121,19 @@ private:
     void initBackground();
     void initView();
     void initWeb();
+    void initBigdragon();
 
     void initGUI();
     void initSystem();
 
     void initPlayer();
     void initBoss();
+
     void initCoconuts();
     void initMonsters();
     void initBigmons();
     void initLockwebs();
+
     void initBubbleTea();
 
 public:
@@ -138,15 +150,20 @@ public:
     void updateView();
     void updateLongWeb();
     void updateViewWeb();
+    void updateBigdragon();
     
     void updateGUI();
     void updateCollision();
+
     void updateCoconutsAndCombat(const float& dt);
     void updateMonstersAndCombat(const float& dt);
     void updateBigmonsAndCombat(const float& dt);
     void updateLockwebsAndCombat(const float& dt);
     void updateAttackWebsAndCombat(const float& dt);
     void updateUltiWebsAndCombat(const float& dt);
+
+    void updateUltiDragonsAndCombat(const float& dt);
+
     void updateBossAndCombat(const float& dt);
     void updateBubbleTea();
 

@@ -28,6 +28,8 @@ public:
     const sf::FloatRect HitboxgetBounds() const;
     const sf::FloatRect CutboxgetBounds() const;
     sf::Vector2f GetPosition() { return sprite.getPosition(); }
+    const int& faceLeft() const;
+    const int& faceRight() const;
     const int& getHp() const;
     const int& getHpMax() const;
     const int& getDamage() const;
@@ -38,7 +40,9 @@ public:
     
     //Functions
     const bool canAttack();
+    void updateCoolDown();
     void updateAttack();
+    const bool isAttacking();
     void updateCutbox();
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);

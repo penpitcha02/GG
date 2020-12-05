@@ -1,12 +1,12 @@
-#include "EndGameState.h"
+#include "RankState.h"
 
 //Initializer functions
-void EndGameState::initVariable()
+void RankState::initVariable()
 {
 
 }
 
-void EndGameState::initBackground()
+void RankState::initBackground()
 {
 	//Background
 	this->background.setSize(
@@ -53,17 +53,17 @@ void EndGameState::initBackground()
 	this->fade.setFillColor(sf::Color(20, 20, 20, 100));
 }
 
-void EndGameState::initView()
+void RankState::initView()
 {
 	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
 }
 
-void EndGameState::initKeybinds()
+void RankState::initKeybinds()
 {
 	this->keybinds["CLOSE"] = this->supportedKeys->at("Escape");
 }
 
-void EndGameState::initButton()
+void RankState::initButton()
 {
 	////Button1
 	//if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
@@ -105,7 +105,7 @@ void EndGameState::initButton()
 		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
 }
 
-EndGameState::EndGameState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
+RankState::RankState(sf::RenderWindow* window, std::map<std::string, int>* supportedKeys, std::stack<State*>* states)
 	: State(window, supportedKeys, states)
 {
 	this->initVariable();
@@ -115,7 +115,7 @@ EndGameState::EndGameState(sf::RenderWindow* window, std::map<std::string, int>*
 	this->initButton();
 }
 
-EndGameState::~EndGameState()
+RankState::~RankState()
 {
 	auto it = this->buttons.begin();
 	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
@@ -125,18 +125,18 @@ EndGameState::~EndGameState()
 }
 
 
-void EndGameState::updateInput(const float& dt)
+void RankState::updateInput(const float& dt)
 {
 
 
 }
 
-void EndGameState::updateView()
+void RankState::updateView()
 {
 	this->view.setCenter(sf::Vector2f(720.0f, 405.0f));
 }
 
-void EndGameState::updateButtons()
+void RankState::updateButtons()
 {
 	/*Update all the buttons in the state and handles their functionality*/
 	for (auto& it : this->buttons)
@@ -157,7 +157,7 @@ void EndGameState::updateButtons()
 	}
 }
 
-void EndGameState::update(const float& dt)
+void RankState::update(const float& dt)
 {
 	this->updateMousePosition();
 	this->updateInput(dt);
@@ -166,7 +166,7 @@ void EndGameState::update(const float& dt)
 	this->updateButtons();
 }
 
-void EndGameState::renderButtons(sf::RenderTarget& target)
+void RankState::renderButtons(sf::RenderTarget& target)
 {
 	for (auto& it : this->buttons)
 	{
@@ -174,7 +174,7 @@ void EndGameState::renderButtons(sf::RenderTarget& target)
 	}
 }
 
-void EndGameState::render(sf::RenderTarget* target)
+void RankState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window;

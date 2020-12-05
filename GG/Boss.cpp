@@ -66,7 +66,7 @@ const int& Boss::getHpMax() const
 	return this->hpMax;
 }
 
-//Modifier
+//Modifier 
 void Boss::setHp(const int hp)
 {
 	this->hp = hp;
@@ -108,29 +108,14 @@ void Boss::updateAttack()
 
 void Boss::updateAnimation(const float& dt)
 {
-	if (this->hp != 0)
+	if (this->hp > 0)
 	{
-		if (this->attacking)
-		{
-			if (this->animationComponent->play("ATTACK", dt, true))
-			{
-				this->attacking = false;
-			}
-		}
-		else
-		{
-			this->animationComponent->play("IDLE", dt);
-		}
+		this->animationComponent->play("ATTACK", dt);
 	}
 	else
 	{
 		this->animationComponent->play("DIE", dt);
 	}
-}
-
-void Boss::updateDieAnimation(const float& dt)
-{
-	
 }
 
 void Boss::update(const float& dt)

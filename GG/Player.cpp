@@ -9,7 +9,7 @@ void Player::initVariables()
 	this->hp = this->hpMax;
 	this->damage = 1;
 
-	this->attackCooldownMax = 10.f;
+	this->attackCooldownMax = 50.f;
 	this->attackCooldown = this->attackCooldownMax;
 }
 
@@ -49,6 +49,16 @@ const sf::FloatRect Player::HitboxgetBounds() const
 const sf::FloatRect Player::CutboxgetBounds() const
 {
 	return this->cutboxComponent->getBounds();
+}
+
+const int& Player::faceLeft() const
+{
+	return this->movementComponent->getState(MOVING_LEFT);
+}
+
+const int& Player::faceRight() const
+{
+	return this->movementComponent->getState(MOVING_RIGHT);
 }
 
 const int& Player::getHp() const
@@ -91,16 +101,29 @@ const bool Player::canAttack()
 	return false;
 }
 
-void Player::updateAttack()
+void Player::updateCoolDown()
 {
 	if (this->attackCooldown < this->attackCooldownMax)
 	{
 		this->attackCooldown += 1.f;
 	}
+}
+
+void Player::updateAttack()
+{
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->canAttack())
 	{
 		this->attacking = true;
 	}
+}
+
+const bool Player::isAttacking()
+{
+	if (this->attacking)
+	{
+		return true;
+	}
+	return false;
 }
 
 void Player::updateCutbox()
@@ -148,6 +171,8 @@ void Player::updateAnimation(const float& dt)
 void Player::update(const float& dt)
 {
 	this->movementComponent->update(dt);
+
+	this->updateCoolDown();
 
 	this->updateAttack();
 
