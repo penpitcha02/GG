@@ -29,6 +29,9 @@ private:
     sf::SoundBuffer bigmonSoundBuffer;
     sf::Sound bigmonSound;
 
+    sf::SoundBuffer yakultSoundBuffer;
+    sf::Sound yakultSound;
+
     sf::SoundBuffer bossDieSoundBuffer;
     sf::Sound bossDieSound;
     
@@ -189,9 +192,9 @@ public:
     void updateUltiWebsAndCombat(const float& dt);
 
     void updateUltimate();
-    void updateUltiDragonsAndCombat(const float& dt);
+    void updateUltiDragons(const float& dt);
 
-    void updateYakults(const float& dt);
+   /* void updateYakults(const float& dt);*/
 
     void updateBossAndCombat(const float& dt);
     void updateBubbleTea();

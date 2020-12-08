@@ -3,7 +3,7 @@
 //Variables
 void Yakult::initVariables()
 {
-	this->heal = 5;
+	this->heal = 10;
 }
 
 //Con-De
