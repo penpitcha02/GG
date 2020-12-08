@@ -10,6 +10,9 @@ class MainMenuState :
 private:
     //View
     sf::View view;
+
+    //Music
+    sf::Music music;
     
     //Background
     sf::Texture backgroundTexture;
@@ -29,12 +32,11 @@ private:
     sf::Texture button3hoverTexture;
     sf::Texture button3activeTexture;
 
-    
-
     std::map<std::string, Button*> buttons;
 
     //Function
     void initVariable();
+    void initMusic();
     void initBackground();
     void initView();
     void initFonts();

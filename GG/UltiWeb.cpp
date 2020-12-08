@@ -20,7 +20,7 @@ UltiWeb::UltiWeb(float x, float y, sf::Texture& texture_sheet)
 
 	this->setPosition(x, y);
 
-	this->createHitboxComponent(this->sprite, 70.f, 60.f, 110.f, 130.f);
+	this->createHitboxComponent(this->sprite, 10.f, 70.f, 300.f, 50.f);
 	this->createAnimationComponent(texture_sheet);
 
 	this->animationComponent->addAnimation("WALK", 10.f, 0, 0, 0, 0, 303, 182);
@@ -88,14 +88,24 @@ void UltiWeb::updateAttack()
 	}
 }
 
-void UltiWeb::attackwebBackLeft()
+void UltiWeb::ultiwebBackLeft()
 {
 	this->sprite.move(-this->speed, 0.f);
 }
 
-void UltiWeb::attackwebBackRight()
+void UltiWeb::ultiwebBackRight()
 {
 	this->sprite.move(this->speed, 0.f);
+}
+
+void UltiWeb::ultiwebBackUp()
+{
+	this->sprite.move(0.f, -this->speed);
+}
+
+void UltiWeb::ultiwebBackDown()
+{
+	this->sprite.move(0.f, this->speed);
 }
 
 void UltiWeb::updateAnimation(const float& dt)

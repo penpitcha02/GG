@@ -13,6 +13,7 @@ private:
 protected:
 
 	sf::Sprite sprite;
+	sf::Sound sound;
 
 	HitboxComponent* hitboxComponent;
 	HitboxComponent* cutboxComponent;
@@ -25,6 +26,7 @@ public:
 
 	//Component functions
 	void setTexture(sf::Texture& texture);
+	void setBuffer(sf::SoundBuffer& buffer);
 	void createHitboxComponent(sf::Sprite& sprite, 
 		float offset_x, float offset_y,
 		float width, float height);

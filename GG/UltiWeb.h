@@ -42,8 +42,11 @@ public:
     const bool canAttack();
     void updateAttack();
 
-    void attackwebBackLeft();
-    void attackwebBackRight();
+    void ultiwebBackLeft();
+    void ultiwebBackRight();
+    void ultiwebBackUp();
+    void ultiwebBackDown();
+
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

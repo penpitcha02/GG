@@ -12,6 +12,9 @@ private:
     //View
     sf::View view;
 
+    //Music
+    sf::Music music;
+
     //Fade
     sf::RectangleShape fade;
 
@@ -41,6 +44,7 @@ private:
 
     //Function
     void initVariable();
+    void initMusic();
     void initBackground();
     void initView();
     void initKeybinds();

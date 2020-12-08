@@ -28,10 +28,11 @@ public:
 
 	//Accessors
 	void setScale(int x, int y);
+	void setPosition(int x, int y);
 
 	//Functions
 	const sf::FloatRect getBounds() const;
-	
+
 	void update();
 	void render(sf::RenderTarget& target);
 };

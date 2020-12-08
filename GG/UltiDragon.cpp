@@ -3,7 +3,7 @@
 //Variables
 void UltiDragon::initVariables()
 {
-	this->speed = 5.f;
+	this->speed = 10.f;
 	this->damage = 5;
 
 	this->attackCooldownMax = 50.f;
@@ -75,6 +75,7 @@ void UltiDragon::moveRight()
 void UltiDragon::leftHitbox()
 {
 	this->hitboxComponent->setScale(-1.f, 1.f);
+	this->hitboxComponent->setPosition(this->sprite.getPosition().x - 200.f, this->sprite.getPosition().y + 500.f);
 }
 
 void UltiDragon::rightHitbox()

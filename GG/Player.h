@@ -16,6 +16,14 @@ private:
     float attackCooldown;
     float attackCooldownMax;
 
+    float attackCount;
+
+    sf::SoundBuffer attackSound1Buffer;
+    sf::Sound attackSound1;
+
+    sf::SoundBuffer attackSound2Buffer;
+    sf::Sound attackSound2;
+
     //Initializer functions
     void initVariables();
     void initComponents();
@@ -37,6 +45,7 @@ public:
     //Modifier
     void setHp(const int hp);
     void loseHp(const int value);
+    void gainHp(const int value);
     
     //Functions
     const bool canAttack();

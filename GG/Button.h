@@ -25,6 +25,9 @@ private:
 	sf::Texture* hoverColor;
 	sf::Texture* activeColor;
 
+	sf::SoundBuffer soundBuffer;
+	sf::Sound sound;
+
 public:
 	Button(float x, float y, float width, float height, 
 		sf::Texture* idleColor, sf::Texture* hoverColor, sf::Texture* activeColor);

@@ -44,6 +44,9 @@ public:
 
     void attackwebBackLeft();
     void attackwebBackRight();
+    void attackwebBackUp();
+    void attackwebBackDown();
+
     void updateAnimation(const float& dt);
     virtual void update(const float& dt);
 };

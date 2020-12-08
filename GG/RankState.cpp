@@ -6,6 +6,13 @@ void RankState::initVariable()
 
 }
 
+void RankState::initMusic()
+{
+	if (!this->music.openFromFile("music/Gurenge.wav"))
+		printf("LOAD MAI DAI AAAAAAA");
+	this->music.play();
+}
+
 void RankState::initBackground()
 {
 	//Background
@@ -109,6 +116,7 @@ RankState::RankState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	: State(window, supportedKeys, states)
 {
 	this->initVariable();
+	this->initMusic();
 	this->initBackground();
 	this->initView();
 	this->initKeybinds();
@@ -153,6 +161,8 @@ void RankState::updateButtons()
 	//Quit The Game
 	if (this->buttons["QUIT_STATE"]->isPressed())
 	{
+		this->music.stop();
+		this->states->push(new MainMenuState(this->window, this->supportedKeys, this->states));
 		this->endState();
 	}
 }

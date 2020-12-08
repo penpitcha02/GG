@@ -75,9 +75,6 @@
     <ClCompile Include="AttackWeb.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="BubbleTea.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="UltiWeb.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
@@ -97,6 +94,9 @@
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="UltiDragon.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Yakult.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,9 +149,6 @@
     <ClInclude Include="UltiWeb.h">
       <Filter>Entities</Filter>
     </ClInclude>
-    <ClInclude Include="BubbleTea.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>GUI</Filter>
     </ClInclude>
@@ -168,6 +165,9 @@
       <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="UltiDragon.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Yakult.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

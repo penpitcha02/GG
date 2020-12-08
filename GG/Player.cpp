@@ -11,6 +11,21 @@ void Player::initVariables()
 
 	this->attackCooldownMax = 50.f;
 	this->attackCooldown = this->attackCooldownMax;
+
+	this->attackCount = 0;
+
+	if (!this->attackSound1Buffer.loadFromFile("sfx/attack1.wav"))
+	{
+		printf("LOAD sound fx MAI DAI AAAAAAA");
+	}
+	this->attackSound1.setBuffer(this->attackSound1Buffer);
+
+	if (!this->attackSound2Buffer.loadFromFile("sfx/attack2.wav"))
+	{
+		printf("LOAD sound fx MAI DAI AAAAAAA");
+	}
+	this->attackSound2.setBuffer(this->attackSound2Buffer);
+	this->attackSound2.setVolume(50.f);
 }
 
 void Player::initComponents()
@@ -90,6 +105,13 @@ void Player::loseHp(const int value)
 		this->hp = 0;
 }
 
+void Player::gainHp(const int value)
+{
+	this->hp += value;
+	if (this->hp > 1000)
+		this->hp = 1000;
+}
+
 //Functions
 const bool Player::canAttack()
 {
@@ -114,6 +136,14 @@ void Player::updateAttack()
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->canAttack())
 	{
 		this->attacking = true;
+		this->attackCount += 1;
+		if (this->attackCount == 1)
+			this->attackSound1.play();
+		if (this->attackCount == 2)
+		{
+			this->attackSound2.play();
+			this->attackCount = 0;
+		}
 	}
 }
 

@@ -13,6 +13,12 @@ Button::Button(float x, float y, float width, float height,
 	this->activeColor = activeColor;
 
 	this->shape.setTexture(this->idleColor);
+
+	if (!this->soundBuffer.loadFromFile("sfx/hardpop.wav"))
+	{
+		printf("LOAD sound MAI DAI AAAAAAA");
+	}
+	this->sound.setBuffer(this->soundBuffer);
 }
 
 Button::~Button()
@@ -68,6 +74,7 @@ void Button::update(const sf::Vector2f& mousePos)
 
 	case BTN_ACTIVE:
 		this->shape.setTexture(this->activeColor);
+		this->sound.play();
 		break;
 
 	default:

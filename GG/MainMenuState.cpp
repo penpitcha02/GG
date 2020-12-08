@@ -6,6 +6,13 @@ void MainMenuState::initVariable()
 	
 }
 
+void MainMenuState::initMusic()
+{
+	if (!this->music.openFromFile("music/Tanjirou.wav"))
+		printf("LOAD MAI DAI AAAAAAA");
+	this->music.play();
+}
+
 void MainMenuState::initBackground()
 {
 	this->background.setSize(
@@ -88,6 +95,7 @@ MainMenuState::MainMenuState(sf::RenderWindow* window, std::map<std::string, int
 	: State(window, supportedKeys, states)
 {
 	this->initVariable();
+	this->initMusic();
 	this->initBackground();
 	this->initView();
 	this->initFonts();
@@ -127,7 +135,9 @@ void MainMenuState::updateButtons()
 	//New Game
 	if (this->buttons["GAME_STATE"]->isPressed())
 	{
+		this->music.stop();
 		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
+		this->endState(); 
 	}
 
 	//Quit The Game

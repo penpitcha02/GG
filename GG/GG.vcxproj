@@ -149,7 +149,7 @@
     <ClCompile Include="AttackWeb.cpp" />
     <ClCompile Include="BigMons.cpp" />
     <ClCompile Include="Boss.cpp" />
-    <ClCompile Include="BubbleTea.cpp" />
+    <ClCompile Include="Yakult.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="EndGame.cpp" />
     <ClCompile Include="RankState.cpp" />
@@ -175,7 +175,7 @@
     <ClInclude Include="AttackWeb.h" />
     <ClInclude Include="BigMons.h" />
     <ClInclude Include="Boss.h" />
-    <ClInclude Include="BubbleTea.h" />
+    <ClInclude Include="Yakult.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="EndGame.h" />
     <ClInclude Include="RankState.h" />

@@ -12,6 +12,25 @@ class GameState :
 private:
     //View
     sf::View view;
+
+    //Music
+    sf::Music music;
+
+    //SFX
+    sf::SoundBuffer playergethitBuffer;
+    sf::Sound playergethit;
+    sf::SoundBuffer ultimateSoundBuffer;
+    sf::Sound ultimateSound;
+
+    sf::SoundBuffer coconutSoundBuffer;
+    sf::Sound coconutSound;
+    sf::SoundBuffer monsterSoundBuffer;
+    sf::Sound monsterSound;
+    sf::SoundBuffer bigmonSoundBuffer;
+    sf::Sound bigmonSound;
+
+    sf::SoundBuffer bossDieSoundBuffer;
+    sf::Sound bossDieSound;
     
     //Pause Menu
     PauseMenu* pmenu;
@@ -55,6 +74,7 @@ private:
     //GUI
     sf::Font font;
     sf::Text scoreText;
+    sf::Text ultiText;
 
     //Player
     Player* player;
@@ -99,6 +119,9 @@ private:
     //Ultidragons
     std::vector<UltiDragon*> ultidragons;
 
+    //Yakult
+    std::vector<Yakult*> yakults;
+
     //BubbleTea
     sf::Texture bubbleteaTexture;
     sf::RectangleShape bubbletea;
@@ -106,6 +129,7 @@ private:
     //System
     unsigned score; 
     unsigned lastscore;
+    unsigned ultimate;
     bool cantMove;
     bool canUlti;
     bool leftUlti;
@@ -113,6 +137,8 @@ private:
    
     //Function
     void initKeybinds();
+    void initMusic();
+    void initSFX();
     void initTexture();
     void initPauseMenu();
     void initGameOver();
@@ -162,7 +188,10 @@ public:
     void updateAttackWebsAndCombat(const float& dt);
     void updateUltiWebsAndCombat(const float& dt);
 
+    void updateUltimate();
     void updateUltiDragonsAndCombat(const float& dt);
+
+    void updateYakults(const float& dt);
 
     void updateBossAndCombat(const float& dt);
     void updateBubbleTea();
@@ -171,4 +200,5 @@ public:
     void renderGUI();
     void render(sf::RenderTarget* target = NULL);
 };
+
 #endif 

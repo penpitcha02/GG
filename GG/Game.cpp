@@ -36,7 +36,8 @@ void Game::initKeys()
 	this->supportedKeys["W"] = sf::Keyboard::Key::W;
 	this->supportedKeys["S"] = sf::Keyboard::Key::S;
 	this->supportedKeys["Space"] = sf::Keyboard::Key::Space;
-
+	this->supportedKeys["Q"] = sf::Keyboard::Key::Q;
+	this->supportedKeys["E"] = sf::Keyboard::Key::E;
 
 	//DEBUG REMOVE LATER!
 	for (auto i : this->supportedKeys)

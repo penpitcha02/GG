@@ -29,6 +29,11 @@ void Entity::setTexture(sf::Texture& texture)
 	this->sprite.setTexture(texture);
 }
 
+void Entity::setBuffer(sf::SoundBuffer& buffer)
+{
+	this->sound.setBuffer(buffer);
+}
+
 void Entity::createHitboxComponent(sf::Sprite& sprite, 
 	float offset_x, float offset_y,
 	float width, float height)
@@ -79,10 +84,11 @@ void Entity::render(sf::RenderTarget& target)
 {
 		target.draw(this->sprite);
 
-		if (this->hitboxComponent)
-			this->hitboxComponent->render(target);
-
-		if (this->cutboxComponent)
-			this->cutboxComponent->render(target);
-
+		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
+		{*/
+			if (this->hitboxComponent)
+				this->hitboxComponent->render(target);
+			if (this->cutboxComponent)
+				this->cutboxComponent->render(target);
+	/*	}*/
 }
