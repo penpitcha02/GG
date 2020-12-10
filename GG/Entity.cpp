@@ -84,11 +84,11 @@ void Entity::render(sf::RenderTarget& target)
 {
 		target.draw(this->sprite);
 
-		/*if (sf::Keyboard::isKeyPressed(sf::Keyboard::Q))
-		{*/
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
 			if (this->hitboxComponent)
 				this->hitboxComponent->render(target);
 			if (this->cutboxComponent)
 				this->cutboxComponent->render(target);
-	/*	}*/
+		}
 }

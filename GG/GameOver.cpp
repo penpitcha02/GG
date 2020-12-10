@@ -2,24 +2,24 @@
 
 GameOver::GameOver(sf::RenderWindow& window)
 {
-	if (!this->font.loadFromFile("font/arialbi.ttf"))
+	if (!this->font.loadFromFile("font/maaja.ttf"))
 	{
 		throw("LOAD MAIDAI KRUB");
 	}
 
 	//Init game over text
 	this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(80);
+	this->gameOverText.setCharacterSize(150);
 	this->gameOverText.setFillColor(sf::Color::Red);
-	this->gameOverText.setString("Game Over!");
+	this->gameOverText.setString("Don't Cry Na");
 
 	//Init background
 	this->background.setSize(sf::Vector2f(static_cast<float>(window.getSize().x * 3), static_cast<float>(window.getSize().y)));
-	this->background.setFillColor(sf::Color(20, 20, 20, 100));
+	this->background.setFillColor(sf::Color(20, 20, 20, 200));
 
 	//Init container
-	this->container.setSize(sf::Vector2f(static_cast<float>(window.getSize().x) / 4.f, static_cast<float>(window.getSize().y)));
-	this->container.setFillColor(sf::Color(20, 20, 20, 200));
+	/*this->container.setSize(sf::Vector2f(static_cast<float>(window.getSize().x) / 4.f, static_cast<float>(window.getSize().y)));
+	this->container.setFillColor(sf::Color(20, 20, 20, 200));*/
 }
 
 GameOver::~GameOver()
@@ -34,11 +34,6 @@ GameOver::~GameOver()
 std::map<std::string, Button*>& GameOver::getButtons()
 {
 	return this->buttons;
-}
-
-void GameOver::setPosition(float x, float y)
-{
-	return this->container.setPosition(sf::Vector2f(x, y));
 }
 
 void GameOver::textSetPosition(float x, float y)
@@ -74,7 +69,6 @@ void GameOver::update(const sf::Vector2f& mousePos)
 void GameOver::render(sf::RenderTarget& target)
 {
 	target.draw(this->background);
-	target.draw(this->container);
 
 	for (auto& i : this->buttons)
 	{

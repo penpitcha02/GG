@@ -136,8 +136,8 @@ void MainMenuState::updateButtons()
 	if (this->buttons["GAME_STATE"]->isPressed())
 	{
 		this->music.stop();
+		this->endState();
 		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
-		this->endState(); 
 	}
 
 	//Quit The Game

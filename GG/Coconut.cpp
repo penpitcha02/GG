@@ -21,7 +21,7 @@ Coconut::Coconut(float x, float y, sf::Texture& texture_sheet)
 	this->createHitboxComponent(this->sprite, 32.f, 35.f, 65.f, 70.f);
 	this->createAnimationComponent(texture_sheet);
 
-	this->animationComponent->addAnimation("FLY", 10.f, 0, 0, 1, 0, 126.f, 114.f);
+	this->animationComponent->addAnimation("FLY", 10.f, 0, 0, 1, 0, 118.5f, 118.f);
 }
 
 Coconut::~Coconut()

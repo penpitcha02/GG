@@ -15,6 +15,8 @@ private:
 
     //Music
     sf::Music music;
+    sf::Music win;
+    sf::Music lose;
 
     //SFX
     sf::SoundBuffer playergethitBuffer;
@@ -123,6 +125,8 @@ private:
     std::vector<UltiDragon*> ultidragons;
 
     //Yakult
+    float spawnTimer5;
+    float spawnTimerMax5;
     std::vector<Yakult*> yakults;
 
     //BubbleTea
@@ -131,7 +135,6 @@ private:
 
     //System
     unsigned score; 
-    unsigned lastscore;
     unsigned ultimate;
     bool cantMove;
     bool canUlti;
@@ -163,6 +166,8 @@ private:
     void initBigmons();
     void initLockwebs();
 
+    void initYakults();
+
     void initBubbleTea();
 
 public:
@@ -193,8 +198,9 @@ public:
 
     void updateUltimate();
     void updateUltiDragons(const float& dt);
+    void updateUltiDragonsAndCombat(const float& dt);
 
-   /* void updateYakults(const float& dt);*/
+    void updateYakults(const float& dt);
 
     void updateBossAndCombat(const float& dt);
     void updateBubbleTea();

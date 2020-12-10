@@ -58,7 +58,7 @@ void UltiDragon::updateAttack()
 {
 	if (this->attackCooldown < this->attackCooldownMax)
 	{
-		this->attackCooldown += 3.f;
+		this->attackCooldown += 10.f;
 	}
 }
 

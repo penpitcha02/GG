@@ -108,7 +108,7 @@ void RankState::initButton()
 	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
-	this->buttons["QUIT_STATE"] = new Button(1200, 700, 172.5, 107.5,
+	this->buttons["QUIT_STATE"] = new Button(1200, 650, 172.5, 107.5,
 		&this->button3idleTexture, &this->button3hoverTexture, &this->button3activeTexture);
 }
 
@@ -162,8 +162,8 @@ void RankState::updateButtons()
 	if (this->buttons["QUIT_STATE"]->isPressed())
 	{
 		this->music.stop();
-		this->states->push(new MainMenuState(this->window, this->supportedKeys, this->states));
 		this->endState();
+		this->states->push(new MainMenuState(this->window, this->supportedKeys, this->states));
 	}
 }
 

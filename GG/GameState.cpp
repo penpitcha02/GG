@@ -105,33 +105,33 @@ void GameState::initTexture()
 	}
 
 	//Pause Menu
-	if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+	if (!this->button1idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
 		printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
 
-	if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+	if (!this->button1hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
 		printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
 
-	if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+	if (!this->button1activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
 
 	//Game Over
-	if (!this->button2idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+	if (!this->button2idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
 		printf("LOAD BUTTON 2 IDLE MAI DAI AAAAAAA");
 
-	if (!this->button2hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+	if (!this->button2hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
 		printf("LOAD BUTTON 2 HOVER MAI DAI AAAAAAA");
 
-	if (!this->button2activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+	if (!this->button2activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
 
 	//End Game
-	if (!this->button3idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
+	if (!this->button3idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
 		printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
 
-	if (!this->button3hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
+	if (!this->button3hoverTexture.loadFromFile("img/menubutton/QuitButtonHighlight1.png"))
 		printf("LOAD BUTTON 3 HOVER MAI DAI AAAAAAA");
 
-	if (!this->button3activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
+	if (!this->button3activeTexture.loadFromFile("img/menubutton/QuitButtonPressed1.png"))
 		printf("LOAD BUTTON 3 ACTIVE MAI DAI AAAAAAA");
 
 
@@ -217,7 +217,7 @@ void GameState::initGameOver()
 
 	//Init  last score text
 	this->lastScoreText.setFont(this->font);
-	this->lastScoreText.setCharacterSize(50);
+	this->lastScoreText.setCharacterSize(100);
 	this->lastScoreText.setFillColor(sf::Color::White);
 }
 
@@ -229,7 +229,7 @@ void GameState::initEndGame()
 
 	//Init  last score text 2
 	this->lastScoreText2.setFont(this->font);
-	this->lastScoreText2.setCharacterSize(50);
+	this->lastScoreText2.setCharacterSize(100);
 	this->lastScoreText2.setFillColor(sf::Color::White);
 }
 
@@ -305,8 +305,6 @@ void GameState::initSystem()
 {
 	this->score = 0;
 
-	this->lastscore = this->score;
-
 	this->cantMove = false;
 
 	this->canUlti = false;
@@ -349,7 +347,13 @@ void GameState::initBigmons()
 void GameState::initLockwebs()
 {
 	this->spawnTimerMax4 = 100.f;
-	this->spawnTimer4 = this->spawnTimerMax3;
+	this->spawnTimer4 = this->spawnTimerMax4;
+}
+
+void GameState::initYakults()
+{
+	this->spawnTimerMax5 = 100.f;
+	this->spawnTimer5 = this->spawnTimerMax5;
 }
 
 
@@ -383,10 +387,14 @@ GameState::GameState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 
 	this->initPlayer();
 	this->initBoss();
+
 	this->initCoconuts();
 	this->initMonsters();
 	this->initBigmons();
 	this->initLockwebs();
+
+	this->initYakults();
+
 	this->initBubbleTea();
 }
 
@@ -503,24 +511,25 @@ void GameState::updatePauseMenuButtons()
 
 void GameState::updateGameOverButton()
 {
-	this->music.stop();
+	/*this->music.stop();*/
 
 	//Last score
-	this->lastScoreText.setPosition(this->view.getCenter().x - this->lastScoreText.getGlobalBounds().width, 400.f);
+	this->lastScoreText.setPosition(this->view.getCenter().x - this->lastScoreText.getGlobalBounds().width/2, 300.f);
 
 	std::stringstream ss;
-	ss << "Your Score : " << this->lastscore;
+	ss << "Your Score : " << this->score;
 
 	this->lastScoreText.setString(ss.str());
 
-	this->gameover->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+	/*this->gameover->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);*/
 
-	this->gameover->textSetPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);
+	this->gameover->textSetPosition(this->view.getCenter().x - 300.f, this->view.getCenter().y - 300.f);
 
-	this->gameover->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 100.f);
+	this->gameover->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 200.f);
 
 	if (this->gameover->isButtonPressed("RANK_STATE"))
 	{
+		this->music.stop();
 		this->endState();
 		this->states->push(new RankState(this->window, this->supportedKeys, this->states));
 	}
@@ -529,21 +538,22 @@ void GameState::updateGameOverButton()
 void GameState::updateEndGameButton()
 {
 	//Last score 2
-	this->lastScoreText2.setPosition(this->view.getCenter().x - this->lastScoreText2.getGlobalBounds().width, 400.f);
+	this->lastScoreText2.setPosition(this->view.getCenter().x - this->lastScoreText2.getGlobalBounds().width/2, 550.f);
 
 	std::stringstream ss;
-	ss << "Your Score : " << this->lastscore;
+	ss << "Your Score : " << this->score;
 
 	this->lastScoreText2.setString(ss.str());
 
-	this->endgame->setPosition(this->view.getCenter().x - 720.f, this->view.getCenter().y - 405.f);
+	this->endgame->setPosition(this->view.getCenter().x - 620.f, this->view.getCenter().y - 355.f);
 
-	this->endgame->buttonSetPosition("RANK_STATE", this->view.getCenter().x + 300, this->view.getCenter().y + 300.f);
+	this->endgame->buttonSetPosition("RANK_STATE", this->view.getCenter().x + 400, this->view.getCenter().y + 250.f);
 
 	if (this->endgame->isButtonPressed("RANK_STATE"))
 	{
-		this->states->push(new RankState(this->window, this->supportedKeys, this->states));
+		this->music.stop();
 		this->endState();
+		this->states->push(new RankState(this->window, this->supportedKeys, this->states));
 	}
 }
 
@@ -656,7 +666,7 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 {
 	if (this->score < 300.f)
 	{
-		this->spawnTimer += 0.2f;
+		this->spawnTimer += 0.5f;
 		if (this->spawnTimer >= this->spawnTimerMax)
 		{
 			this->coconuts.push_back(new Coconut(rand() % this->window->getSize().x, -100.f, this->textures["COCONUTS_SHEET"]));
@@ -664,29 +674,29 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		}
 	}
 
-	for (int i = 0; i < this->coconuts.size(); ++i)
-	{
-		bool coconut_removed = false;
+	//for (int i = 0; i < this->coconuts.size(); ++i)
+	//{
+	//	bool coconut_removed = false;
 
-		this->coconuts[i]->update(dt);
+	//	this->coconuts[i]->update(dt);
 
-		//Coconuts Follow Player
-		if (this->coconuts[i]->GetPosition().x > this->player->GetPosition().x + 200.f)
-		{
-			this->coconuts[i]->coconutBackLeft();
-		}
-		if (this->coconuts[i]->GetPosition().x < this->player->GetPosition().x + 200.f)
-		{
-			this->coconuts[i]->coconutBackRight();
-		}
-		if (this->coconuts[i]->GetPosition().y > this->player->GetPosition().y)
-		{
-			this->coconuts[i]->coconutBackUp();
-		}
-		if (this->coconuts[i]->GetPosition().y < this->player->GetPosition().y)
-		{
-			this->coconuts[i]->coconutBackDown();
-		}
+	//	//Coconuts Follow Player
+	//	if (this->coconuts[i]->GetPosition().x > this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->coconuts[i]->coconutBackLeft();
+	//	}
+	//	if (this->coconuts[i]->GetPosition().x < this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->coconuts[i]->coconutBackRight();
+	//	}
+	//	if (this->coconuts[i]->GetPosition().y > this->player->GetPosition().y)
+	//	{
+	//		this->coconuts[i]->coconutBackUp();
+	//	}
+	//	if (this->coconuts[i]->GetPosition().y < this->player->GetPosition().y)
+	//	{
+	//		this->coconuts[i]->coconutBackDown();
+	//	}
 
 
 		////Left Collision
@@ -710,27 +720,27 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		//	this->coconuts[i]->setPosition(this->coconuts[i]->GetPosition().x, 810.f - this->coconuts[i]->getBounds().height);
 		//}
 
-		//Remove if chop the coconut
-		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds())
-			&& !coconut_removed)
-		{
-			this->score += this->coconuts[i]->getPoints();
-			this->ultimate += 1;
-			this->coconutSound.play();
+		////Remove if chop the coconut
+		//if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->coconuts[i]->getBounds())
+		//	&& !coconut_removed)
+		//{
+		//	this->score += this->coconuts[i]->getPoints();
+		//	this->ultimate += 1;
+		//	this->coconutSound.play();
 
-			this->coconuts.erase(this->coconuts.begin() + i);
-			coconut_removed = true;
-		}
-		//Coconuts Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
-		{
-			this->player->loseHp(this->coconuts[i]->getDamage());
-			this->playergethit.play();
+		//	this->coconuts.erase(this->coconuts.begin() + i);
+		//	coconut_removed = true;
+		//}
+		////Coconuts Player Collision
+		//else if (this->player->HitboxgetBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
+		//{
+		//	this->player->loseHp(this->coconuts[i]->getDamage());
+		//	this->playergethit.play();
 
-			this->coconuts.erase(this->coconuts.begin() + i);
-			coconut_removed = true;
-			
-		}
+		//	this->coconuts.erase(this->coconuts.begin() + i);
+		//	coconut_removed = true;
+		//	
+		//}
 
 		////Remove coconuts at the bottom of the screen
 		//if (!coconut_removed)
@@ -742,6 +752,53 @@ void GameState::updateCoconutsAndCombat(const float& dt)
 		//		coconut_removed = true;
 		//	}
 		//}
+	/*}*/
+	unsigned counter = 0;
+	for (auto* coconut : this->coconuts)
+	{
+		coconut->update(dt);
+
+		//Coconuts Follow Player
+		if (coconut->GetPosition().x > this->player->GetPosition().x + 200.f)
+		{
+			coconut->coconutBackLeft();
+		}
+		if (coconut->GetPosition().x < this->player->GetPosition().x + 200.f)
+		{
+			coconut->coconutBackRight();
+		}
+		if (coconut->GetPosition().y > this->player->GetPosition().y)
+		{
+			coconut->coconutBackUp();
+		}
+		if (coconut->GetPosition().y < this->player->GetPosition().y)
+		{
+			coconut->coconutBackDown();
+		}
+
+		//Remove if chop the coconut
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(coconut->getBounds()))
+		{
+			this->score += coconut->getPoints();
+			this->ultimate += 1;
+			this->coconutSound.play();
+
+			delete this->coconuts.at(counter);
+			this->coconuts.erase(this->coconuts.begin() + counter);
+			--counter;
+		}
+		//Coconuts Player Collision
+		else if (this->player->HitboxgetBounds().intersects(coconut->getBounds()))
+		{
+			this->player->loseHp(coconut->getDamage());
+			this->playergethit.play();
+
+			delete this->coconuts.at(counter);
+			this->coconuts.erase(this->coconuts.begin() + counter);
+			--counter;
+		}
+
+		++counter;
 	}
 }
 
@@ -757,69 +814,126 @@ void GameState::updateMonstersAndCombat(const float& dt)
 		}
 	}
 
-	for (int j = 0; j < this->monsters.size(); ++j)
-	{
-		bool monster_removed = false;
+	//for (int j = 0; j < this->monsters.size(); ++j)
+	//{
+	//	bool monster_removed = false;
 
-		this->monsters[j]->update(dt);
+	//	this->monsters[j]->update(dt);
+
+	//	//Monster Follow Player
+	//	if (this->monsters[j]->GetPosition().x > this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->monsters[j]->monsterBackLeft();
+	//	}
+	//	if (this->monsters[j]->GetPosition().x < this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->monsters[j]->monsterBackRight();
+	//	}
+	//	if (this->monsters[j]->GetPosition().y > this->player->GetPosition().y + 150.f)
+	//	{
+	//		this->monsters[j]->monsterBackUp();
+	//	}
+	//	if (this->monsters[j]->GetPosition().y < this->player->GetPosition().y + 150.f)
+	//	{
+	//		this->monsters[j]->monsterBackDown();
+	//	}
+
+		////Monster lose hp if ultimate
+		//for (size_t a = 0; a < this->ultidragons.size() && !monster_removed; a++)
+		//{
+		//	if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->monsters[j]->getBounds()))
+		//	{
+		//		this->monsters[j]->loseHp(this->ultidragons[a]->getDamage());
+		//		printf("NACK");
+		//	}
+		//}
+	//	//Monster lose hp if attack the monster
+	//	if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) 
+	//		&& !monster_removed)
+	//	{
+	//		this->monsters[j]->loseHp(this->player->getDamage());
+	//	}
+	//	//Monster Player Collision
+	//	else if (this->player->HitboxgetBounds().intersects(this->monsters[j]->getBounds()) && this->monsters[j]->canAttack())
+	//	{
+	//		this->player->loseHp(this->monsters[j]->getDamage());
+	//		this->playergethit.play();
+	//	}
+
+	//	//Remove if monster die
+	//	if (this->monsters[j]->getHp() <= 0)
+	//	{
+	//		this->score += this->monsters[j]->getPoints();
+	//		this->monsterSound.play();
+	//		this->ultimate += 5;
+
+	//		this->monsters.erase(this->monsters.begin() + j);
+	//		monster_removed = true;
+	//	}
+
+	//	//Remove if boss die
+	//	if (this->boss->getHp() <= 0)
+	//	{
+	//		this->monsters.erase(this->monsters.begin() + j);
+	//		monster_removed = true;
+	//	}
+	//}
+
+	unsigned counter = 0;
+	for (auto* monster : this->monsters)
+	{
+		monster->update(dt);
 
 		//Monster Follow Player
-		if (this->monsters[j]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		if (monster->GetPosition().x > this->player->GetPosition().x + 200.f)
 		{
-			this->monsters[j]->monsterBackLeft();
+			monster->monsterBackLeft();
 		}
-		if (this->monsters[j]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		if (monster->GetPosition().x < this->player->GetPosition().x + 200.f)
 		{
-			this->monsters[j]->monsterBackRight();
+			monster->monsterBackRight();
 		}
-		if (this->monsters[j]->GetPosition().y > this->player->GetPosition().y + 150.f)
+		if (monster->GetPosition().y > this->player->GetPosition().y + 150.f)
 		{
-			this->monsters[j]->monsterBackUp();
+			monster->monsterBackUp();
 		}
-		if (this->monsters[j]->GetPosition().y < this->player->GetPosition().y + 150.f)
+		if (monster->GetPosition().y < this->player->GetPosition().y + 150.f)
 		{
-			this->monsters[j]->monsterBackDown();
+			monster->monsterBackDown();
 		}
 
-		//Monster lose hp if ultimate
-		for (size_t a = 0; a < this->ultidragons.size() && !monster_removed; a++)
-		{
-			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->monsters[j]->getBounds()))
-			{
-				this->monsters[j]->loseHp(this->ultidragons[a]->getDamage());
-				printf("NACK");
-			}
-		}
 		//Monster lose hp if attack the monster
-		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->monsters[j]->getBounds()) 
-			&& !monster_removed)
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(monster->getBounds()))
 		{
-			this->monsters[j]->loseHp(this->player->getDamage());
+			monster->loseHp(this->player->getDamage());
 		}
 		//Monster Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->monsters[j]->getBounds()) && this->monsters[j]->canAttack())
+		else if (this->player->HitboxgetBounds().intersects(monster->getBounds()) && monster->canAttack())
 		{
-			this->player->loseHp(this->monsters[j]->getDamage());
+			this->player->loseHp(monster->getDamage());
 			this->playergethit.play();
 		}
 
 		//Remove if monster die
-		if (this->monsters[j]->getHp() <= 0)
+		if (monster->getHp() <= 0)
 		{
-			this->score += this->monsters[j]->getPoints();
+			this->score += monster->getPoints();
+			this->ultimate += 20;
 			this->monsterSound.play();
-			this->ultimate += 5;
 
-			this->monsters.erase(this->monsters.begin() + j);
-			monster_removed = true;
+			delete this->monsters.at(counter);
+			this->monsters.erase(this->monsters.begin() + counter);
+			--counter;
 		}
-
 		//Remove if boss die
 		if (this->boss->getHp() <= 0)
 		{
-			this->monsters.erase(this->monsters.begin() + j);
-			monster_removed = true;
+			delete this->monsters.at(counter);
+			this->monsters.erase(this->monsters.begin() + counter);
+			--counter;
 		}
+
+		++counter;
 	}
 }
 
@@ -837,69 +951,126 @@ void GameState::updateBigmonsAndCombat(const float& dt)
 	}
 
 
-	for (int k = 0; k < this->bigmons.size(); ++k)
+	//for (int k = 0; k < this->bigmons.size(); ++k)
+	//{
+	//	bool bigmons_removed = false;
+
+	//	this->bigmons[k]->update(dt);
+
+	//	//Bigmons Follow Player
+	//	if (this->bigmons[k]->GetPosition().x > this->player->GetPosition().x + 100.f)
+	//	{
+	//		this->bigmons[k]->bigmonsBackLeft();
+	//	}
+	//	if (this->bigmons[k]->GetPosition().x < this->player->GetPosition().x + 100.f)
+	//	{
+	//		this->bigmons[k]->bigmonsBackRight();
+	//	}
+	//	if (this->bigmons[k]->GetPosition().y > this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->bigmons[k]->bigmonsBackUp();
+	//	}
+	//	if (this->bigmons[k]->GetPosition().y < this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->bigmons[k]->bigmonsBackDown();
+	//	}
+
+	//	//Bigmon lose hp if ultimate
+	//	for (size_t b = 0; b < this->ultidragons.size() && !bigmons_removed; b++)
+	//	{
+	//		if (this->ultidragons[b]->canAttack() && this->ultidragons[b]->getBounds().intersects(this->bigmons[k]->getBounds()))
+	//		{
+	//			this->bigmons[k]->loseHp(this->ultidragons[b]->getDamage());
+	//			printf("NACKKY");
+	//		}
+	//	}
+	//	//Bigmon lose hp if attack the bigmons
+	//	if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds())
+	//		&& !bigmons_removed )
+	//	{
+	//		this->bigmons[k]->loseHp(this->player->getDamage());
+	//	}
+	//	//Bigmons Player Collision
+	//	else if (this->player->HitboxgetBounds().intersects(this->bigmons[k]->getBounds()) && this->bigmons[k]->canAttack())
+	//	{
+	//		this->player->loseHp(this->bigmons[k]->getDamage());
+	//		this->playergethit.play();
+	//	}
+
+	//	//Remove if bigmon die
+	//	if (this->bigmons[k]->getHp() <= 0)
+	//	{
+	//		this->score += this->bigmons[k]->getPoints();
+	//		this->bigmonSound.play();
+	//		this->ultimate += 50;
+
+	//		this->bigmons.erase(this->bigmons.begin() + k);
+	//		bigmons_removed = true;
+	//	}
+
+	//	//Remove if boss die
+	//	if (this->boss->getHp() <= 0)
+	//	{
+	//		this->bigmons.erase(this->bigmons.begin() + k);
+	//		bigmons_removed = true;
+	//	}
+	//}
+
+	unsigned counter = 0;
+	for (auto* bigmon : this->bigmons)
 	{
-		bool bigmons_removed = false;
+		bigmon->update(dt);
 
-		this->bigmons[k]->update(dt);
-
-		//Bigmons Follow Player
-		if (this->bigmons[k]->GetPosition().x > this->player->GetPosition().x + 100.f)
+		//Bigmon Follow Player
+		if (bigmon->GetPosition().x > this->player->GetPosition().x + 200.f)
 		{
-			this->bigmons[k]->bigmonsBackLeft();
+			bigmon->bigmonsBackLeft();
 		}
-		if (this->bigmons[k]->GetPosition().x < this->player->GetPosition().x + 100.f)
+		if (bigmon->GetPosition().x < this->player->GetPosition().x + 200.f)
 		{
-			this->bigmons[k]->bigmonsBackRight();
+			bigmon->bigmonsBackRight();
 		}
-		if (this->bigmons[k]->GetPosition().y > this->player->GetPosition().y + 200.f)
+		if (bigmon->GetPosition().y > this->player->GetPosition().y + 150.f)
 		{
-			this->bigmons[k]->bigmonsBackUp();
+			bigmon->bigmonsBackUp();
 		}
-		if (this->bigmons[k]->GetPosition().y < this->player->GetPosition().y + 200.f)
+		if (bigmon->GetPosition().y < this->player->GetPosition().y + 150.f)
 		{
-			this->bigmons[k]->bigmonsBackDown();
+			bigmon->bigmonsBackDown();
 		}
 
-		//Bigmon lose hp if ultimate
-		for (size_t b = 0; b < this->ultidragons.size() && !bigmons_removed; b++)
+		//Bigmon lose hp if attack the monster
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(bigmon->getBounds()))
 		{
-			if (this->ultidragons[b]->canAttack() && this->ultidragons[b]->getBounds().intersects(this->bigmons[k]->getBounds()))
-			{
-				this->bigmons[k]->loseHp(this->ultidragons[b]->getDamage());
-				printf("NACKKY");
-			}
+			bigmon->loseHp(this->player->getDamage());
 		}
-		//Bigmon lose hp if attack the bigmons
-		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->bigmons[k]->getBounds())
-			&& !bigmons_removed )
+		//Bigmon Player Collision
+		else if (this->player->HitboxgetBounds().intersects(bigmon->getBounds()) && bigmon->canAttack())
 		{
-			this->bigmons[k]->loseHp(this->player->getDamage());
-		}
-		//Bigmons Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->bigmons[k]->getBounds()) && this->bigmons[k]->canAttack())
-		{
-			this->player->loseHp(this->bigmons[k]->getDamage());
+			this->player->loseHp(bigmon->getDamage());
 			this->playergethit.play();
 		}
 
-		//Remove if bigmon die
-		if (this->bigmons[k]->getHp() <= 0)
+		//Remove if Bigmon die
+		if (bigmon->getHp() <= 0)
 		{
-			this->score += this->bigmons[k]->getPoints();
-			this->bigmonSound.play();
+			this->score += bigmon->getPoints();
 			this->ultimate += 50;
+			this->bigmonSound.play();
 
-			this->bigmons.erase(this->bigmons.begin() + k);
-			bigmons_removed = true;
+			delete this->bigmons.at(counter);
+			this->bigmons.erase(this->bigmons.begin() + counter);
+			--counter;
 		}
-
 		//Remove if boss die
 		if (this->boss->getHp() <= 0)
 		{
-			this->bigmons.erase(this->bigmons.begin() + k);
-			bigmons_removed = true;
+			delete this->bigmons.at(counter);
+			this->bigmons.erase(this->bigmons.begin() + counter);
+			--counter;
 		}
+
+		++counter;
 	}
 }
 
@@ -961,7 +1132,7 @@ void GameState::updateAttackWebsAndCombat(const float& dt)
 {
 	if (this->score >= 300.f && this->boss->getHp() > 20 && this->boss->getHp() != 0)
 	{
-		this->spawnTimer += 0.2f;
+		this->spawnTimer += 0.5f;
 		if (this->spawnTimer >= this->spawnTimerMax)
 		{
 			this->attackwebs.push_back(new AttackWeb(this->boss->GetPosition().x, this->player->GetPosition().y + 250.f, this->textures["ATTACKWEB_SHEET"]));
@@ -969,76 +1140,133 @@ void GameState::updateAttackWebsAndCombat(const float& dt)
 		}
 	}
 
-	for (int m = 0; m < this->attackwebs.size(); ++m)
-	{
-		bool attackweb_removed = false;
+	//for (int m = 0; m < this->attackwebs.size(); ++m)
+	//{
+	//	bool attackweb_removed = false;
 
-		this->attackwebs[m]->update(dt);
+	//	this->attackwebs[m]->update(dt);
+
+	//	//Attackweb Follow Player
+	//	if (this->attackwebs[m]->GetPosition().x > this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->attackwebs[m]->attackwebBackLeft();
+	//	}
+	//	if (this->attackwebs[m]->GetPosition().x < this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->attackwebs[m]->attackwebBackRight();
+	//	}
+	//	if (this->attackwebs[m]->GetPosition().y > this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->attackwebs[m]->attackwebBackUp();
+	//	}
+	//	if (this->attackwebs[m]->GetPosition().y < this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->attackwebs[m]->attackwebBackDown();
+	//	}
+
+	//	//Attackweb lose hp if ultimate
+	//	for (size_t c = 0; c < this->ultidragons.size() && !attackweb_removed; c++)
+	//	{
+	//		if (this->ultidragons[c]->canAttack() && this->ultidragons[c]->getBounds().intersects(this->attackwebs[m]->getBounds()))
+	//		{
+	//			this->attackwebs[m]->loseHp(this->ultidragons[c]->getDamage());
+	//			printf("NACKZA");
+	//		}
+	//	}
+	//	//Attackweb lose if attack the monster
+	//	if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->attackwebs[m]->getBounds()) 
+	//		&& !attackweb_removed)
+	//	{
+	//		this->attackwebs[m]->loseHp(this->player->getDamage());
+	//	}
+	//	//Attackweb Player Collision
+	//	else if (this->player->HitboxgetBounds().intersects(this->attackwebs[m]->getBounds()) && this->attackwebs[m]->canAttack())
+	//	{
+	//		this->player->loseHp(this->attackwebs[m]->getDamage());
+	//		this->playergethit.play();
+	//	}
+
+	//	//Remove if attackweb die
+	//	if (this->attackwebs[m]->getHp() <= 0)
+	//	{
+	//		this->score += this->attackwebs[m]->getPoints();
+	//		this->ultimate += 5;
+
+	//		this->attackwebs.erase(this->attackwebs.begin() + m);
+	//		attackweb_removed = true;
+	//	}
+
+	//	//Remove if boss die
+	//	if (this->boss->getHp() <= 0)
+	//	{
+	//		this->attackwebs.erase(this->attackwebs.begin() + m);
+	//		attackweb_removed = true;
+	//	}
+	//}
+
+	unsigned counter = 0;
+	for (auto* attackweb : this->attackwebs)
+	{
+		attackweb->update(dt);
 
 		//Attackweb Follow Player
-		if (this->attackwebs[m]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		if (attackweb->GetPosition().x > this->player->GetPosition().x + 150.f)
 		{
-			this->attackwebs[m]->attackwebBackLeft();
+			attackweb->attackwebBackLeft();
 		}
-		if (this->attackwebs[m]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		if (attackweb->GetPosition().x < this->player->GetPosition().x + 150.f)
 		{
-			this->attackwebs[m]->attackwebBackRight();
+			attackweb->attackwebBackRight();
 		}
-		if (this->attackwebs[m]->GetPosition().y > this->player->GetPosition().y + 200.f)
+		if (attackweb->GetPosition().y > this->player->GetPosition().y + 150.f)
 		{
-			this->attackwebs[m]->attackwebBackUp();
+			attackweb->attackwebBackUp();
 		}
-		if (this->attackwebs[m]->GetPosition().y < this->player->GetPosition().y + 200.f)
+		if (attackweb->GetPosition().y < this->player->GetPosition().y + 150.f)
 		{
-			this->attackwebs[m]->attackwebBackDown();
+			attackweb->attackwebBackDown();
 		}
 
-		//Attackweb lose hp if ultimate
-		for (size_t c = 0; c < this->ultidragons.size() && !attackweb_removed; c++)
+		//Attackweb lose hp if attack the monster
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(attackweb->getBounds()))
 		{
-			if (this->ultidragons[c]->canAttack() && this->ultidragons[c]->getBounds().intersects(this->attackwebs[m]->getBounds()))
-			{
-				this->attackwebs[m]->loseHp(this->ultidragons[c]->getDamage());
-				printf("NACKZA");
-			}
-		}
-		//Attackweb lose if attack the monster
-		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->attackwebs[m]->getBounds()) 
-			&& !attackweb_removed)
-		{
-			this->attackwebs[m]->loseHp(this->player->getDamage());
+			attackweb->loseHp(this->player->getDamage());
 		}
 		//Attackweb Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->attackwebs[m]->getBounds()) && this->attackwebs[m]->canAttack())
+		else if (this->player->HitboxgetBounds().intersects(attackweb->getBounds()) && attackweb->canAttack())
 		{
-			this->player->loseHp(this->attackwebs[m]->getDamage());
+			this->player->loseHp(attackweb->getDamage());
 			this->playergethit.play();
 		}
 
-		//Remove if attackweb die
-		if (this->attackwebs[m]->getHp() <= 0)
+		//Remove if Attackweb die
+		if (attackweb->getHp() <= 0)
 		{
-			this->score += this->attackwebs[m]->getPoints();
+			this->score += attackweb->getPoints();
 			this->ultimate += 5;
+			/*this->bigmonSound.play();*/
 
-			this->attackwebs.erase(this->attackwebs.begin() + m);
-			attackweb_removed = true;
+			delete this->attackwebs.at(counter);
+			this->attackwebs.erase(this->attackwebs.begin() + counter);
+			--counter;
 		}
-
 		//Remove if boss die
 		if (this->boss->getHp() <= 0)
 		{
-			this->attackwebs.erase(this->attackwebs.begin() + m);
-			attackweb_removed = true;
+			delete this->attackwebs.at(counter);
+			this->attackwebs.erase(this->attackwebs.begin() + counter);
+			--counter;
 		}
+
+		++counter;
 	}
 }
 
 void GameState::updateUltiWebsAndCombat(const float& dt)
 {
-	if (this->score >= 300.f && this->boss->getHp() <= 20 && this->boss->getHp() != 0)
+	if (this->score >= 300 && this->boss->getHp() <= 20 && this->boss->getHp() != 0)
 	{
-		this->spawnTimer2 += 0.2f;
+		this->spawnTimer2 += 0.5f;
 		if (this->spawnTimer2 >= this->spawnTimerMax2)
 		{
 			this->ultiwebs.push_back(new UltiWeb(this->boss->GetPosition().x, this->player->GetPosition().y + 250.f, this->textures["ULTIWEB_SHEET"]));
@@ -1046,68 +1274,125 @@ void GameState::updateUltiWebsAndCombat(const float& dt)
 		}
 	}
 
-	for (int n = 0; n < this->ultiwebs.size(); ++n)
-	{
-		bool ultiweb_removed = false;
+	//for (int n = 0; n < this->ultiwebs.size(); ++n)
+	//{
+	//	bool ultiweb_removed = false;
 
-		this->ultiwebs[n]->update(dt);
+	//	this->ultiwebs[n]->update(dt);
+
+	//	//Ultiweb Follow Player
+	//	if (this->ultiwebs[n]->GetPosition().x > this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->ultiwebs[n]->ultiwebBackLeft();
+	//	}
+	//	if (this->ultiwebs[n]->GetPosition().x < this->player->GetPosition().x + 200.f)
+	//	{
+	//		this->ultiwebs[n]->ultiwebBackRight();
+	//	}
+	//	if (this->ultiwebs[n]->GetPosition().y > this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->ultiwebs[n]->ultiwebBackUp();
+	//	}
+	//	if (this->ultiwebs[n]->GetPosition().y < this->player->GetPosition().y + 200.f)
+	//	{
+	//		this->ultiwebs[n]->ultiwebBackDown();
+	//	}
+
+	//	//Ultiweb lose hp if ultimate
+	//	for (size_t d = 0; d < this->ultidragons.size() && !ultiweb_removed; d++)
+	//	{
+	//		if (this->ultidragons[d]->canAttack() && this->ultidragons[d]->getBounds().intersects(this->ultiwebs[n]->getBounds()))
+	//		{
+	//			this->ultiwebs[n]->loseHp(this->ultidragons[d]->getDamage());
+	//			printf("NACKZUZA");
+	//		}
+	//	}
+	//	//Ultiweb lose if attack the ultiweb
+	//	if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->ultiwebs[n]->getBounds())
+	//		&& !ultiweb_removed)
+	//	{
+	//		this->ultiwebs[n]->loseHp(this->player->getDamage());
+	//	}
+	//	//Ultiweb Player Collision
+	//	else if (this->player->HitboxgetBounds().intersects(this->ultiwebs[n]->getBounds()) && this->ultiwebs[n]->canAttack())
+	//	{
+	//		this->player->loseHp(this->ultiwebs[n]->getDamage());
+	//		this->playergethit.play();
+	//	}
+
+	//	//Remove if Ultiweb die
+	//	if (this->ultiwebs[n]->getHp() <= 0)
+	//	{
+	//		this->score += this->ultiwebs[n]->getPoints();
+	//		this->ultimate += 10;
+
+	//		this->ultiwebs.erase(this->ultiwebs.begin() + n);
+	//		ultiweb_removed = true;
+	//	}
+
+	//	//Remove if boss die
+	//	if (this->boss->getHp() <= 0)
+	//	{
+	//		this->ultiwebs.erase(this->ultiwebs.begin() + n);
+	//		ultiweb_removed = true;
+	//	}
+	//}
+
+	unsigned counter = 0;
+	for (auto* ultiweb : this->ultiwebs)
+	{
+		ultiweb->update(dt);
 
 		//Ultiweb Follow Player
-		if (this->ultiwebs[n]->GetPosition().x > this->player->GetPosition().x + 200.f)
+		if (ultiweb->GetPosition().x > this->player->GetPosition().x + 150.f)
 		{
-			this->ultiwebs[n]->ultiwebBackLeft();
+			ultiweb->ultiwebBackLeft();
 		}
-		if (this->ultiwebs[n]->GetPosition().x < this->player->GetPosition().x + 200.f)
+		if (ultiweb->GetPosition().x < this->player->GetPosition().x + 150.f)
 		{
-			this->ultiwebs[n]->ultiwebBackRight();
+			ultiweb->ultiwebBackRight();
 		}
-		if (this->ultiwebs[n]->GetPosition().y > this->player->GetPosition().y + 200.f)
+		if (ultiweb->GetPosition().y > this->player->GetPosition().y + 150.f)
 		{
-			this->ultiwebs[n]->ultiwebBackUp();
+			ultiweb->ultiwebBackUp();
 		}
-		if (this->ultiwebs[n]->GetPosition().y < this->player->GetPosition().y + 200.f)
+		if (ultiweb->GetPosition().y < this->player->GetPosition().y + 150.f)
 		{
-			this->ultiwebs[n]->ultiwebBackDown();
+			ultiweb->ultiwebBackDown();
 		}
 
-		//Ultiweb lose hp if ultimate
-		for (size_t d = 0; d < this->ultidragons.size() && !ultiweb_removed; d++)
+		//Ultiweb lose hp if attack the monster
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(ultiweb->getBounds()))
 		{
-			if (this->ultidragons[d]->canAttack() && this->ultidragons[d]->getBounds().intersects(this->ultiwebs[n]->getBounds()))
-			{
-				this->ultiwebs[n]->loseHp(this->ultidragons[d]->getDamage());
-				printf("NACKZUZA");
-			}
-		}
-		//Ultiweb lose if attack the ultiweb
-		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->ultiwebs[n]->getBounds())
-			&& !ultiweb_removed)
-		{
-			this->ultiwebs[n]->loseHp(this->player->getDamage());
+			ultiweb->loseHp(this->player->getDamage());
 		}
 		//Ultiweb Player Collision
-		else if (this->player->HitboxgetBounds().intersects(this->ultiwebs[n]->getBounds()) && this->ultiwebs[n]->canAttack())
+		else if (this->player->HitboxgetBounds().intersects(ultiweb->getBounds()) && ultiweb->canAttack())
 		{
-			this->player->loseHp(this->ultiwebs[n]->getDamage());
+			this->player->loseHp(ultiweb->getDamage());
 			this->playergethit.play();
 		}
 
 		//Remove if Ultiweb die
-		if (this->ultiwebs[n]->getHp() <= 0)
+		if (ultiweb->getHp() <= 0)
 		{
-			this->score += this->ultiwebs[n]->getPoints();
+			this->score += ultiweb->getPoints();
 			this->ultimate += 10;
+			/*this->bigmonSound.play();*/
 
-			this->ultiwebs.erase(this->ultiwebs.begin() + n);
-			ultiweb_removed = true;
+			delete this->ultiwebs.at(counter);
+			this->ultiwebs.erase(this->ultiwebs.begin() + counter);
+			--counter;
 		}
-
 		//Remove if boss die
 		if (this->boss->getHp() <= 0)
 		{
-			this->ultiwebs.erase(this->ultiwebs.begin() + n);
-			ultiweb_removed = true;
+			delete this->ultiwebs.at(counter);
+			this->ultiwebs.erase(this->ultiwebs.begin() + counter);
+			--counter;
 		}
+
+		++counter;
 	}
 }
 
@@ -1120,7 +1405,6 @@ void GameState::updateUltimate()
 		this->canUlti = true;
 		if (leftUlti || rightUlti)
 		{
-			this->ultimateSound.play();
 			this->ultimate = 0;
 			this->canUlti = false;
 		}
@@ -1194,11 +1478,13 @@ void GameState::updateUltiDragons(const float& dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("LEFTULTIMATE"))) && this->getKeytime() && this->canUlti)
 	{
 		this->ultidragons.push_back(new UltiDragon(this->player->GetPosition().x + 1200.f, this->player->GetPosition().y - 400.f, this->textures["ULTIDRAGON_SHEET"]));
+		this->ultimateSound.play();
 		this->leftUlti = true;
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("RIGHTULTIMATE"))) && this->getKeytime() && this->canUlti)
 	{
 		this->ultidragons.push_back(new UltiDragon(this->player->GetPosition().x - 800.f, this->player->GetPosition().y - 400.f, this->textures["ULTIDRAGON_SHEET"]));
+		this->ultimateSound.play();
 		this->rightUlti = true;
 	}
 
@@ -1221,25 +1507,25 @@ void GameState::updateUltiDragons(const float& dt)
 
 		//Remove ultidragon
 		if (this->rightUlti && ultidragon->getBounds().left > this->window->getSize().x * 3)
-			{
-				delete this->ultidragons.at(counter);
-				this->ultidragons.erase(this->ultidragons.begin() + counter);
-				--counter;
+		{
+			delete this->ultidragons.at(counter);
+			this->ultidragons.erase(this->ultidragons.begin() + counter);
+			--counter;
 
-				this->rightUlti = false;
-			}
-			//Remove ultidragon
-			if (this->leftUlti && ultidragon->getBounds().left < 500.f)
-			{
-				delete this->ultidragons.at(counter);
-				this->ultidragons.erase(this->ultidragons.begin() + counter);
-				--counter;
-
-				this->leftUlti = false;
-			}
-
-			++counter;
+			this->rightUlti = false;
 		}
+			//Remove ultidragon
+		if (this->leftUlti && ultidragon->getBounds().left < 500.f)
+		{
+			delete this->ultidragons.at(counter);
+			this->ultidragons.erase(this->ultidragons.begin() + counter);
+			--counter;
+
+			this->leftUlti = false;
+		}
+
+		++counter;
+	}
 
 		////Remove if boss die
 		//if (this->boss->getHp() <= 0)
@@ -1250,111 +1536,166 @@ void GameState::updateUltiDragons(const float& dt)
 //	}
 }
 
+void GameState::updateUltiDragonsAndCombat(const float& dt)
+{
+	for (size_t a = 0; a < this->ultidragons.size() ; a++)
+	{
+		//Coconut
+		for (size_t i = 0; i < this->coconuts.size(); ++i)
+		{
+			bool coconut_removed = false;
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->coconuts[i]->getBounds()) && !coconut_removed)
+			{
+				delete this->coconuts[i];
+				coconuts.erase(this->coconuts.begin() + i);
+				printf("Nack\n");
+			}
+		}
+		//Monster
+		for (size_t j = 0; j < this->monsters.size(); ++j)
+		{
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->monsters[j]->getBounds()))
+			{
+				this->monsters[j]->loseHp(this->ultidragons[a]->getDamage());
+				printf("Snack\n");
+			}
+		}
+		//Bigmon
+		for (size_t k = 0; k < this->bigmons.size(); ++k)
+		{
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->bigmons[k]->getBounds()))
+			{
+				this->bigmons[k]->loseHp(this->ultidragons[a]->getDamage());
+				printf("Nackky\n");
+			}
+		}
+		//Attackweb
+		for (size_t l = 0; l < this->attackwebs.size(); ++l)
+		{
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->attackwebs[l]->getBounds()))
+			{
+				this->attackwebs[l]->loseHp(this->ultidragons[a]->getDamage());
+				printf("Nackzass\n");
+			}
+		}
+		//Ultiweb
+		for (size_t m = 0; m < this->ultiwebs.size(); ++m)
+		{
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->ultiwebs[m]->getBounds()))
+			{
+				this->ultiwebs[m]->loseHp(this->ultidragons[a]->getDamage());
+				printf("Nackzuza\n");
+			}
+		}
 
-//void GameState::updateYakults(const float& dt)
-//{
-//	if (this->score >= 100.f)
-//	{
-//		if (this->boss->getHp() == 80.f)
-//		{
-//			this->yakults.push_back(new Yakult(4000.f, 340.f, this->textures["YAKULT_SHEET"]));
-//		}
-//		else if (this->boss->getHp() == 60.f)
-//		{
-//			this->yakults.push_back(new Yakult(860.f, 250.f, this->textures["YAKULT_SHEET"]));
-//		}
-//		else if (this->boss->getHp() == 40.f)
-//		{
-//			this->yakults.push_back(new Yakult(3000.f, 400.f, this->textures["YAKULT_SHEET"]));
-//		}
-//		else if (this->boss->getHp() == 20.f)
-//		{
-//			this->yakults.push_back(new Yakult(100.f, 300.f, this->textures["YAKULT_SHEET"]));
-//		}
-//	}
-//
-//	for (int p = 0; p < this->yakults.size(); ++p)
-//	{
-//		bool yakult_removed = false;
-//
-//		this->yakults[p]->update(dt);
-//
-//		//Yakults Player Collision
-//		if (this->player->HitboxgetBounds().intersects(this->yakults[p]->getBounds()) && !yakult_removed)
-//		{
-//			this->player->gainHp(this->yakults[p]->getHeal());
-//			this->yakultSound.play();
-//
-//			this->yakults.erase(this->yakults.begin() + p);
-//			yakult_removed = true;
-//
-//		}
-//	}
-//}
+		/*if (this->score >= 300)
+		{
+			if (this->ultidragons[a]->canAttack() && this->ultidragons[a]->getBounds().intersects(this->boss->getBounds()))
+			{
+				this->boss->loseHp(this->ultidragons[a]->getDamage());
+				printf("NACKlnwza\n");
+			}
+		}*/
+	}
+}
+
+
+void GameState::updateYakults(const float& dt)
+{
+	if (this->score >= 300 && this->boss->getHp() != 0)
+	{
+		this->spawnTimer5 += 0.1f;
+		if (this->spawnTimer5 >= this->spawnTimerMax5)
+		{
+			this->yakults.push_back(new Yakult(rand() % this->window->getSize().x*3, this->player->GetPosition().y,
+				this->textures["YAKULT_SHEET"]));
+			this->spawnTimer5 = 0.f;
+		}
+	}
+
+	for (int p = 0; p < this->yakults.size(); ++p)
+	{
+		bool yakult_removed = false;
+
+		this->yakults[p]->update(dt);
+
+		//Yakults Player Collision
+		if (this->player->HitboxgetBounds().intersects(this->yakults[p]->getBounds()) && !yakult_removed)
+		{
+			this->player->gainHp(this->yakults[p]->getHeal());
+			this->yakultSound.play();
+
+			this->yakults.erase(this->yakults.begin() + p);
+			yakult_removed = true;
+		}
+	}
+}
 
 
 void GameState::updateBossAndCombat(const float& dt)
 {
-	
-	this->boss->update(dt);
+	if (this->score >= 300.f)
+	{
+		this->boss->update(dt);
 
-	if (this->boss->getHp() > 600 && this->boss->getHp() <= 800)
-	{
-		this->boss->setPosition(860, 250);
-	}
-	if (this->boss->getHp() > 400 && this->boss->getHp() <= 600)
-	{
-		this->boss->setPosition(3000, 400);
-	}
-	if (this->boss->getHp() > 200 && this->boss->getHp() <= 400)
-	{
-		this->boss->setPosition(100, 300);
-	}
-	if (this->boss->getHp() <= 200)
-	{
-		this->boss->setPosition(1500, 250);
-	}
-
-	//Monster lose hp if ultimate
-	for (size_t e = 0; e < this->ultidragons.size() ; e++)
-	{
-		if (this->ultidragons[e]->canAttack() && this->ultidragons[e]->getBounds().intersects(this->boss->getBounds()))
+		if (this->boss->getHp() > 600 && this->boss->getHp() <= 800)
 		{
-			this->boss->loseHp(this->ultidragons[e]->getDamage());
-			printf("NACKlnwza");
+			this->boss->setPosition(860, 250);
 		}
-	}
-	//Boss lose if attack the boss
-	if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->boss->HitboxgetBounds()))
-	{
-		this->boss->loseHp(this->player->getDamage());
-	}
-	//Boss Player Collision
-	else if(this->boss->getHp() > 0)
-	{
+		if (this->boss->getHp() > 400 && this->boss->getHp() <= 600)
+		{
+			this->boss->setPosition(3000, 400);
+		}
+		if (this->boss->getHp() > 200 && this->boss->getHp() <= 400)
+		{
+			this->boss->setPosition(100, 300);
+		}
+		if (this->boss->getHp() <= 200)
+		{
+			this->boss->setPosition(1500, 250);
+		}
+
+		//Monster lose hp if ultimate
+		for (size_t e = 0; e < this->ultidragons.size(); e++)
+		{
+			if (this->ultidragons[e]->canAttack() && this->ultidragons[e]->getBounds().intersects(this->boss->getBounds()))
+			{
+				this->boss->loseHp(this->ultidragons[e]->getDamage());
+				printf("NACKlnwza\n");
+			}
+		}
+		//Boss lose if attack the boss
+		if (this->player->isAttacking() && this->player->CutboxgetBounds().intersects(this->boss->HitboxgetBounds()))
+		{
+			this->boss->loseHp(this->player->getDamage());
+		}
+		//Boss Player Collision
 		if (this->player->HitboxgetBounds().intersects(this->boss->HitboxgetBounds()) && this->boss->canAttack())
 		{
 			this->player->loseHp(this->boss->getDamage());
 			this->playergethit.play();
 		}
-	}
 
-	if (this->boss->getHp() == 0)
-	{
-		/*this->score += this->boss->getPoints();*/
-		this->bossDieSound.play();
-		this->music.stop();
+		if (this->boss->getHp() == 0)
+		{
+			/*this->score += this->boss->getPoints();*/
+			/*this->music.stop();*/
+		}
 	}
 }
 
 void GameState::updateBubbleTea()
 {
-	this->bubbletea.move(0.f, 5.f);
-
-	//Bottom Collision
-	if (this->bubbletea.getPosition().y + this->bubbletea.getGlobalBounds().height >= 500.f)
+	if (this->boss->getHp() <= 0)
 	{
-	this->bubbletea.setPosition(this->bubbletea.getPosition().x, 500.f - this->bubbletea.getGlobalBounds().height);
+		/*this->bossDieSound.play();*/
+		this->bubbletea.move(0.f, 5.f);
+
+		//Bottom Collision
+		if (this->bubbletea.getPosition().y + this->bubbletea.getGlobalBounds().height >= 500.f)
+		{
+			this->bubbletea.setPosition(this->bubbletea.getPosition().x, 500.f - this->bubbletea.getGlobalBounds().height);
+		}
 	}
 }
 
@@ -1363,7 +1704,8 @@ void GameState::update(const float& dt)
 	this->updateMousePosition();
 	this->updateKeytime(dt);
 	this->updateInput(dt);
-	
+	this->music.setLoop(true);
+
 	if (!this->paused && this->player->getHp() != 0 && !this->player->HitboxgetBounds().intersects(this->bubbletea.getGlobalBounds())) //Unpause update
 	{
 		this->updatePlayerInput(dt);
@@ -1390,12 +1732,12 @@ void GameState::update(const float& dt)
 
 		this->updateUltimate();
 		this->updateUltiDragons(dt);
+		this->updateUltiDragonsAndCombat(dt);
 
-		/*this->updateYakults(dt);*/
+		this->updateYakults(dt);
 
 		this->updateBossAndCombat(dt);
-		if (this->boss->getHp() <= 0)
-			this->updateBubbleTea();
+		this->updateBubbleTea();
 
 		this->updateGUI();
 	}
@@ -1409,6 +1751,10 @@ void GameState::update(const float& dt)
 		}
 		else if(this->player->getHp() == 0)
 		{
+			/*this->music.stop();
+
+			this->lose.play();*/
+
 			this->gameover->update(this->mousePosView);
 
 			this->updateGameOverButton();

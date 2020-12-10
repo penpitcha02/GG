@@ -25,7 +25,6 @@ private:
 	sf::Font font;
 
 	sf::RectangleShape background;
-	sf::RectangleShape container;
 
 	std::map<std::string, Button*> buttons;
 
@@ -35,7 +34,6 @@ public:
 
 	//Accessor
 	std::map<std::string, Button*>& getButtons();
-	void setPosition(float x, float y);
 	void textSetPosition(float x, float y);
 	void buttonSetPosition(const std::string key, float x, float y);
 
