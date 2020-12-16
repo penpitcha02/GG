@@ -99,6 +99,12 @@
     <ClCompile Include="Yakult.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="HowToState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="NameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Game.h">
@@ -168,6 +174,15 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="Yakult.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="HowToState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="NameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Header.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>

@@ -3,7 +3,7 @@
 //Variables
 void UltiDragon::initVariables()
 {
-	this->speed = 10.f;
+	this->speed = 8.f;
 	this->damage = 50;
 
 	this->attackCooldownMax = 50.f;
@@ -58,7 +58,7 @@ void UltiDragon::updateAttack()
 {
 	if (this->attackCooldown < this->attackCooldownMax)
 	{
-		this->attackCooldown += 10.f;
+		this->attackCooldown += 2.f;
 	}
 }
 

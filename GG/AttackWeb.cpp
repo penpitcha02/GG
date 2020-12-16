@@ -4,7 +4,7 @@
 void AttackWeb::initVariables()
 {
 	this->speed = 5.f;
-	this->hpMax = 100;
+	this->hpMax = 150;
 	this->hp = this->hpMax;
 	this->damage = 10;
 	this->points = 10;

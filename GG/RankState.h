@@ -26,16 +26,11 @@ private:
     sf::Texture shopTexture;
     sf::RectangleShape shop;
 
+    //Name
+    sf::Text nameText;
+    sf::Font font;
 
-    ////Variables
-    //sf::Texture button1idleTexture;
-    //sf::Texture button1hoverTexture;
-    //sf::Texture button1activeTexture;
-
-    //sf::Texture button2idleTexture;
-    //sf::Texture button2hoverTexture;
-    //sf::Texture button2activeTexture;
-
+    //Button
     sf::Texture button3idleTexture;
     sf::Texture button3hoverTexture;
     sf::Texture button3activeTexture;
@@ -46,6 +41,7 @@ private:
     void initVariable();
     void initMusic();
     void initBackground();
+    void initName();
     void initView();
     void initKeybinds();
     void initButton();

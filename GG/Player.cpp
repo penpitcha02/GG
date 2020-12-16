@@ -7,7 +7,7 @@ void Player::initVariables()
 
 	this->hpMax = 500;
 	this->hp = this->hpMax;
-	this->damage = 10;
+	this->damage = 2;
 
 	this->attackCooldownMax = 50.f;
 	this->attackCooldown = this->attackCooldownMax;
@@ -108,8 +108,8 @@ void Player::loseHp(const int value)
 void Player::gainHp(const int value)
 {
 	this->hp += value;
-	if (this->hp > 1000)
-		this->hp = 1000;
+	if (this->hp > this->hpMax)
+		this->hp = this->hpMax;
 }
 
 //Functions

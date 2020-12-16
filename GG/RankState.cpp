@@ -11,6 +11,7 @@ void RankState::initMusic()
 	if (!this->music.openFromFile("music/Gurenge.wav"))
 		printf("LOAD MAI DAI AAAAAAA");
 	this->music.play();
+	this->music.setLoop(true);
 }
 
 void RankState::initBackground()
@@ -60,6 +61,21 @@ void RankState::initBackground()
 	this->fade.setFillColor(sf::Color(20, 20, 20, 100));
 }
 
+void RankState::initName()
+{
+	if (!this->font.loadFromFile("font/maaja.ttf"))
+	{
+		throw("LOAD MAIDAI KRUB");
+	}
+
+	//Name
+	this->nameText.setFont(this->font);
+	this->nameText.setCharacterSize(50);
+	this->nameText.setFillColor(sf::Color::White);
+	this->nameText.setPosition(25.f, 725.f);
+	this->nameText.setString("Penpitcha Sappakun 63010709");
+}
+
 void RankState::initView()
 {
 	this->view.setSize(sf::Vector2f(1440.0f, 810.0f));
@@ -72,33 +88,6 @@ void RankState::initKeybinds()
 
 void RankState::initButton()
 {
-	////Button1
-	//if (!this->button1idleTexture.loadFromFile("img/menubutton/PlayButton1.png"))
-	//	printf("LOAD BUTTON 1 IDLE MAI DAI AAAAAAA");
-
-	//if (!this->button1hoverTexture.loadFromFile("img/menubutton/PlayButtonHighlight1.png"))
-	//	printf("LOAD BUTTON 1 HOVER MAI DAI AAAAAAA");
-
-	//if (!this->button1activeTexture.loadFromFile("img/menubutton/PlayButtonPressed1.png"))
-	//	printf("LOAD BUTTON 1 ACTIVE MAI DAI AAAAAAA");
-
-	//this->buttons["GAME_STATE"] = new Button(1050, 200, 172.5, 107.5,
-	//	&this->button1idleTexture, &this->button1hoverTexture, &this->button1activeTexture);
-
-	////Button2
-	//if (!this->button2idleTexture.loadFromFile("img/menubutton/HelpButton1.png"))
-	//	printf("LOAD BUTTON 2 IDLE MAI DAI AAAAAAA");
-
-	//if (!this->button2hoverTexture.loadFromFile("img/menubutton/HelpButtonHighlight1.png"))
-	//	printf("LOAD BUTTON 2 HOVER MAI DAI AAAAAAA");
-
-	//if (!this->button2activeTexture.loadFromFile("img/menubutton/HelpButtonPressed1.png"))
-	//	printf("LOAD BUTTON 2 ACTIVE MAI DAI AAAAAAA");
-
-	//this->buttons["HELP_STATE"] = new Button(1050, 350, 172.5, 107.5,
-	//	&this->button2idleTexture, &this->button2hoverTexture, &this->button2activeTexture);
-
-	//Button3
 	if (!this->button3idleTexture.loadFromFile("img/menubutton/QuitButton1.png"))
 		printf("LOAD BUTTON 3 IDLE MAI DAI AAAAAAA");
 
@@ -118,6 +107,7 @@ RankState::RankState(sf::RenderWindow* window, std::map<std::string, int>* suppo
 	this->initVariable();
 	this->initMusic();
 	this->initBackground();
+	this->initName();
 	this->initView();
 	this->initKeybinds();
 	this->initButton();
@@ -152,18 +142,12 @@ void RankState::updateButtons()
 		it.second->update(this->mousePosView);
 	}
 
-	////New Game
-	//if (this->buttons["GAME_STATE"]->isPressed())
-	//{
-	//	this->states->push(new GameState(this->window, this->supportedKeys, this->states));
-	//}
-
 	//Quit The Game
 	if (this->buttons["QUIT_STATE"]->isPressed())
 	{
 		this->music.stop();
-		this->endState();
 		this->states->push(new MainMenuState(this->window, this->supportedKeys, this->states));
+		this->endState();
 	}
 }
 
@@ -196,6 +180,8 @@ void RankState::render(sf::RenderTarget* target)
 	target->draw(this->shop);
 
 	target->draw(this->fade);
+
+	target->draw(this->nameText);
 
 	this->renderButtons(*target);
 

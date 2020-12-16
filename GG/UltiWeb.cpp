@@ -4,7 +4,7 @@
 void UltiWeb::initVariables()
 {
 	this->speed = 10.f;
-	this->hpMax = 100;
+	this->hpMax = 200;
 	this->hp = this->hpMax;
 	this->damage = 20;
 	this->points = 20;

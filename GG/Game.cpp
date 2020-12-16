@@ -59,7 +59,6 @@ Game::Game()
 	this->initWindow();
 	this->initKeys();
 	this->initStates();
-	
 }
 
 Game::~Game() 
@@ -132,7 +131,6 @@ void Game::render()
 
 void Game::run()
 {
-
 	while (this->window->isOpen())
 	{
 		this->updateDt();

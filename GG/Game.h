@@ -10,6 +10,8 @@ private:
 	sf::RenderWindow *window;
 	sf::Event sfEvent;
 
+	sf::Music music;
+
 	sf::Clock dtClock;
 	float dt;
 

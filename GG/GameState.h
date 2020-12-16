@@ -15,9 +15,7 @@ private:
 
     //Music
     sf::Music music;
-    sf::Music win;
-    sf::Music lose;
-
+ 
     //SFX
     sf::SoundBuffer playergethitBuffer;
     sf::Sound playergethit;

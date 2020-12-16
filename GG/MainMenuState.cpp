@@ -11,6 +11,7 @@ void MainMenuState::initMusic()
 	if (!this->music.openFromFile("music/Tanjirou.wav"))
 		printf("LOAD MAI DAI AAAAAAA");
 	this->music.play();
+	this->music.setLoop(true);
 }
 
 void MainMenuState::initBackground()
@@ -136,9 +137,16 @@ void MainMenuState::updateButtons()
 	if (this->buttons["GAME_STATE"]->isPressed())
 	{
 		this->music.stop();
+		this->states->push(new NameState(this->window, this->supportedKeys, this->states));
 		this->endState();
-		this->states->push(new GameState(this->window, this->supportedKeys, this->states));
 	}
+
+	//How to play
+	if (this->buttons["HELP_STATE"]->isPressed())
+	{
+		this->states->push(new HowToState(this->window, this->supportedKeys, this->states));
+	}
+
 
 	//Quit The Game
 	if (this->buttons["QUIT_STATE"]->isPressed())

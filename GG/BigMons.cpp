@@ -7,7 +7,7 @@ void BigMons::initVariables()
 
 	this->type = 0;
 	this->speed = 3.f;
-	this->hpMax = 100;
+	this->hpMax = 200;
 	this->hp = this->hpMax;
 	this->damage = 20;
 	this->points = 30;
