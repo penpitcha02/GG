@@ -519,8 +519,6 @@ void GameState::updateGameOverButton()
 
 	this->lastScoreText.setString(ss.str());
 
-	/*this->gameover->setPosition(this->view.getCenter().x - 180.f, this->view.getCenter().y - 405.f);*/
-
 	this->gameover->textSetPosition(this->view.getCenter().x - 300.f, this->view.getCenter().y - 300.f);
 
 	this->gameover->buttonSetPosition("RANK_STATE", this->view.getCenter().x - 86.25, this->view.getCenter().y + 200.f);

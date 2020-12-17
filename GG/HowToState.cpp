@@ -4,6 +4,17 @@
 void HowToState::initVariable()
 {
 
+	if (!this->font.loadFromFile("font/maaja.ttf"))
+	{
+		throw("LOAD MAIDAI KRUB");
+	}
+
+	//End
+	this->escape.setFont(this->font);
+	this->escape.setCharacterSize(30);
+	this->escape.setFillColor(sf::Color::White);
+	this->escape.setPosition(this->window->getSize().x / 2.f - 100.f, 0.f);
+	this->escape.setString("Press ESC to get back!");
 }
 
 void HowToState::initBackground()
@@ -79,4 +90,6 @@ void HowToState::render(sf::RenderTarget* target)
 	target->setView(this->view);
 
 	target->draw(this->background);
+
+	target->draw(this->escape);
 }

@@ -26,6 +26,10 @@ private:
     sf::Texture shopTexture;
     sf::RectangleShape shop;
 
+    //End
+    sf::Text endText;
+    sf::Text byeText;
+
     //Name
     sf::Text nameText;
     sf::Font font;

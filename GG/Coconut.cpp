@@ -7,8 +7,8 @@ void Coconut::initVariables()
 	this->speed = 2.f;
 	this->hpMax = 100;
 	this->hp = this->hpMax;
-	this->damage = 1;
-	this->points = 5;
+	this->damage = 5;
+	this->points = 10;
 }
 
 //Con-De

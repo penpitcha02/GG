@@ -9,8 +9,8 @@ void BigMons::initVariables()
 	this->speed = 3.f;
 	this->hpMax = 200;
 	this->hp = this->hpMax;
-	this->damage = 20;
-	this->points = 30;
+	this->damage = 50;
+	this->points = 50;
 
 	this->attackCooldownMax = 50.f;
 	this->attackCooldown = this->attackCooldownMax;

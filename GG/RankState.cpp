@@ -3,7 +3,24 @@
 //Initializer functions
 void RankState::initVariable()
 {
+	if (!this->font.loadFromFile("font/maaja.ttf"))
+	{
+		throw("LOAD MAIDAI KRUB");
+	}
 
+	//End
+	this->endText.setFont(this->font);
+	this->endText.setCharacterSize(200);
+	this->endText.setFillColor(sf::Color::White);
+	this->endText.setPosition(500.f, 200.f);
+	this->endText.setString("The End");
+
+	//Bye
+	this->byeText.setFont(this->font);
+	this->byeText.setCharacterSize(100);
+	this->byeText.setFillColor(sf::Color::White);
+	this->byeText.setPosition(300.f, 400.f);
+	this->byeText.setString("I hope you have a nice day!");
 }
 
 void RankState::initMusic()
@@ -63,11 +80,6 @@ void RankState::initBackground()
 
 void RankState::initName()
 {
-	if (!this->font.loadFromFile("font/maaja.ttf"))
-	{
-		throw("LOAD MAIDAI KRUB");
-	}
-
 	//Name
 	this->nameText.setFont(this->font);
 	this->nameText.setCharacterSize(50);
@@ -182,6 +194,10 @@ void RankState::render(sf::RenderTarget* target)
 	target->draw(this->fade);
 
 	target->draw(this->nameText);
+
+	target->draw(this->endText);
+
+	target->draw(this->byeText);
 
 	this->renderButtons(*target);
 

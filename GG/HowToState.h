@@ -15,6 +15,10 @@ private:
     sf::Texture backgroundTexture;
     sf::RectangleShape background;
 
+    //Escape
+    sf::Text escape;
+    sf::Font font;
+
     //Function
     void initVariable();
     void initBackground();

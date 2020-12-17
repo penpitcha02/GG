@@ -6,7 +6,7 @@ void LockWeb::initVariables()
 	this->speed = 3.f;
 	this->hpMax = 4;
 	this->hp = this->hpMax;
-	this->points = 5;
+	this->points = 15;
 }
 
 //Con-De
