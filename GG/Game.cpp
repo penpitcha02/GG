@@ -26,6 +26,9 @@ void Game::initWindow()
 	this->window->setFramerateLimit(framerate_limit);
 	this->window->setVerticalSyncEnabled(vertical_sync_enabled);
 
+	sf::Image icon;
+	icon.loadFromFile("img/icon.png");
+	this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 }
 
 void Game::initKeys()
