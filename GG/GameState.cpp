@@ -1367,7 +1367,6 @@ void GameState::updateBossAndCombat(const float& dt)
 		if (this->boss->getHp() == 0)
 		{
 			/*this->score += this->boss->getPoints();*/
-			/*this->music.stop();*/
 		}
 	}
 }

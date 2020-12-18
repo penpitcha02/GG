@@ -8,7 +8,7 @@ void Boss::initVariables()
 	this->hpMax = 1000;
 	this->hp = this->hpMax;
 	this->damage = 50;
-	this->points = 5;
+	this->points = 100;
 
 	this->attackCooldownMax = 50.f;
 	this->attackCooldown = this->attackCooldownMax;
